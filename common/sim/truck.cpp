@@ -684,12 +684,27 @@ void UpdTruck(Unit* u)
 		//prevent job from expiring from inactivity ("stuck")
 		if(u->cmpos != u->prevpos)
 			u->jobframes = TBID_DELAY;
+
+		Unit* ignoreu = NULL;
+
+		if(u->driver >= 0)
+			ignoreu = &g_unit[u->driver];
+
+#if 0
+		//Doesn't work, in situations where 
+		//approaching driver blocks path.
+		if(Trapped(u, ignoreu))
+		{
+			ResetMode(u);
+			return;
+		}
+#endif
 	}
 
 	if(u->belongings[RES_FUEL] <= 0)
 	{
 		char msg[128];
-		sprintf(msg, "%s Truck out of fuel!", Time().c_str());
+		sprintf(msg, "%s Truck out of fuel! (Remaining %d)", Time().c_str(), CountU(UNIT_TRUCK));
 		g_log<<msg<<std::endl;
 		g_log<<"\tRemain: "<<CountU(UNIT_TRUCK)<<std::endl;
 		RichText sr;

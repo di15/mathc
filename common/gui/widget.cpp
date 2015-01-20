@@ -3,7 +3,6 @@
 #include "font.h"
 #include "../window.h"
 #include "icon.h"
-#include "../net/net.h"
 
 
 void Widget::frameupd()
@@ -26,6 +25,7 @@ void Widget::reframe()	//resized or moved
 	}
 #endif
 
+#if 0	//only use when add windows widgets, and then fix parent bounds of "zoom text" and "max elev" labels
 	if(m_parent)
 	{
 		float* parp = m_parent->m_pos;
@@ -44,9 +44,32 @@ void Widget::reframe()	//resized or moved
 		m_pos[1] = fmin(m_pos[1], m_pos[3]);
 		m_pos[0] = fmin(m_pos[0], m_pos[2]);
 	}
+#endif
 
 	for(auto i=m_subwidg.begin(); i!=m_subwidg.end(); i++)
 		(*i)->reframe();
+}
+
+void Widget::tofront()
+{
+	//return;
+
+	if(!m_parent)
+		return;
+
+	//return;
+
+	auto subs = &m_parent->m_subwidg;
+
+	for(auto wi=subs->begin(); wi!=subs->end(); wi++)
+	{
+		if(*wi == this)
+		{
+			subs->erase(wi);
+			subs->push_back(this);
+			break;
+		}
+	}
 }
 
 void CenterLabel(Widget* w)

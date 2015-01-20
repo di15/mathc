@@ -8,6 +8,7 @@
 #include "../math/frustum.h"
 
 std::list<Transaction> g_transx;
+bool g_drawtransx = false;
 
 void DrawTransactions(Matrix projmodlview)
 {
@@ -24,8 +25,6 @@ void DrawTransactions(Matrix projmodlview)
 
 	while(triter != g_transx.end())
 	{
-		pos = &triter->drawpos;
-		
 		triter->drawpos.y += TRANSACTION_RISE * g_drawfrinterval;
 		triter->life -= TRANSACTION_DECAY * g_drawfrinterval;
 
@@ -34,6 +33,18 @@ void DrawTransactions(Matrix projmodlview)
 			triter = g_transx.erase( triter );
 			continue;
 		}
+
+		triter ++;
+	}
+
+	if(!g_drawtransx)
+		return;
+
+	triter = g_transx.begin();
+
+	while(triter != g_transx.end())
+	{
+		pos = &triter->drawpos;
 
 		if(!g_frustum.pointin(pos->x, pos->y, pos->z))
 		{

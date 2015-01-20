@@ -12,6 +12,7 @@
 
 Model g_model[MODELS];
 std::vector<ModelToLoad> g_modelsToLoad;
+int g_lastmodelload = -1;
 
 Model::~Model()
 {
@@ -20,6 +21,8 @@ Model::~Model()
 
 void Model::destroy()
 {
+	m_on = false;
+
 	if(m_va == NULL)
 		return;
 
@@ -27,8 +30,6 @@ void Model::destroy()
 	m_va = NULL;
 
 	m_ms3d.destroy();
-
-	m_on = false;
 }
 
 int NewModel()
@@ -54,21 +55,20 @@ void QueueModel(int* id, const char* relative, Vec3f scale, Vec3f translate, boo
 
 bool Load1Model()
 {
-	static int last = -1;
 
-	if(last+1 < g_modelsToLoad.size())
-		Status(g_modelsToLoad[last+1].filepath);
+	if(g_lastmodelload+1 < g_modelsToLoad.size())
+		Status(g_modelsToLoad[g_lastmodelload+1].filepath);
 
-	if(last >= 0)
+	if(g_lastmodelload >= 0)
 	{
 		int id = NewModel();
-		g_model[id].load(g_modelsToLoad[last].filepath, g_modelsToLoad[last].scale, g_modelsToLoad[last].translate, false, g_modelsToLoad[last].blendnorm);
-		(*g_modelsToLoad[last].id) = id;
+		g_model[id].load(g_modelsToLoad[g_lastmodelload].filepath, g_modelsToLoad[g_lastmodelload].scale, g_modelsToLoad[g_lastmodelload].translate, false, g_modelsToLoad[g_lastmodelload].blendnorm);
+		(*g_modelsToLoad[g_lastmodelload].id) = id;
 	}
 
-	last ++;
+	g_lastmodelload ++;
 
-	if(last >= g_modelsToLoad.size())
+	if(g_lastmodelload >= g_modelsToLoad.size())
 	{
 		g_modelsToLoad.clear();
 		return false;	// Done loading all models
@@ -410,4 +410,10 @@ void FreeModels()
 
 		m->destroy();
 	}
+}
+
+
+void ReloadModels()
+{
+
 }

@@ -17,7 +17,7 @@
 #include "../../window.h"
 #include "../../render/shader.h"
 #include "../gui.h"
-#include "../../sim/player.h"
+
 #include "../../debug.h"
 
 Viewport::Viewport()
@@ -66,9 +66,8 @@ Viewport::Viewport(Widget* parent, const char* n, void (*reframef)(Widget* thisw
 
 void Viewport::draw()
 {
-	//g_log<<m_pos[0]<<","<<m_pos[1]<<","<<m_pos[2]<<","<<m_pos[3]<<std::endl;
+	//g_applog<<m_pos[0]<<","<<m_pos[1]<<","<<m_pos[2]<<","<<m_pos[3]<<std::endl;
 
-	Player* py = &g_player[g_localP];
 	int w = (int)( m_pos[2] - m_pos[0] );
 	int h = (int)( m_pos[3] - m_pos[1] );
 
@@ -98,16 +97,18 @@ void Viewport::draw()
 
 void Viewport::inev(InEv* ie)
 {
-	Player* py = &g_player[g_localP];
-
 	if(ie->type == INEV_MOUSEMOVE)
 	{
 		if(g_mouse.x >= m_pos[0] && g_mouse.x <= m_pos[2] && g_mouse.y >= m_pos[1] && g_mouse.y <= m_pos[3])
-		{}
+		{
+			if(!ie->intercepted)
+				m_over = true;
+		}
 		else
 			m_over = false;
 	}
-	else if(ie->type == INEV_MOUSEMOVE && !ie->intercepted)
+	
+	if(ie->type == INEV_MOUSEMOVE && !ie->intercepted)
 	{
 		if(g_mouse.x >= m_pos[0] && g_mouse.x <= m_pos[2] && g_mouse.y >= m_pos[1] && g_mouse.y <= m_pos[3])
 			m_over = true;
@@ -125,12 +126,13 @@ void Viewport::inev(InEv* ie)
 	}
 	else if(ie->type == INEV_MOUSEDOWN && ie->key == MOUSE_LEFT && !ie->intercepted)
 	{
+		//InfoMess("vpld", "vpld");
+
 		if(!m_over)
 			return;
 
 		if(ldownfunc != NULL)
 		{
-			Player* py = &g_player[g_localP];
 			int relx = g_mouse.x - (int)m_pos[0];
 			int rely = g_mouse.y - (int)m_pos[1];
 			int w = (int)( m_pos[2] - m_pos[0] );
@@ -140,9 +142,13 @@ void Viewport::inev(InEv* ie)
 	}
 	else if(ie->type == INEV_MOUSEUP && ie->key == MOUSE_LEFT && !ie->intercepted)
 	{
+		//InfoMess("vplu", "vplu");
+
+		if(!m_over)
+			return;
+
 		if(lupfunc != NULL)
 		{
-			Player* py = &g_player[g_localP];
 			int relx = g_mouse.x - (int)m_pos[0];
 			int rely = g_mouse.y - (int)m_pos[1];
 			int w = (int)( m_pos[2] - m_pos[0] );
@@ -157,7 +163,6 @@ void Viewport::inev(InEv* ie)
 
 		if(rdownfunc != NULL)
 		{
-			Player* py = &g_player[g_localP];
 			int relx = g_mouse.x - (int)m_pos[0];
 			int rely = g_mouse.y - (int)m_pos[1];
 			int w = (int)( m_pos[2] - m_pos[0] );
@@ -167,9 +172,11 @@ void Viewport::inev(InEv* ie)
 	}
 	else if(ie->type == INEV_MOUSEUP && ie->key == MOUSE_RIGHT && !ie->intercepted)
 	{
+		if(!m_over)
+			return;
+
 		if(rupfunc != NULL)
 		{
-			Player* py = &g_player[g_localP];
 			int relx = g_mouse.x - (int)m_pos[0];
 			int rely = g_mouse.y - (int)m_pos[1];
 			int w = (int)( m_pos[2] - m_pos[0] );
@@ -179,6 +186,9 @@ void Viewport::inev(InEv* ie)
 	}
 	else if(ie->type == INEV_MOUSEWHEEL && !ie->intercepted)
 	{
+		if(!m_over)
+			return;
+
 		if(mousewfunc != NULL)
 		{
 			ie->intercepted = mousewfunc(m_param, ie->amount);

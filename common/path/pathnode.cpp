@@ -4,7 +4,7 @@
 #include "pathjob.h"
 #include "../sim/utype.h"
 #include "collidertile.h"
-#include "binheap.h"
+#include "../sys/binheap.h"
 #include "../utils.h"
 #include "../debug.h"
 #include "../sim/unit.h"
@@ -126,8 +126,10 @@ void SnapToNode(PathJob* pj)
 	//Edit: No, the second method is correct. The only solution to the truck being stuck is to use more pathnode divisions.
 	//This is more realistic anyways (using PATHNODE_SIZE of 50 centimeters instead of 125, because a person has about 50 cm
 	//of personal space, and a 10x10 meter road tile divides to give 20x20 people worth of room).
-	//Vec2i npos = Vec2i( (pj->cmstartx+PATHNODE_SIZE/2) / PATHNODE_SIZE, (pj->cmstarty+PATHNODE_SIZE/2) / PATHNODE_SIZE );
-	Vec2i npos = Vec2i( (pj->cmstartx) / PATHNODE_SIZE, (pj->cmstarty) / PATHNODE_SIZE );
+	//Edit: the first method must be correct, since for the npos_min we are at npos-1, and for npos_max we are at npos+1.
+	Vec2i npos = Vec2i( (pj->cmstartx+PATHNODE_SIZE/2) / PATHNODE_SIZE, (pj->cmstarty+PATHNODE_SIZE/2) / PATHNODE_SIZE );
+	//Vec2i npos = Vec2i( (pj->cmstartx) / PATHNODE_SIZE, (pj->cmstarty) / PATHNODE_SIZE );
+	//Vec2i npos = Vec2i( (pj->cmstartx-PATHNODE_SIZE/2) / PATHNODE_SIZE, (pj->cmstarty-PATHNODE_SIZE/2) / PATHNODE_SIZE );
 
 	npos.x = imin(g_pathdim.x-1, npos.x);
 	npos.y = imin(g_pathdim.y-1, npos.y);
@@ -136,7 +138,7 @@ void SnapToNode(PathJob* pj)
 
 	npos_min.x = imax(0, npos_min.x);
 	npos_min.y = imax(0, npos_min.y);
-
+	
 	Vec2i npos_max = npos_min + Vec2i(1,1);
 
 	Vec2i npos_nw = Vec2i( npos_min.x, npos_min.y );

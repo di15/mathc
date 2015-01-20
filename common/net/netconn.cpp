@@ -55,6 +55,8 @@ void OpenSock()
 		//sprintf(msg, "open port %d", PORT+i);
 		//InfoMess("p", msg);
 
+		//SDLNet_UDP_SetPacketLoss(g_sock, 70);
+
 		return;
 	}
 	

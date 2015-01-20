@@ -18,7 +18,7 @@
 #include "../sim/selection.h"
 #include "../sim/simdef.h"
 #include "../phys/trace.h"
-#include "binheap.h"
+#include "../sys/binheap.h"
 #include "anypath.h"
 #include "reconstructpath.h"
 #include "pathdebug.h"

@@ -522,7 +522,8 @@ void Click_BV_Set()
 	BlType* bt = &g_bltype[ b->type ];
 
 	int row = 0;
-	
+	char wn[32];
+
 	// change bl view prod price
 
 	for(int ri=0; ri<RESOURCES; ri++)
@@ -530,7 +531,6 @@ void Click_BV_Set()
 		if(bt->output[ri] <= 0)
 			continue;
 
-		char wn[32];
 		sprintf(wn, "%d 1", row);
 		EditBox* pp = (EditBox*)bv->get(wn);
 		std::string sval = pp->m_value.rawstr();
@@ -561,33 +561,40 @@ void Click_BV_Set()
 		row++;
 	}
 	
-	// change bl view (op) wage
-
-	char wn[32];
-	sprintf(wn, "%d 1", row);
-	EditBox* cw = (EditBox*)bv->get(wn);
-	std::string sval = cw->m_value.rawstr();
-
-	if(sval.length() <= 0)
-		return;
-
+	EditBox* cw;
+	std::string sval;
 	int ival;
-	sscanf(sval.c_str(), "%d", &ival);
 
-	//TO DO: this change needs to happen at the next net turn (next 200 netframe interval).
-	//Also needs to be sent to server and only executed when received back.
-	ival = imax(ival, 0);
-	//b->opwage = ival;
-
-	if(b->opwage != ival)
+	if(bt->input[RES_LABOUR] > 0)
 	{
-		ChValPacket cvp;
-		cvp.header.type = PACKET_CHVAL;
-		cvp.chtype = CHVAL_BLWAGE;
-		cvp.bi = bi;
-		cvp.player = g_localP;
-		cvp.value = ival;
-		LockCmd((PacketHeader*)&cvp, sizeof(ChValPacket));
+		// change bl view (op) wage
+
+		sprintf(wn, "%d 1", row);
+		cw = (EditBox*)bv->get(wn);
+		sval = cw->m_value.rawstr();
+
+		if(sval.length() <= 0)
+			return;
+
+		sscanf(sval.c_str(), "%d", &ival);
+
+		//TO DO: this change needs to happen at the next net turn (next 200 netframe interval).
+		//Also needs to be sent to server and only executed when received back.
+		ival = imax(ival, 0);
+		//b->opwage = ival;
+
+		if(b->opwage != ival)
+		{
+			ChValPacket cvp;
+			cvp.header.type = PACKET_CHVAL;
+			cvp.chtype = CHVAL_BLWAGE;
+			cvp.bi = bi;
+			cvp.player = g_localP;
+			cvp.value = ival;
+			LockCmd((PacketHeader*)&cvp, sizeof(ChValPacket));
+		}
+	
+		row++;
 	}
 
 	// change bl view production level
@@ -606,6 +613,10 @@ void Click_BV_Set()
 	ival = imin(ival, RATIO_DENOM);
 	ival = imax(ival, 0);
 	//b->prodlevel = ival;
+
+	//char msg[128];
+	//sprintf(msg, "prodv %d", ival);
+	//InfoMess(msg, msg);
 	
 	if(b->prodlevel != ival)
 	{
@@ -617,6 +628,8 @@ void Click_BV_Set()
 		cvp.value = ival;
 		LockCmd((PacketHeader*)&cvp, sizeof(ChValPacket));
 	}
+	
+	row++;
 
 	// change bl view manuf unit price
 
@@ -664,6 +677,8 @@ void Click_BV_Set()
 			cvp.value = ival;
 			LockCmd((PacketHeader*)&cvp, sizeof(ChValPacket));
 		}
+
+		row++;
 	}
 }
 

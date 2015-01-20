@@ -70,7 +70,7 @@
     <LinkIncremental>true</LinkIncremental>
     <IncludePath>$(SolutionDir)..\libs\win\SDL2_mixer-2.0.0\include;$(SolutionDir)..\libs\win\SDL2_net-2.0.0\include;$(SolutionDir)..\libs\win\SDL2-2.0.3\include;$(SolutionDir)..\libs\glew\include;$(SolutionDir)..\libs\lpng;$(SolutionDir)..\libs\;$(SolutionDir)..\libs\libzip-0.11.1\lib;$(SolutionDir)..\libs\jpeglib;$(IncludePath)</IncludePath>
     <LibraryPath>$(SolutionDir)..\libs\win\SDL2_mixer-2.0.0\lib;$(SolutionDir)..\libs\win\SDL2_net-2.0.0\lib;$(SolutionDir)..\libs\win\SDL2-2.0.3\lib;$(SolutionDir)..\libs\glew\lib\Release\Win32;$(SolutionDir)..\libs\GL;$(SolutionDir)..\libs\zlib-1.2.5\build\Release;$(SolutionDir)..\libs\libzip-0.11.1\build\lib\Release;$(SolutionDir)..\libs\lpng\lib;$(SolutionDir)..\libs\jpeglib;$(LibraryPath)</LibraryPath>
-    <TargetName>EconCoDbg</TargetName>
+    <TargetName>EconPlDbg</TargetName>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <LinkIncremental>true</LinkIncremental>
@@ -79,7 +79,7 @@
     <LinkIncremental>false</LinkIncremental>
     <IncludePath>$(SolutionDir)..\libs\win\SDL2_mixer-2.0.0\include;$(SolutionDir)..\libs\win\SDL2_net-2.0.0\include;$(SolutionDir)..\libs\win\SDL2-2.0.3\include;$(SolutionDir)..\libs\glew\include;$(SolutionDir)..\libs\lpng;$(SolutionDir)..\libs\jpeglib;$(SolutionDir)..\libs\libzip-0.11.1\lib;$(SolutionDir)..\libs\;$(IncludePath)</IncludePath>
     <LibraryPath>$(SolutionDir)..\libs\win\SDL2_mixer-2.0.0\lib;$(SolutionDir)..\libs\win\SDL2_net-2.0.0\lib;$(SolutionDir)..\libs\win\SDL2-2.0.3\lib;$(SolutionDir)..\libs\glew\lib\Release\Win32;$(SolutionDir)..\libs\lpng\lib;$(SolutionDir)..\libs\jpeglib;$(SolutionDir)..\libs\zlib-1.2.5\build\Release;$(SolutionDir)..\libs\GL;$(SolutionDir)..\libs\libzip-0.11.1\build\lib\Release;$(LibraryPath)</LibraryPath>
-    <TargetName>EconCo</TargetName>
+    <TargetName>EconPl</TargetName>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <LinkIncremental>false</LinkIncremental>
@@ -227,7 +227,6 @@
     <ClCompile Include="..\common\net\sendpackets.cpp" />
     <ClCompile Include="..\common\path\anypath.cpp" />
     <ClCompile Include="..\common\path\astarpath.cpp" />
-    <ClCompile Include="..\common\path\binheap.cpp" />
     <ClCompile Include="..\common\path\collidertile.cpp" />
     <ClCompile Include="..\common\path\fillbodies.cpp" />
     <ClCompile Include="..\common\path\groupmove.cpp" />
@@ -291,6 +290,7 @@
     <ClCompile Include="..\common\sim\utype.cpp" />
     <ClCompile Include="..\common\sound\sound.cpp" />
     <ClCompile Include="..\common\sound\soundch.cpp" />
+    <ClCompile Include="..\common\sys\binheap.cpp" />
     <ClCompile Include="..\common\sys\checksum.cpp" />
     <ClCompile Include="..\common\sys\mempool.cpp" />
     <ClCompile Include="..\common\sys\regress.cpp" />
@@ -386,7 +386,6 @@
     <ClInclude Include="..\common\net\sendpackets.h" />
     <ClInclude Include="..\common\path\anypath.h" />
     <ClInclude Include="..\common\path\astarpath.h" />
-    <ClInclude Include="..\common\path\binheap.h" />
     <ClInclude Include="..\common\path\collidertile.h" />
     <ClInclude Include="..\common\path\fillbodies.h" />
     <ClInclude Include="..\common\path\groupmove.h" />
@@ -450,6 +449,7 @@
     <ClInclude Include="..\common\sim\utype.h" />
     <ClInclude Include="..\common\sound\sound.h" />
     <ClInclude Include="..\common\sound\soundch.h" />
+    <ClInclude Include="..\common\sys\binheap.h" />
     <ClInclude Include="..\common\sys\checksum.h" />
     <ClInclude Include="..\common\sys\mempool.h" />
     <ClInclude Include="..\common\sys\unicode.h" />

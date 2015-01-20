@@ -24,4 +24,6 @@ void TilePath(int utype, int umode, int cmstartx, int cmstarty, int target, int 
 
 void Expand_T(PathJob* pj, PathNode* node);
 
+void UpdJams();
+
 #endif

@@ -356,9 +356,6 @@
     <ClCompile Include="..\common\path\astarpath.cpp">
       <Filter>Source Files\common\path</Filter>
     </ClCompile>
-    <ClCompile Include="..\common\path\binheap.cpp">
-      <Filter>Source Files\common\path</Filter>
-    </ClCompile>
     <ClCompile Include="..\common\path\collidertile.cpp">
       <Filter>Source Files\common\path</Filter>
     </ClCompile>
@@ -523,6 +520,9 @@
     </ClCompile>
     <ClCompile Include="..\common\path\fillbodies.cpp">
       <Filter>Source Files\common\path</Filter>
+    </ClCompile>
+    <ClCompile Include="..\common\sys\binheap.cpp">
+      <Filter>Source Files\common\sys</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -826,9 +826,6 @@
     <ClInclude Include="..\common\path\astarpath.h">
       <Filter>Source Files\common\path</Filter>
     </ClInclude>
-    <ClInclude Include="..\common\path\binheap.h">
-      <Filter>Source Files\common\path</Filter>
-    </ClInclude>
     <ClInclude Include="..\common\path\collidertile.h">
       <Filter>Source Files\common\path</Filter>
     </ClInclude>
@@ -996,6 +993,9 @@
     </ClInclude>
     <ClInclude Include="..\common\path\fillbodies.h">
       <Filter>Source Files\common\path</Filter>
+    </ClInclude>
+    <ClInclude Include="..\common\sys\binheap.h">
+      <Filter>Source Files\common\sys</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

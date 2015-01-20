@@ -119,52 +119,56 @@ void MS3DModel::loadtex(unsigned int& diffm, unsigned int& specm, unsigned int& 
 
 bool MS3DModel::load(const char *relative, unsigned int& diffm, unsigned int& specm, unsigned int& normm, unsigned int& ownm, bool dontqueue)
 {
-	g_log<<"load "<<relative<<std::endl;
-	g_log.flush();
+	//g_log<<"load "<<relative<<std::endl;
+	//g_log.flush();
 
 	char full[MAX_PATH+1];
 	FullPath(relative, full);
+	char *pBuffer;
 
-	std::ifstream inputFile( full, std::ios::in | std::ios::binary );
-	if ( inputFile.fail())
 	{
-		g_log << "Couldn't open the model file "<< relative << std::endl;
-		return false;
+		std::ifstream inputFile( full, std::ios::in | std::ios::binary );
+		if ( inputFile.fail())
+		{
+			g_log << "Couldn't open the model file "<< relative << std::endl;
+			inputFile.close();
+			return false;
+		}
+
+		std::string reltemp = StripFile(relative);
+
+		//if(strlen(reltemp.c_str()) == 0)
+		//	reltemp += CORRECT_SLASH;
+
+		strcpy(m_relative, reltemp.c_str());
+
+		/*
+		char pathTemp[MAX_PATH+1];
+		int pathLength;
+		for ( pathLength = strlen( filename ); --pathLength; )
+		{
+			if ( filename[pathLength] == '/' || filename[pathLength] == '\\' )
+				break;
+		}
+		strncpy( pathTemp, filename, pathLength );
+
+		int i;
+		if ( pathLength > 0 )
+		{
+			pathTemp[pathLength++] = '/';
+		}
+
+		strncpy( m_filepath, filename, pathLength );
+		*/
+
+		inputFile.seekg( 0, std::ios::end );
+		long fileSize = (long)inputFile.tellg();
+		inputFile.seekg( 0, std::ios::beg );
+
+		pBuffer = new char[fileSize];
+		inputFile.read( pBuffer, fileSize );
+		inputFile.close();
 	}
-
-	std::string reltemp = StripFile(relative);
-
-	//if(strlen(reltemp.c_str()) == 0)
-	//	reltemp += CORRECT_SLASH;
-
-	strcpy(m_relative, reltemp.c_str());
-
-	/*
-	char pathTemp[MAX_PATH+1];
-	int pathLength;
-	for ( pathLength = strlen( filename ); --pathLength; )
-	{
-		if ( filename[pathLength] == '/' || filename[pathLength] == '\\' )
-			break;
-	}
-	strncpy( pathTemp, filename, pathLength );
-
-	int i;
-	if ( pathLength > 0 )
-	{
-		pathTemp[pathLength++] = '/';
-	}
-
-	strncpy( m_filepath, filename, pathLength );
-	*/
-
-	inputFile.seekg( 0, std::ios::end );
-	long fileSize = (long)inputFile.tellg();
-	inputFile.seekg( 0, std::ios::beg );
-
-	char *pBuffer = new char[fileSize];
-	inputFile.read( pBuffer, fileSize );
-	inputFile.close();
 
 	const char *pPtr = pBuffer;
 	MS3DHeader *pHeader = ( MS3DHeader* )pPtr;
@@ -173,12 +177,14 @@ bool MS3DModel::load(const char *relative, unsigned int& diffm, unsigned int& sp
 	if ( strncmp( pHeader->m_ID, "MS3D000000", 10 ) != 0 )
 	{
 		g_log << "Not an MS3D file "<< relative << std::endl;
+		//inputFile.close();
 		return false;
 	}
 
 	if ( pHeader->m_version < 3 )
 	{
 		g_log << "I know nothing about MS3D v1.2, " <<relative<< std::endl;
+		//inputFile.close();
 		return false;
 	}
 
@@ -326,14 +332,15 @@ bool MS3DModel::load(const char *relative, unsigned int& diffm, unsigned int& sp
 				if ( _stricmp( pNameList[j].m_pName, pJoint->m_parentName ) == 0 )
 				{
 					parentIndex = pNameList[j].m_jointIndex;
-					g_log<<"parentIndex/m_numJoints = "<<parentIndex<<"/"<<m_numJoints<<std::endl;
-					g_log.flush();
+					//g_log<<"parentIndex/m_numJoints = "<<parentIndex<<"/"<<m_numJoints<<std::endl;
+					//g_log.flush();
 					break;
 				}
 			}
 			if ( parentIndex == -1 )
 			{
 				g_log << "Unable to find parent bone in MS3D file" << std::endl;
+				//inputFile.close();
 				return false;
 			}
 		}
@@ -364,24 +371,25 @@ bool MS3DModel::load(const char *relative, unsigned int& diffm, unsigned int& sp
 	}
 	delete[] pNameList;
 
-	g_log<<"setupjo"<<std::endl;
-	g_log.flush();
+	//g_log<<"setupjo"<<std::endl;
+	//g_log.flush();
 
 	setupjoints();
 
 	delete[] pBuffer;
-
 	
-	g_log<<"restart"<<std::endl;
-	g_log.flush();
+	//g_log<<"restart"<<std::endl;
+	//g_log.flush();
 
 	restart();
 
-	g_log<<"/restart"<<std::endl;
-	g_log.flush();
+	//g_log<<"/restart"<<std::endl;
+	//g_log.flush();
 
 	g_log<<relative<<"\n\r";
 	g_log.flush();
+
+	//inputFile.close();
 
 	return true;
 }
@@ -584,8 +592,8 @@ void MS3DModel::setupjoints()
 	int i;
 	for ( i = 0; i < m_numJoints; i++ )
 	{
-		g_log<<"setupj1 j#"<<i<<std::endl;
-		g_log.flush();
+		//g_log<<"setupj1 j#"<<i<<std::endl;
+		//g_log.flush();
 
 		Joint& joint = m_pJoints[i];
 
@@ -603,8 +611,8 @@ void MS3DModel::setupjoints()
 
 	for ( i = 0; i < m_numVertices; i++ )
 	{
-		g_log<<"setupj2 v#"<<i<<std::endl;
-		g_log.flush();
+		//g_log<<"setupj2 v#"<<i<<std::endl;
+		//g_log.flush();
 
 		Vertex& vertex = m_pVertices[i];
 		
@@ -620,8 +628,8 @@ void MS3DModel::setupjoints()
 
 	for ( i = 0; i < m_numTriangles; i++ )
 	{
-		g_log<<"setupj3 t#"<<i<<std::endl;
-		g_log.flush();
+		//g_log<<"setupj3 t#"<<i<<std::endl;
+		//g_log.flush();
 
 		Triangle& triangle = m_pTriangles[i];
 		for ( int j = 0; j < 3; j++ )

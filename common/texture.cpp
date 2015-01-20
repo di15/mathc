@@ -110,6 +110,8 @@ LoadedTex *LoadBMP(const char *fullpath)
 		}
 	}*/
 
+	fclose(pFile);
+
 	return pImage;
 }
 
@@ -435,7 +437,7 @@ LoadedTex *LoadJPG(const char *fullpath)
 	{
 		// Display an error message saying the file was not found, then return NULL
 		char msg[MAX_PATH+1];
-		sprintf(msg, "Unable to load JPG File: %s", fullpath);
+		sprintf(msg, "Unable to load JPG File: %s \n errno = %d", fullpath, errno);
 		ErrMess("Error", msg);
 		return NULL;
 	}
@@ -596,7 +598,7 @@ LoadedTex *LoadPNG(const char *fullpath)
 		//std::cout << "Color type " << info_ptr->color_type << " not supported" << std::endl;
 		png_destroy_read_struct(&png_ptr, &info_ptr, NULL);
 		fclose(fp);
-		free(pImageData);
+		delete pImageData;
 		return NULL;
 	}
 
@@ -607,6 +609,7 @@ LoadedTex *LoadPNG(const char *fullpath)
 	{
 		OutOfMem(__FILE__, __LINE__);
 		fclose(fp);
+		delete pImageData;
 		return NULL;
 	}
 
@@ -756,7 +759,7 @@ void FreeTextures()
 			continue;
 
 		glDeleteTextures(1, &g_texture[i].texname);
-		//g_texture[i].loaded = false;	// Needed to reload textures
+		g_texture[i].loaded = false;	// Needed to reload textures. EDIT: not.
 	}
 }
 
@@ -861,6 +864,21 @@ void RequeueTexture(unsigned int texindex, const char* relative, bool clamp, boo
 	toLoad.mipmaps = mipmaps;
 
 	g_texLoad.push_back(toLoad);
+}
+
+void ReloadTextures()
+{
+	for(int i=0; i<TEXTURES; i++)
+	{
+		Texture* t = &g_texture[i];
+
+		if(!t->loaded)
+			continue;
+
+		std::string rel;
+		rel = MakePathRelative(t->filepath);
+		RequeueTexture(i, rel.c_str(), t->clamp, t->mipmaps);
+	}
 }
 
 LoadedTex* LoadTexture(const char* full)

@@ -168,7 +168,7 @@ void Status(const char* status, bool logthis)
 		g_log.flush();
 	}
 
-#if 1
+#if 0
 	g_log<<status<<std::endl;
 	g_log.flush();
 #endif

@@ -16,7 +16,7 @@
 #include "../sim/selection.h"
 #include "../sim/simdef.h"
 #include "../phys/trace.h"
-#include "binheap.h"
+#include "../sys/binheap.h"
 #include "anypath.h"
 #include "reconstructpath.h"
 #include "pathdebug.h"
@@ -29,7 +29,7 @@ bool AnyPath(int utype, int umode, int cmstartx, int cmstarty, int target, int t
 {
 	UType* ut = &g_utype[utype];
 
-#if 0
+#if 1
 	if(thisu)
 	{
 		RichText rt("pathf");

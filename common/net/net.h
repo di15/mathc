@@ -21,6 +21,8 @@
 #else
 #define NETCONN_TIMEOUT		(60*1000)
 #endif
+#define NETCONN_UNRESP	(2*1000)
+#define QUIT_DELAY		(10*1000)
 
 unsigned short NextAck(unsigned short ack);
 unsigned short PrevAck(unsigned short ack);
@@ -50,6 +52,7 @@ void UpdNet();
 void ClearPackets();
 void CheckAddSv();
 bool Same(IPaddress* a, IPaddress* b);
+bool NetQuit();
 
 #ifndef MATCHMAKER
 extern unsigned int g_transmitted;

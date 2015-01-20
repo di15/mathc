@@ -42,12 +42,14 @@ public:
 	std::list<unsigned short> tregs;
 	bool opened;
 	bool closed;
+	unsigned char jams;
 	TileNode()
 	{
 		//tried = false;
 		previous = NULL;
 		opened = false;
 		closed = false;
+		jams = 0;
 	};
 	TileNode(int startx, int startz, int endx, int endz, int nx, int nz, TileNode* prev, int totalD, int stepD, unsigned short treg);
 	//PathNode(int startx, int startz, int endx, int endz, int nx, int nz, PathNode* prev, int totalD, int stepD, unsigned char expan);

@@ -62,7 +62,6 @@ public:
 	void reframe();
 	void chcall(Widget* ch, int type, void* data);
 	void subframe(float* fr);
-	virtual void tofront();	//only used for windows
 };
 
 #endif

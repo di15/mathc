@@ -227,10 +227,14 @@
 		<Unit filename="../common/path/anypath.h" />
 		<Unit filename="../common/path/astarpath.cpp" />
 		<Unit filename="../common/path/astarpath.h" />
-		<Unit filename="../common/path/binheap.cpp" />
-		<Unit filename="../common/path/binheap.h" />
 		<Unit filename="../common/path/collidertile.cpp" />
 		<Unit filename="../common/path/collidertile.h" />
+		<Unit filename="../common/path/fillbodies.cpp" />
+		<Unit filename="../common/path/fillbodies.h" />
+		<Unit filename="../common/path/groupmove.cpp" />
+		<Unit filename="../common/path/groupmove.h" />
+		<Unit filename="../common/path/itinerary.cpp" />
+		<Unit filename="../common/path/itinerary.h" />
 		<Unit filename="../common/path/jpsexpansion.cpp" />
 		<Unit filename="../common/path/jpsexpansion.h" />
 		<Unit filename="../common/path/jpspartpath.cpp" />
@@ -251,6 +255,8 @@
 		<Unit filename="../common/path/pathnode.h" />
 		<Unit filename="../common/path/reconstructpath.cpp" />
 		<Unit filename="../common/path/reconstructpath.h" />
+		<Unit filename="../common/path/tilepath.cpp" />
+		<Unit filename="../common/path/tilepath.h" />
 		<Unit filename="../common/path/trip.cpp" />
 		<Unit filename="../common/path/trip.h" />
 		<Unit filename="../common/phys/collision.cpp" />
@@ -349,6 +355,14 @@
 		<Unit filename="../common/sound/sound.h" />
 		<Unit filename="../common/sound/soundch.cpp" />
 		<Unit filename="../common/sound/soundch.h" />
+		<Unit filename="../common/sys/binheap.cpp" />
+		<Unit filename="../common/sys/binheap.h" />
+		<Unit filename="../common/sys/checksum.cpp" />
+		<Unit filename="../common/sys/checksum.h" />
+		<Unit filename="../common/sys/dirent.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="../common/sys/dirent.h" />
 		<Unit filename="../common/sys/mempool.cpp" />
 		<Unit filename="../common/sys/mempool.h" />
 		<Unit filename="../common/sys/regress.cpp" />

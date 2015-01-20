@@ -15,6 +15,7 @@
 #include "truck.h"
 #include "../math/fixmath.h"
 #include "../path/pathjob.h"
+#include "../path/fillbodies.h"
 
 short g_labsnd[LAB_SOUNDS] = {-1,-1,-1};
 
@@ -1038,7 +1039,12 @@ bool CanDrive(Unit* op)
 #endif
 
 	if(Trapped(tr, op))
+	{
+		short tin = (tr->cmpos.x/TILE_SIZE) + (tr->cmpos.y/TILE_SIZE)*g_hmap.m_widthx;
+		TileNode* tn = &g_tilenode[tin];
+		tn->jams = imin(tn->jams + 3, 6);
 		return false;
+	}
 	
 #ifdef HIERDEBUG
 	//if(pathnum == 73)
@@ -1288,7 +1294,7 @@ void UpdLab(Unit* u)
 	if(u->belongings[RES_RETFOOD] <= 0)
 	{
 		char msg[128];
-		sprintf(msg, "%s Starvation!", Time().c_str());
+		sprintf(msg, "%s Starvation! (Population %d.)", Time().c_str(), CountU(UNIT_LABOURER));
 		RichText sr;
 		sr.m_part.push_back(UString(msg));
 		//SubmitConsole(&sr);

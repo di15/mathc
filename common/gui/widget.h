@@ -130,7 +130,7 @@ public:
 	virtual void open();
 	virtual void chcall(Widget* ch, int type, void* data);	//child callback
 	virtual void freech();	//free subwidget children
-	virtual void tofront(){}	//only used for windows
+	virtual void tofront();	//only used for windows. edit: needed for everything since droplist uses it on parent tree.
 	virtual void subdraw(){}
 	virtual void subdrawover(){}
 	virtual void subreframe(){}

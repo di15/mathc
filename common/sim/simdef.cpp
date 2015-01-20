@@ -473,7 +473,7 @@ void Queue()
 	BMan(BL_FACTORY, UNIT_BATTLECOMP);
 	BMan(BL_FACTORY, UNIT_CARLYLE);
 	
-#if 1
+#if 0
 	DefB(BL_REFINERY, "Oil Refinery", 
 		Vec2i(2,2),  false, 
 		"models/refinery2/refinery2", 
@@ -481,7 +481,15 @@ void Queue()
 		"models/refinery2/refinery2", 
 		Vec3f(1,1,1), Vec3f(0,0,0), 
 		FOUNDATION_LAND, RES_NONE, 1000);
-#else
+#elif 1
+	DefB(BL_REFINERY, "Oil Refinery", 
+		Vec2i(1,1),  false, 
+		"models/refinery3/fractower", 
+		Vec3f(1,1,1), Vec3f(0,0,0), 
+		"models/refinery3/fractower", 
+		Vec3f(1,1,1), Vec3f(0,0,0), 
+		FOUNDATION_LAND, RES_NONE, 1000);
+#elif 0
 	DefB(BL_REFINERY, "Oil Refinery", 
 		Vec2i(2,2),  false, 
 		"models/box/refinery/basebuilding.ms3d", 
@@ -496,7 +504,7 @@ void Queue()
 	BIn(BL_REFINERY, RES_ENERGY, 5);
 	BIn(BL_REFINERY, RES_CRUDEOIL, 100);
 	BOut(BL_REFINERY, RES_FUEL, 6000);
-	//BEmitter(BL_REFINERY, 0, PARTICLE_EXHAUST, Vec3f(TILE_SIZE*5.7/10, TILE_SIZE*3/2, TILE_SIZE*-5/10));
+	BEmitter(BL_REFINERY, 0, PARTICLE_EXHAUST, Vec3f(TILE_SIZE*0.4f, TILE_SIZE*4, TILE_SIZE*-0.2f));
 	//BEmitter(BL_REFINERY, 1, PARTICLE_EXHAUST2, Vec3f(TILE_SIZE*5.7/10, TILE_SIZE*3/2, TILE_SIZE*-5/10));
 	//BEmitter(BL_REFINERY, 2, PARTICLE_EXHAUST, Vec3f(TILE_SIZE*-4.5/10, TILE_SIZE*1.75, TILE_SIZE*3.0f/10));
 	//BEmitter(BL_REFINERY, 3, PARTICLE_EXHAUST2, Vec3f(TILE_SIZE*-4.5/10, TILE_SIZE*1.75, TILE_SIZE*3.0f/10));

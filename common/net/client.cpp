@@ -45,7 +45,8 @@ bool AddClient(NetConn* nc, RichText name, int* retci)
 	if(ci < 0)
 		return false;
 
-	nc->client = ci;
+	if(nc)
+		nc->client = ci;
 
 	Client* c = &g_client[ci];
 

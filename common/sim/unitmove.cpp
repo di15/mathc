@@ -26,11 +26,13 @@
 #include "../path/pathjob.h"
 #include "../path/tilepath.h"
 #include "../path/astarpath.h"
+#include "../path/anypath.h"
+#include "../path/fillbodies.h"
 
 //not engine
 #include "../../game/gui/chattext.h"
 
-#define HIERPATH	//hierarchical pathfinding?
+//#define HIERPATH	//hierarchical pathfinding?
 
 //TODO circular unit radius
 bool UnitCollides(Unit* u, Vec2i cmpos, int utype)
@@ -262,12 +264,15 @@ void MoveUnit(Unit* u)
 	}
 #endif
 
+	//Signs that we need a new path
 	if(u->path.size() <= 0 || 
 		(*u->path.rbegin() != u->goal 
 #ifdef HIERPATH
 		&& 
-			(u->tpath.size() == 0 || 
-			*u->tpath.rbegin() != Vec2s(u->goal.x/TILE_SIZE,u->goal.y/TILE_SIZE))
+			(u->tpath.size() == 0 //|| 
+			//*u->tpath.rbegin() != Vec2s(u->goal.x/TILE_SIZE,u->goal.y/TILE_SIZE)	//doesn't work for corner-placed conduits
+			//let's hope tpath will always be reset when new path is needed.
+			)
 #endif
 			) )
 	{
@@ -387,14 +392,22 @@ void MoveUnit(Unit* u)
 			                u->goal.x, u->goal.y,
 			                u->goal.x, u->goal.y, u->goal.x, u->goal.y))
 #elif !defined(HIERPATH)
-#if 0
+#if 1
+			if(AnyPath(u->type, u->mode,
+				u->cmpos.x, u->cmpos.y, u->target, u->target2, u->targtype, u->cdtype,
+				u, NULL, NULL,
+				u->goal.x, u->goal.y,
+				u->goal.x, u->goal.y, u->goal.x, u->goal.y,
+				0, 0, g_pathdim.x-1, g_pathdim.y-1))
+#endif
+#if 1
 			JPSPath(u->type, u->mode,
 			            u->cmpos.x, u->cmpos.y, u->target, u->target2, u->targtype, u->cdtype,
 						&u->path, &u->subgoal,
 			            u, NULL, NULL,
 			            u->goal.x, u->goal.y,
 			            u->goal.x, u->goal.y, u->goal.x, u->goal.y,
-						0, 0, g_pathdim.x-1, g_pathdim.y-1, false);
+						0, 0, g_pathdim.x-1, g_pathdim.y-1, false, true);
 #elif 0
 			AStarPath(u->type, u->mode,
 			            u->cmpos.x, u->cmpos.y, u->target, u->target2, u->targtype, u->cdtype,
@@ -640,9 +653,41 @@ elif 0
 				else
 					g_log<<"did find subpath ----"<<std::endl;
 #endif
+
+#if 0
+				//Try a full path
+				if(u->path.size() <= 0)
+				{
+					JPSPath(u->type, u->mode, 
+						u->cmpos.x, u->cmpos.y,
+						u->target, u->target2, u->targtype, u->cdtype,
+						&u->path, &u->subgoal,
+						u, NULL, NULL,
+						u->goal.x, u->goal.y,
+						u->goal.x, u->goal.y, u->goal.x, u->goal.y,
+						0, 0, g_pathdim.x-1, g_pathdim.y-1,
+						false, true);
+
+					if(u->path.size() > 0)
+					{
+						//Necessary for it to not reset path upon
+						//arriving at next tile node?
+						u->tpath.clear();
+						//u->tpath.push_back(Vec2s(u->goal.x/TILE_SIZE, u->goal.y/TILE_SIZE));
+					}
+				}
+#endif
+
+				//check for jams
+				if(u->path.size() <= 0)
+				{
+					short tin = (u->cmpos.x/TILE_SIZE) + (u->cmpos.y/TILE_SIZE)*g_hmap.m_widthx;
+					TileNode* tn = &g_tilenode[tin];
+					tn->jams = imin(tn->jams + 3, 6);
+				}
 			}
 #endif
-		
+
 #if 1
 			//causes clumps
 			if(u->path.size() <= 0)

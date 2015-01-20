@@ -18,6 +18,7 @@ public:
 #define TRANSACTION_DECAY		(0.015f*30.0f)
 
 extern std::list<Transaction> g_transx;
+extern bool g_drawtransx;
 
 class Matrix;
 

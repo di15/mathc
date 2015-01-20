@@ -28,6 +28,8 @@
 #include "../render/particle.h"
 #include "../render/transaction.h"
 #include "../render/graph.h"
+#include "../path/fillbodies.h"
+#include "../path/tilepath.h"
 
 float ConvertHeight(unsigned char brightness)
 {
@@ -490,6 +492,12 @@ void SaveUnits(FILE *fp)
 		fwrite(&u->cargoamt, sizeof(int), 1, fp);
 		fwrite(&u->cargotype, sizeof(int), 1, fp);
 		fwrite(&u->cargoreq, sizeof(int), 1, fp);
+
+		int ntpath = u->tpath.size();
+		fwrite(&ntpath, sizeof(int), 1, fp);
+		//u->tpath.clear();
+		for(auto ti=u->tpath.begin(); ti!=u->tpath.end(); ti++)
+			fwrite(&*ti, sizeof(Vec2s), 1, fp);
 	}
 }
 
@@ -575,6 +583,18 @@ void ReadUnits(FILE *fp)
 		fread(&u->cargoamt, sizeof(int), 1, fp);
 		fread(&u->cargotype, sizeof(int), 1, fp);
 		fread(&u->cargoreq, sizeof(int), 1, fp);
+
+#if 1
+		int ntpath = 0;
+		fread(&ntpath, sizeof(int), 1, fp);
+		u->tpath.clear();
+		for(int ti=0; ti<ntpath; ti++)
+		{
+			Vec2s tpos;
+			fread(&tpos, sizeof(Vec2s), 1, fp);
+			u->tpath.push_back(tpos);
+		}
+#endif
 
 		//u->fillcollider();
 	}
@@ -749,8 +769,8 @@ void ReadBls(FILE *fp)
 	for(int i=0; i<BUILDINGS; i++)
 	{
 		
-		g_log<<"\t read bl"<<i<<std::endl;
-		g_log.flush();
+		//g_log<<"\t read bl"<<i<<std::endl;
+		//g_log.flush();
 
 		Building *b = &g_building[i];
 
@@ -758,10 +778,9 @@ void ReadBls(FILE *fp)
 
 		if(!b->on)
 			continue;
-
 		
-		g_log<<"\t\t on"<<i<<std::endl;
-		g_log.flush();
+		//g_log<<"\t\t on"<<i<<std::endl;
+		//g_log.flush();
 
 		fread(&b->type, sizeof(int), 1, fp);
 #if 0
@@ -774,11 +793,26 @@ void ReadBls(FILE *fp)
 
 		fread(&b->tilepos, sizeof(Vec2i), 1, fp);
 		fread(&b->drawpos, sizeof(Vec3f), 1, fp);
+		
+		BlType* t = &g_bltype[b->type];
+		Vec2i tmin;
+		Vec2i tmax;
+		tmin.x = b->tilepos.x - t->widthx/2;
+		tmin.y = b->tilepos.y - t->widthy/2;
+		tmax.x = tmin.x + t->widthx;
+		tmax.y = tmin.y + t->widthy;
+		b->drawpos = Vec3f(b->tilepos.x*TILE_SIZE, Lowest(tmin.x, tmin.y, tmax.x, tmax.y), b->tilepos.y*TILE_SIZE);
+		if(t->foundation == FOUNDATION_SEA)
+			b->drawpos.y = WATER_LEVEL;
+		if(t->widthx % 2 == 1)
+			b->drawpos.x += TILE_SIZE/2;
+		if(t->widthy % 2 == 1)
+			b->drawpos.z += TILE_SIZE/2;
 
 		fread(&b->finished, sizeof(bool), 1, fp);
 
-		g_log<<"\t\t netws..."<<i<<std::endl;
-		g_log.flush();
+		//g_log<<"\t\t netws..."<<i<<std::endl;
+		//g_log.flush();
 
 		fread(&b->pownetw, sizeof(short), 1, fp);
 		fread(&b->crpipenetw, sizeof(short), 1, fp);
@@ -798,10 +832,9 @@ void ReadBls(FILE *fp)
 		fread(&b->inoperation, sizeof(bool), 1, fp);
 		fread(b->price, sizeof(int), RESOURCES, fp);
 		fread(&b->propprice, sizeof(int), 1, fp);
-
 		
-		g_log<<"\t\t ocs..."<<i<<std::endl;
-		g_log.flush();
+		//g_log<<"\t\t ocs..."<<i<<std::endl;
+		//g_log.flush();
 
 		unsigned char noc = b->occupier.size();
 		fread(&noc, sizeof(unsigned char), 1, fp);
@@ -1072,6 +1105,30 @@ void SaveGr(FILE* fp)
 	}
 }
 
+void ReadJams(FILE* fp)
+{
+	//return;
+
+	for(short x=0; x<g_hmap.m_widthx; x++)
+		for(short y=0; y<g_hmap.m_widthy; y++)
+		{
+			int tin = x + y * g_hmap.m_widthx;
+			TileNode* tn = &g_tilenode[tin];
+			fread(&tn->jams, sizeof(unsigned char), 1, fp);
+		}
+}
+
+void SaveJams(FILE* fp)
+{
+	for(short x=0; x<g_hmap.m_widthx; x++)
+		for(short y=0; y<g_hmap.m_widthy; y++)
+		{
+			int tin = x + y * g_hmap.m_widthx;
+			TileNode* tn = &g_tilenode[tin];
+			fwrite(&tn->jams, sizeof(unsigned char), 1, fp);
+		}
+}
+
 bool SaveMap(const char* name)
 {
 	char fullpath[MAX_PATH+1];
@@ -1101,6 +1158,7 @@ bool SaveMap(const char* name)
 	SaveUnits(fp);
 	SaveCo(fp);
 	SaveGr(fp);
+	SaveJams(fp);
 
 	fclose(fp);
 
@@ -1190,6 +1248,7 @@ bool LoadMap(const char* name)
 	if(memcmp(tag, realtag, sizeof(tag)) != 0)
 	{
 		ErrMess("Error", "Incorrect header tag in map file.");
+		fclose(fp);
 		return false;
 	}
 
@@ -1197,6 +1256,7 @@ bool LoadMap(const char* name)
 
 	if(version != MAP_VERSION)
 	{
+		fclose(fp);
 		char msg[128];
 		sprintf(msg, "Map file version (%i) doesn't match %i.", version, MAP_VERSION);
 		ErrMess("Error", msg);
@@ -1233,6 +1293,7 @@ bool LoadMap(const char* name)
 	g_log.flush();
 
 	ReadGr(fp);
+	ReadJams(fp);
 
 	FillColliderGrid();
 	g_log<<"loaded m"<<std::endl;

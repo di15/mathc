@@ -9,11 +9,13 @@
 #include "../econ/utility.h"
 #include "../path/jpspath.h"
 #include "../path/partialpath.h"
+#include "../path/tilepath.h"
 #include "../path/anypath.h"
 #include "../path/pathnode.h"
 #include "../path/pathjob.h"
-#include "../path/binheap.h"
+#include "../sys/binheap.h"
 #include "../path/collidertile.h"
+#include "../path/fillbodies.h"
 
 //not engine
 #include "../../game/gui/chattext.h"
@@ -50,6 +52,9 @@ bool FindJob(Unit* u)
 
 	if(Trapped(u, NULL))
 	{
+		short tin = (u->cmpos.x/TILE_SIZE) + (u->cmpos.y/TILE_SIZE)*g_hmap.m_widthx;
+		TileNode* tn = &g_tilenode[tin];
+		tn->jams = imin(tn->jams + 3, 6);
 		StopTimer(TIMER_FINDJOB);
 		return false;
 	}
@@ -521,6 +526,7 @@ bool FindJob(Unit* u)
 		//first pathable job
 
 #if 1
+#if 0
 		if(!AnyPath(u->type, j->jobtype, u->cmpos.x, u->cmpos.y,
 			j->target, j->target2, j->targtype, j->ctype,
 			u, j->ignoreu, j->ignoreb,
@@ -528,7 +534,28 @@ bool FindJob(Unit* u)
 			j->goal.x, j->goal.y, j->goal.x, j->goal.y,
 			nminx, nminy, nmaxx, nmaxy))
 			continue;
+#else
+		if(Trapped( u, j->ignoreu ))
+		{
+			short tin = (u->cmpos.x/TILE_SIZE) + (u->cmpos.y/TILE_SIZE)*g_hmap.m_widthx;
+			TileNode* tn = &g_tilenode[tin];
+			tn->jams = imin(tn->jams + 3, 6);
+			continue;
+		}
 
+		std::list<Vec2s> tpath;
+
+		TilePath(u->type, j->jobtype, u->cmpos.x, u->cmpos.y,
+			j->target, j->target2, j->targtype, j->ctype,
+			&tpath, 
+			u, j->ignoreu, j->ignoreb,
+			j->goal.x, j->goal.y,
+			j->goal.x, j->goal.y, j->goal.x, j->goal.y,
+			g_hmap.m_widthx*g_hmap.m_widthy);
+
+		if(tpath.size() <= 0)
+			continue;
+#endif
 #if 0
 		if(j->jobtype == UMODE_GODRIVE &&
 			j->target == 15)
@@ -544,6 +571,11 @@ bool FindJob(Unit* u)
 		{
 			//if(j->target == 15)
 			//	InfoMess("15t", "15t");
+
+			Unit* tu = &g_unit[j->target];
+			short tin = (tu->cmpos.x/TILE_SIZE) + (tu->cmpos.y/TILE_SIZE)*g_hmap.m_widthx;
+			TileNode* tn = &g_tilenode[tin];
+			tn->jams = imin(tn->jams + 3, 6);
 
 			continue;
 		}
@@ -828,7 +860,13 @@ void NewJob(int jobtype, int target, int target2, int cdtype)
 			
 			if(jobtype == UMODE_GODRIVE &&
 				Trapped( &g_unit[target], u ))
+			{
+				Unit* tu = &g_unit[target];
+				short tin = (tu->cmpos.x/TILE_SIZE) + (tu->cmpos.y/TILE_SIZE)*g_hmap.m_widthx;
+				TileNode* tn = &g_tilenode[tin];
+				tn->jams = imin(tn->jams + 3, 6);
 				continue;
+			}
 
 			//otherwise, switch to new job
 			u->resetpath();

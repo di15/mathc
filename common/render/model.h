@@ -51,6 +51,8 @@ struct ModelToLoad
 	bool blendnorm;
 };
 
+extern int g_lastmodelload;
+
 int NewModel();
 int FindModel(const char* relative);
 void QueueModel(int* id, const char* relative, Vec3f scale, Vec3f translate, bool blendnorm=false);
@@ -62,5 +64,6 @@ bool PlayAni(float& frame, int first, int last, bool loop, float rate);
 bool PlayAniB(float& frame, int first, int last, bool loop, float rate);	//Play animation backwards
 void FreeModels();
 int LoadModel(const char* relative, Vec3f scale, Vec3f translate, bool dontqueue, bool blendnorm);
+void ReloadModels();
 
 #endif

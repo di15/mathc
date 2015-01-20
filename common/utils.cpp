@@ -154,6 +154,7 @@ void StripPathExtension(const char* n, char* o)
 #ifndef PLATFORM_IOS
 void ExePath(char* exepath)
 {
+#if 0
 #ifdef PLATFORM_WIN
 	//char buffer[MAX_PATH+1];
 	GetModuleFileName(NULL, exepath, MAX_PATH+1);
@@ -169,6 +170,22 @@ void ExePath(char* exepath)
 		exepath[bytes] = '\0';
 	//std::string strexepath = StripFile(std::string(buffer));
 	//strcpy(exepath, strexepath.c_str());
+#endif
+#else
+	char *base_path = SDL_GetBasePath();
+#if 0
+	if (base_path) {
+        data_path = SDL_strdup(base_path);
+        SDL_free(base_path);
+    } else {
+        data_path = SDL_strdup("./");
+    }
+#endif
+	if(base_path)
+	{
+		strcpy(exepath, base_path);
+		SDL_free(base_path);
+	}
 #endif
 }
 #endif

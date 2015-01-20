@@ -82,6 +82,8 @@ public:
 	}
 };
 
+//TODO merge some of these into multi-purpose packet types
+
 #define	PACKET_NULL						0
 #define PACKET_DISCONNECT				1
 #define PACKET_CONNECT					2
@@ -109,6 +111,7 @@ public:
 #define PACKET_MAPCHANGE				24
 #define PACKET_CHVAL					25
 #define PACKET_CLDISCONNECTED			26
+#define PACKET_CLSTATE					27
 
 // byte-align structures
 #pragma pack(push, 1)
@@ -134,6 +137,18 @@ typedef BasePacket KeepAlivePacket;
 typedef BasePacket AddSvPacket;
 typedef BasePacket AddedSvPacket;
 typedef BasePacket AckPacket;
+
+#define CLCH_UNRESP			0	//client became unresponsive
+#define CLCH_RESP			1	//became responsive again
+#define CLCH_PING			2
+
+struct ClStatePacket
+{
+	PacketHeader header;
+	unsigned char chtype;
+	short client;
+	float ping;
+};
 
 struct ClDisconnectedPacket
 {

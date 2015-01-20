@@ -1,0 +1,49 @@
+Frame	...	0ms per frame, -1.#IND% of this level's total
+	EventProc	...	0ms per frame, -1.#IND% of this level's total
+	Update();	...	0ms per frame, -1.#IND% of this level's total
+		UpdUnits();	...	0ms per frame, -1.#IND% of this level's total
+			Upd U On Ch	...	0ms per frame, -1.#IND% of this level's total
+			Upd Unit AI	...	0ms per frame, -1.#IND% of this level's total
+				UpdLab();	...	0ms per frame, -1.#IND% of this level's total
+					FindJob();	...	0ms per frame, -1.#IND% of this level's total
+						Job list collection	...	0ms per frame, -1.#IND% of this level's total
+						Job list sort	...	0ms per frame, -1.#IND% of this level's total
+						Job prepathing	...	0ms per frame, -1.#IND% of this level's total
+						level total sum: 0 ms per frame, that means -1.#IND% of this parent's duration underwent profiling
+					level total sum: 0 ms per frame, that means -1.#IND% of this parent's duration underwent profiling
+				UpdTruck();	...	0ms per frame, -1.#IND% of this level's total
+				level total sum: 0 ms per frame, that means -1.#IND% of this parent's duration underwent profiling
+			Move Unit	...	0ms per frame, -1.#IND% of this level's total
+			Anim Unit	...	0ms per frame, -1.#IND% of this level's total
+			level total sum: 0 ms per frame, that means -1.#IND% of this parent's duration underwent profiling
+		UpdBls();	...	0ms per frame, -1.#IND% of this level's total
+		ManageTrips();	...	0ms per frame, -1.#IND% of this level's total
+		ResetPathNodes();	...	0ms per frame, -1.#IND% of this level's total
+		level total sum: 0 ms per frame, that means -1.#IND% of this parent's duration underwent profiling
+	Draw();	...	0ms per frame, -1.#IND% of this level's total
+		Draw(); setup	...	0ms per frame, -1.#IND% of this level's total
+		DrawGUI();	...	0ms per frame, -1.#IND% of this level's total
+		DrawMinimap();	...	0ms per frame, -1.#IND% of this level's total
+		DrawBuildings();	...	0ms per frame, -1.#IND% of this level's total
+		DrawUnits();	...	0ms per frame, -1.#IND% of this level's total
+			CPU-side matrix math etc.	...	0ms per frame, -1.#IND% of this level's total
+			texture bind	...	0ms per frame, -1.#IND% of this level's total
+			GPU-side	...	0ms per frame, -1.#IND% of this level's total
+			level total sum: 0 ms per frame, that means -1.#IND% of this parent's duration underwent profiling
+		DrawRim();	...	0ms per frame, -1.#IND% of this level's total
+		DrawWater();	...	0ms per frame, -1.#IND% of this level's total
+		DrawCrPipes();	...	0ms per frame, -1.#IND% of this level's total
+		DrawPowls();	...	0ms per frame, -1.#IND% of this level's total
+		DrawFol();	...	0ms per frame, -1.#IND% of this level's total
+		SortParticles();	...	0ms per frame, -1.#IND% of this level's total
+		DrawParticles();	...	0ms per frame, -1.#IND% of this level's total
+		DrawMap();	...	0ms per frame, -1.#IND% of this level's total
+		DrawSceneDepth();	...	0ms per frame, -1.#IND% of this level's total
+			DrawMap(); depth	...	0ms per frame, -1.#IND% of this level's total
+			level total sum: 0 ms per frame, that means -1.#IND% of this parent's duration underwent profiling
+		DrawSky();	...	0ms per frame, -1.#IND% of this level's total
+		DrawRoads();	...	0ms per frame, -1.#IND% of this level's total
+		level total sum: 0 ms per frame, that means -1.#IND% of this parent's duration underwent profiling
+	level total sum: 0 ms per frame, that means -1.#IND% of this parent's duration underwent profiling
+	...	0ms per frame, -1.#IND% of this level's total
+level total sum: 0 ms per frame, that means -1.#IND% of this parent's duration underwent profiling

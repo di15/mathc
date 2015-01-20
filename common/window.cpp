@@ -121,7 +121,7 @@ void Resize(int width, int height)
 	Player* py = &g_player[g_localP];
 	GUI* gui = &g_gui;
 
-	if(g_width != width || g_height != height)
+	//if(g_width != width || g_height != height)
 	{
 		g_width = width;
 		g_height = height;
@@ -501,6 +501,8 @@ bool MakeWindow(const char* title)
 		ErrMess("Error", "Initialization failed");
 		return false;
 	}
+
+	CenterMouse();
 
 	return true;
 }

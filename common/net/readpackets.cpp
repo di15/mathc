@@ -621,6 +621,8 @@ void ReadChValPacket(ChValPacket* cvp, NetConn* nc, IPaddress* from, UDPsocket* 
 		CdTile* cdtile = NULL;
 		Resource* r = NULL;
 		BlType* bt = NULL;
+		CdType* ct = NULL;
+		UType* ut = NULL;
 
 		RichText chat;
 
@@ -633,6 +635,7 @@ void ReadChValPacket(ChValPacket* cvp, NetConn* nc, IPaddress* from, UDPsocket* 
 		case CHVAL_BLPRICE:
 			b = &g_building[cvp->bi];
 			b->price[cvp->res] = cvp->value;
+#if 1
 			r = &g_resource[cvp->res];
 			bt = &g_bltype[b->type];
 			sprintf(add, " set price ");
@@ -645,33 +648,133 @@ void ReadChValPacket(ChValPacket* cvp, NetConn* nc, IPaddress* from, UDPsocket* 
 			chat = chat + RichText(RichPart(RICHTEXT_ICON, r->icon));
 			sprintf(add, "%d", cvp->value);
 			chat = chat + RichText(add);
+#endif
+			//TODO messages for the rest
 			break;
 		case CHVAL_BLWAGE:
 			b = &g_building[cvp->bi];
 			b->opwage = cvp->value;
+#if 1
+			//r = &g_resource[cvp->res];
+			bt = &g_bltype[b->type];
+			sprintf(add, " set wage");
+			chat = chat + RichText(add);
+			//chat = chat + RichText(RichPart(RICHTEXT_ICON, r->icon));
+			//chat = chat + RichText(r->name.c_str());
+			sprintf(add, " at %s to ", bt->name);
+			chat = chat + RichText(add);
+			r = &g_resource[RES_DOLLARS];
+			chat = chat + RichText(RichPart(RICHTEXT_ICON, r->icon));
+			sprintf(add, "%d", cvp->value);
+			chat = chat + RichText(add);
+#endif
 			break;
 		case CHVAL_CSTWAGE:
 			b = &g_building[cvp->bi];
 			b->conwage = cvp->value;
+#if 1
+			r = &g_resource[cvp->res];
+			bt = &g_bltype[b->type];
+			sprintf(add, " set con. wage");
+			chat = chat + RichText(add);
+			//chat = chat + RichText(RichPart(RICHTEXT_ICON, r->icon));
+			//chat = chat + RichText(r->name.c_str());
+			sprintf(add, " at %s to ", bt->name);
+			chat = chat + RichText(add);
+			r = &g_resource[RES_DOLLARS];
+			chat = chat + RichText(RichPart(RICHTEXT_ICON, r->icon));
+			sprintf(add, "%d", cvp->value);
+			chat = chat + RichText(add);
+#endif
 			break;
 		case CHVAL_TRPRICE:
 			py->transpcost = cvp->value;
+#if 1
+			r = &g_resource[cvp->res];
+			bt = &g_bltype[b->type];
+			sprintf(add, " set transp. price");
+			chat = chat + RichText(add);
+			//chat = chat + RichText(RichPart(RICHTEXT_ICON, r->icon));
+			//chat = chat + RichText(r->name.c_str());
+			sprintf(add, " to ");
+			chat = chat + RichText(add);
+			r = &g_resource[RES_DOLLARS];
+			chat = chat + RichText(RichPart(RICHTEXT_ICON, r->icon));
+			sprintf(add, "%d", cvp->value);
+			chat = chat + RichText(add);
+#endif
 			break;
 		case CHVAL_TRWAGE:
 			py->truckwage = cvp->value;
+#if 1
+			r = &g_resource[cvp->res];
+			bt = &g_bltype[b->type];
+			sprintf(add, " set driver wage");
+			chat = chat + RichText(add);
+			//chat = chat + RichText(RichPart(RICHTEXT_ICON, r->icon));
+			//chat = chat + RichText(r->name.c_str());
+			sprintf(add, " to ");
+			chat = chat + RichText(add);
+			r = &g_resource[RES_DOLLARS];
+			chat = chat + RichText(RichPart(RICHTEXT_ICON, r->icon));
+			sprintf(add, "%d", cvp->value);
+			chat = chat + RichText(add);
+#endif
 			break;
 		case CHVAL_PRODLEV:
 			b = &g_building[cvp->bi];
 			b->prodlevel = cvp->value;
+#if 1
+			r = &g_resource[cvp->res];
+			bt = &g_bltype[b->type];
+			sprintf(add, " set prod. level");
+			chat = chat + RichText(add);
+			//chat = chat + RichText(RichPart(RICHTEXT_ICON, r->icon));
+			//chat = chat + RichText(r->name.c_str());
+			sprintf(add, " at %s to ", bt->name);
+			chat = chat + RichText(add);
+			//r = &g_resource[RES_DOLLARS];
+			//chat = chat + RichText(RichPart(RICHTEXT_ICON, r->icon));
+			sprintf(add, "%d", cvp->value);
+			chat = chat + RichText(add);
+#endif
 			break;
 		case CHVAL_CDWAGE:
 			//TODO verify that player owns this
 			cdtile = GetCd(cvp->cdtype, cvp->x, cvp->y, false);
 			cdtile->conwage = cvp->value;
+#if 1
+			r = &g_resource[cvp->res];
+			ct = &g_cdtype[cvp->cdtype];
+			sprintf(add, " set con. wage");
+			chat = chat + RichText(add);
+			//chat = chat + RichText(RichPart(RICHTEXT_ICON, r->icon));
+			//chat = chat + RichText(r->name.c_str());
+			sprintf(add, " at %s to ", ct->name);
+			chat = chat + RichText(add);
+			r = &g_resource[RES_DOLLARS];
+			chat = chat + RichText(RichPart(RICHTEXT_ICON, r->icon));
+			sprintf(add, "%d", cvp->value);
+			chat = chat + RichText(add);
+#endif
 			break;
 		case CHVAL_MANPRICE:
 			b = &g_building[cvp->bi];
 			b->manufprc[cvp->utype] = cvp->value;
+#if 1
+			r = &g_resource[cvp->res];
+			bt = &g_bltype[b->type];
+			sprintf(add, " set manuf. price");
+			//chat = chat + RichText(add);
+			//chat = chat + RichText(RichPart(RICHTEXT_ICON, r->icon));
+			//chat = chat + RichText(r->name.c_str());
+			sprintf(add, " of %s to ", ut->name);
+			chat = chat + RichText(add);
+			r = &g_resource[RES_DOLLARS];
+			chat = chat + RichText(RichPart(RICHTEXT_ICON, r->icon));
+			sprintf(add, "%d", cvp->value);
+			chat = chat + RichText(add);
+#endif
 			break;
 		default:
 			break;
@@ -986,6 +1089,14 @@ void ReadJoinPacket(JoinPacket* jp, NetConn* nc, IPaddress* from, UDPsocket* soc
 		int joinci;
 
 		//InfoMess(" ? mcp", " ? mcp");
+		
+		//unsigned int ipaddr = SDL_SwapBE32(ip.host);
+		//unsigned short port = SDL_SwapBE16(ip.port);
+#if 1
+		char ipname[128];
+		sprintf(ipname, "%u:%u", SDL_SwapBE32(nc->addr.host), (unsigned int)SDL_SwapBE16(nc->addr.port));
+		name = RichText(ipname);
+#endif
 
 		if(!AddClient(nc, name, &joinci))
 		{

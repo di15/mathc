@@ -22,10 +22,12 @@ public:
 	unsigned short recvack;
 	bool handshook;
 	IPaddress addr;
+	//TODO change these to flags
 	bool isclient;	//is this a hosted game's client? or for MATCHMAKER, is this somebody requesting sv list?
 	bool isourhost;	//is this the currently joined game's host? cannot be a host from a server list or something. for MATCHMAKER, it can be a host getting added to sv list.
 	bool ismatcher;	//matchmaker?
 	bool ishostinfo;	//is this a host we're just getting info from for our sv list?
+	bool isunresponsive;
 	unsigned long long lastsent;
 	unsigned long long lastrecv;
 	short client;
@@ -52,6 +54,7 @@ public:
 		isourhost = false;
 		ismatcher = false;
 		ishostinfo = false;
+		isunresponsive = false;
 		lastrecv = GetTickCount64();
 		lastsent = GetTickCount64();
 		//chcallback = NULL;

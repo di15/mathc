@@ -5,7 +5,7 @@
 
 #define VERSION				3
 #define CONFIGFILE			"config.ini"
-#define TITLE				"Economic Prosperity"
+#define TITLE				"Economy Planner"
 #define SERVER_ADDR			"corpstates.com"
 
 //#define TRUCK_DEBUG

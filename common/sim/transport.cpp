@@ -21,6 +21,7 @@
 #include "../sound/sound.h"
 #include "../path/pathjob.h"
 #include "../path/anypath.h"
+#include "../path/fillbodies.h"
 
 //not engine
 #include "../../game/gui/chattext.h"
@@ -279,7 +280,12 @@ void TBid(int target, int target2, int targtype, int umode, int cdtype, int res,
 		truckpathd.push_back(ui);
 
 		if(Trapped(u, NULL))
+		{
+			short tin = (u->cmpos.x/TILE_SIZE) + (u->cmpos.y/TILE_SIZE)*g_hmap.m_widthx;
+			TileNode* tn = &g_tilenode[tin];
+			tn->jams = imin(tn->jams + 3, 6);
 			continue;
+		}
 
 		Player* up = &g_player[u->owner];
 

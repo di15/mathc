@@ -3,6 +3,7 @@
 #include "../../common/gui/widgets/windoww.h"
 #include "../keymap.h"
 #include "../../common/render/heightmap.h"
+#include "../../common/render/transaction.h"
 #include "../../common/math/camera.h"
 #include "../../common/render/shadow.h"
 #include "../../common/render/screenshot.h"
@@ -805,7 +806,7 @@ void Resize_DebugLines(Widget* thisw)
 	thisw->m_pos[3] = (float)(g_height - MINIMAP_SIZE - 32);
 }
 
-void Resize_Save(Widget* thisw)
+void Resize_Transx(Widget* thisw)
 {
 	Player* py = &g_player[g_localP];
 	int i = 1;
@@ -815,7 +816,7 @@ void Resize_Save(Widget* thisw)
 	thisw->m_pos[3] = (float)(g_height - MINIMAP_SIZE - 32);
 }
 
-void Resize_QSave(Widget* thisw)
+void Resize_Save(Widget* thisw)
 {
 	Player* py = &g_player[g_localP];
 	int i = 2;
@@ -825,7 +826,7 @@ void Resize_QSave(Widget* thisw)
 	thisw->m_pos[3] = (float)(g_height - MINIMAP_SIZE - 32);
 }
 
-void Resize_Load(Widget* thisw)
+void Resize_QSave(Widget* thisw)
 {
 	Player* py = &g_player[g_localP];
 	int i = 3;
@@ -835,7 +836,7 @@ void Resize_Load(Widget* thisw)
 	thisw->m_pos[3] = (float)(g_height - MINIMAP_SIZE - 32);
 }
 
-void Resize_Pause(Widget* thisw)
+void Resize_Load(Widget* thisw)
 {
 	Player* py = &g_player[g_localP];
 	int i = 4;
@@ -845,7 +846,7 @@ void Resize_Pause(Widget* thisw)
 	thisw->m_pos[3] = (float)(g_height - MINIMAP_SIZE - 32);
 }
 
-void Resize_Play(Widget* thisw)
+void Resize_Pause(Widget* thisw)
 {
 	Player* py = &g_player[g_localP];
 	int i = 5;
@@ -855,10 +856,20 @@ void Resize_Play(Widget* thisw)
 	thisw->m_pos[3] = (float)(g_height - MINIMAP_SIZE - 32);
 }
 
-void Resize_Fast(Widget* thisw)
+void Resize_Play(Widget* thisw)
 {
 	Player* py = &g_player[g_localP];
 	int i = 6;
+	thisw->m_pos[0] = (float)(0 + 32*i);
+	thisw->m_pos[1] = (float)(g_height - MINIMAP_SIZE - 32 - 32);
+	thisw->m_pos[2] = (float)(32 + 32*i);
+	thisw->m_pos[3] = (float)(g_height - MINIMAP_SIZE - 32);
+}
+
+void Resize_Fast(Widget* thisw)
+{
+	Player* py = &g_player[g_localP];
+	int i = 7;
 	thisw->m_pos[0] = 0 + 32*i;
 	thisw->m_pos[1] = g_height - MINIMAP_SIZE - 32 - 32;
 	thisw->m_pos[2] = 32 + 32*i;
@@ -883,6 +894,11 @@ void Click_Fast()
 void Click_DebugLines()
 {
 	g_debuglines = !g_debuglines;
+}
+
+void Click_Transx()
+{
+	g_drawtransx = !g_drawtransx;
 }
 
 void Click_Save()
@@ -953,6 +969,7 @@ void FillPlay()
 	playview->add(new BotPan(playview, "bottom panel", Resize_BottomPanel));
 
 	playview->add(new Button(playview, "debug lines", "gui/debuglines.png", RichText(), RichText("Show debug info"), MAINFONT16, BUST_LEFTIMAGE, Resize_DebugLines, Click_DebugLines, NULL, NULL, NULL, NULL, -1));
+	playview->add(new Button(playview, "show transactions", "gui/transx.png", RichText(), RichText("Show transactions"), MAINFONT16, BUST_LEFTIMAGE, Resize_Transx, Click_Transx, NULL, NULL, NULL, NULL, -1));
 	playview->add(new Button(playview, "save", "gui/edsave.png", RichText(), RichText("Save game"), MAINFONT16, BUST_LEFTIMAGE, Resize_Save, Click_Save, NULL, NULL, NULL, NULL, -1));
 	playview->add(new Button(playview, "qsave", "gui/qsave.png", RichText(), RichText("Quick save"), MAINFONT16, BUST_LEFTIMAGE, Resize_QSave, Click_QSave, NULL, NULL, NULL, NULL, -1));
 	playview->add(new Button(playview, "load", "gui/edload.png", RichText(), RichText("Load game"), MAINFONT16, BUST_LEFTIMAGE, Resize_Load, Click_Load, NULL, NULL, NULL, NULL, -1));

@@ -48,6 +48,7 @@
 #include "../common/econ/demand.h"
 #include "../common/save/savemap.h"
 #include "../common/render/graph.h"
+#include "../common/path/tilepath.h"
 
 int g_mode = APPMODE_LOADING;
 
@@ -85,16 +86,16 @@ void UpdLogo()
 	stage++;
 }
 
+int g_restage = 0;
 void UpdLoad()
 {
-	static int stage = 0;
 	Player* py = &g_player[g_localP];
 	GUI* gui = &g_gui;
 
-	switch(stage)
+	switch(g_restage)
 	{
 	case 0:
-		if(!Load1Model()) stage++;
+		if(!Load1Model()) g_restage++;
 		break;
 	case 1:
 		if(!Load1Texture())
@@ -110,9 +111,9 @@ void UpdLoad()
 	}
 }
 
-int g_reStage = 0;
 void UpdReload()
 {
+#if 0
 	switch(g_reStage)
 	{
 	case 0:
@@ -122,6 +123,27 @@ void UpdReload()
 		}
 		break;
 	}
+#else
+	g_restage = 0;
+	g_lastLTex = -1;
+	g_lastmodelload = -1;
+	g_gui.freech();
+	FreeModels();
+	FreeTextures();
+	DestroyWindow(TITLE);
+	//ReloadTextures();
+	MakeWindow(TITLE);
+	//ReloadModels();	//Important - VBO only possible after window GL context made.
+	g_mode = APPMODE_LOADING;
+	LoadFonts();
+	FillGUI();
+	//ReloadTextures();
+	Queue();
+	char exepath[MAX_PATH+1];
+	ExePath(exepath);
+	g_log<<"ExePath "<<exepath<<std::endl;
+	g_log.flush();
+#endif
 }
 
 void UpdSim()
@@ -169,6 +191,8 @@ void UpdSim()
 	
 	UpdTurn();
 
+	UpdJams();
+
 #ifdef FREEZE_DEBUG
 		g_log<<"updai"<<std::endl;
 		g_log.flush();
@@ -208,7 +232,6 @@ void UpdSim()
 		g_log.flush();
 #endif
 	
-
 	static long long tick = GetTickCount64();
 
 	//must do this after UpdTurn
@@ -219,8 +242,9 @@ void UpdSim()
 	{
 		long long off = GetTickCount64() - tick;
 		char msg[128];
-		sprintf(msg, "atf4,344,000 \n min %f \n s %f", (float)(off)/(float)SIM_FRAME_RATE/(float)60, (float)(off)/(float)SIM_FRAME_RATE);
+		sprintf(msg, "atf4,344,000 \n min %f \n s %f", (float)(off)/(float)1000/(float)60, (float)(off)/(float)1000);
 		InfoMess(msg, msg);
+		//1.7m
 	}
 	
 #if 1
@@ -643,6 +667,7 @@ void Draw()
 #endif
 
 	CheckGLError(__FILE__, __LINE__);
+	//if(!(g_mode == APPMODE_PLAY && g_speed == SPEED_FAST))
 	gui->draw();
 	StopTimer(TIMER_DRAWGUI);
 
@@ -882,6 +907,22 @@ void LoadConfig()
 		else if(stricmp(keystr, "client_height") == 0)			g_height = g_selectedRes.height = valuei;
 		else if(stricmp(keystr, "screen_bpp") == 0)				g_bpp = valuei;
 	}
+
+	f.close();
+}
+
+void WriteConfig()
+{
+	char cfgfull[MAX_PATH+1];
+	FullPath(CONFIGFILE, cfgfull);
+	FILE* fp = fopen(cfgfull, "w");
+	if(!fp)
+		return;
+	fprintf(fp, "fullscreen %d \r\n\r\n", g_fullscreen ? 1 : 0);
+	fprintf(fp, "client_width %d \r\n\r\n", g_selectedRes.width);
+	fprintf(fp, "client_height %d \r\n\r\n", g_selectedRes.height);
+	fprintf(fp, "screen_bpp %d \r\n\r\n", g_bpp);
+	fclose(fp);
 }
 
 int testfunc(ObjectScript::OS* os, int nparams, int closure_values, int need_ret_values, void * param)
@@ -990,8 +1031,20 @@ void Init()
 
 void Deinit()
 {
+	g_gui.freech();
+
 	WriteProfiles(-1, 0);
 	DestroyWindow(TITLE);
+
+	const unsigned long long start = GetTickCount64();
+	//After quit, wait to send out quit packet to make sure host/clients recieve it.
+	while (GetTickCount64() - start < QUIT_DELAY)
+	{
+		if(NetQuit())
+			break;
+		if(g_sock)
+			UpdNet();
+	}
 
 	// Clean up	
 	

@@ -19,14 +19,20 @@ bool LoadDMDModel(VertexArray** va, unsigned int& diffusem, unsigned int& specul
 	fread(tag, sizeof(char), 5, fp);
 
 	if(memcmp(tag, realtag, sizeof(char)*5) != 0)
+	{
+		fclose(fp);
 		return false;
+	}
 
 	float realversion = BUILDINGM_VERSION;
 	float version;
 	fread(&version, sizeof(float), 1, fp);
 
 	if(version != realversion)
+	{
+		fclose(fp);
 		return false;
+	}
 
 	(*va) = new VertexArray[1];
 	int numv;

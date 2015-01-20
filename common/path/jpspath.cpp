@@ -16,7 +16,7 @@
 #include "../sim/selection.h"
 #include "../sim/simdef.h"
 #include "../phys/trace.h"
-#include "binheap.h"
+#include "../sys/binheap.h"
 #include "jpspath.h"
 #include "reconstructpath.h"
 #include "pathdebug.h"
@@ -32,12 +32,14 @@ void JPSPath(int utype, int umode, int cmstartx, int cmstarty, int target, int t
 {
 	UType* ut = &g_utype[utype];
 
+#if 1
 	if(thisu)
 	{
 		RichText rt("pathf");
 		NewTransx(thisu->drawpos, &rt);
 	}
-	
+#endif
+
 	if(!ignoreb)
 	{
 		switch(umode)

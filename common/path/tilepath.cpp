@@ -8,6 +8,7 @@
 #include "../sim/building.h"
 #include "../sim/bltype.h"
 #include "../render/heightmap.h"
+#include "../render/transaction.h"
 #include "../math/hmapmath.h"
 #include "../phys/collision.h"
 #include "../sim/road.h"
@@ -17,7 +18,7 @@
 #include "../sim/selection.h"
 #include "../sim/simdef.h"
 #include "../phys/trace.h"
-#include "binheap.h"
+#include "../sys/binheap.h"
 #include "reconstructpath.h"
 #include "pathdebug.h"
 #include "tilepath.h"
@@ -52,6 +53,19 @@ Vec2s TileNodePos(TileNode* node)
 	const int ny = i / g_hmap.m_widthx;
 	const int nx = i % g_hmap.m_widthx;
 	return Vec2s(nx, ny);
+}
+
+void UpdJams()
+{
+	for(short y=0; y<g_hmap.m_widthy; y++)
+		for(short x=0; x<g_hmap.m_widthx; x++)
+		{
+			short index = x + y * g_hmap.m_widthx;
+			TileNode* tn = &g_tilenode[index];
+			if(tn->jams <= 0)
+				continue;
+			tn->jams --;
+		}
 }
 
 /*
@@ -423,6 +437,10 @@ void TilePath(int utype, int umode, int cmstartx, int cmstarty, int target, int 
 						//toclear.push_back(tnode2);
 						tnode2->previous = tnode;
 						int H = PATHHEUR( Vec2i(tpos2.x - pj->goalx, tpos2.y - pj->goalz) ) << 1;
+						//if(pj->roaded)
+							H += tnode2->jams;
+						//else if(pj->utype == UNIT_LABOURER)
+						//	H += tnode2->jams / 16;
 						tnode2->score = runtingD + 2 + H;
 						tnode2->totalD = newD;
 						tnode2->closed = false;
@@ -471,6 +489,10 @@ void TilePath(int utype, int umode, int cmstartx, int cmstarty, int target, int 
 						//toclear.push_back(tnode2);
 						tnode2->previous = tnode;
 						int H = PATHHEUR( Vec2i(tpos2.x - pj->goalx, tpos2.y - pj->goalz) ) << 1;
+						//if(pj->roaded)
+							H += tnode2->jams;
+						//else if(pj->utype == UNIT_LABOURER)
+						//	H += tnode2->jams / 16;
 						tnode2->score = newD + H;
 						tnode2->totalD = newD;
 						tnode2->closed = false;
@@ -490,6 +512,10 @@ void TilePath(int utype, int umode, int cmstartx, int cmstarty, int target, int 
 						toclear.push_back(tnode2);
 						tnode2->previous = tnode;
 						int H = PATHHEUR( Vec2i(tpos2.x - pj->goalx, tpos2.y - pj->goalz) ) << 1;
+						//if(pj->roaded)
+							H += tnode2->jams;
+						//else if(pj->utype == UNIT_LABOURER)
+						//	H += tnode2->jams / 16;
 						tnode2->score = runtingD + 2 + H;
 						tnode2->totalD = runtingD + 2;
 						tnode2->closed = false;

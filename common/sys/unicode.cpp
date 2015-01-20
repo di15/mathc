@@ -33,7 +33,7 @@ int main(int argc, char *argv[])
 	fp = fopen(argv[1], "r");
 	if (!fp)
 	{
-		perror("fopen");
+		perror("`");
 		exit(1);
 	}
 	x = fread(buff, 1, buf.st_size, fp);

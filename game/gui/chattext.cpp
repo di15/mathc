@@ -36,7 +36,8 @@ void AddChat(ViewLayer* playview)
 	{
 		char name[32];
 		sprintf(name, "%d", i);
-		playview->add(new Text(playview, name, RichText(), MAINFONT16, Resize_ChatLine, true, 1, 1, 1, 0.8f));
+		playview->add(new Text(playview, name, RichText(), MAINFONT16, Resize_ChatLine, true, 1.0f, 1.0f, 1.0f, 1.0f));
+		//TODO get rid of warnings
 	}
 }
 

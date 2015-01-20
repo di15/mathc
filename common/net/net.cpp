@@ -121,7 +121,8 @@ void CheckAddSv()
 #endif
 
 	//add us to sv list of matchmaker
-	if(g_netmode == NETM_HOST && !g_sentsvinfo)
+	//if(g_netmode == NETM_HOST && !g_sentsvinfo)
+	if(false)	//disabled, since no matchmaker server up
 	{
 		if(g_mmconn)
 		{
@@ -362,7 +363,81 @@ void CheckGetSvs()
 	//until we get the current one.
 	g_reqdnexthost = true;
 }
+
+//check for unresponsive clients
+void CheckCls()
+{
+	if(g_netmode != NETM_HOST)
+		return;
+
+	const unsigned long long now = GetTickCount64();
+
+	for(auto cit=g_conn.begin(); cit!=g_conn.end(); cit++)
+	{
+		if(!cit->isclient)
+			continue;
+
+		if(now - cit->lastrecv < NETCONN_UNRESP)
+			continue;
+
+		//unresponsive, what to do?
+
+		if(cit->isunresponsive)
+			continue;
+
+		cit->isunresponsive = true;
+
+		ClStatePacket csp;
+		csp.header.type = PACKET_CLSTATE;
+		csp.chtype = CLCH_UNRESP;
+		csp.client = cit->client;
+		SendAll((char*)&csp, sizeof(ClStatePacket), true, false, NULL);
+	}
+	
+	//unresponsive becoming responsive again
+	for(auto cit=g_conn.begin(); cit!=g_conn.end(); cit++)
+	{
+		if(!cit->isclient)
+			continue;
+		
+		if(now - cit->lastrecv >= NETCONN_UNRESP)
+			continue;
+
+		if(!cit->isunresponsive)
+			continue;
+
+		cit->isunresponsive = false;
+
+		ClStatePacket csp;
+		csp.header.type = PACKET_CLSTATE;
+		csp.chtype = CLCH_RESP;
+		csp.client = cit->client;
+		SendAll((char*)&csp, sizeof(ClStatePacket), true, false, NULL);
+	}
+
+	//TODO send this as well to newly joined clients on join?
+}
 #endif
+
+//Check if we can quit. There's also a countdown to 
+//make sure we quit eventually either way.
+bool NetQuit()
+{
+#ifndef MATCHMAKER
+	for(auto oit=g_outgo.begin(); oit!=g_outgo.end(); oit++)
+	{
+		PacketHeader* ph = (PacketHeader*)oit->buffer;
+
+		if(ph->type != PACKET_DISCONNECT)
+			continue;
+		
+		//Sending out disconnect packet, so can't quit yet.
+		return false;
+	}
+#endif
+
+	return true;
+}
 
 void EndConns()
 {
@@ -464,6 +539,7 @@ void UpdNet()
 #ifndef MATCHMAKER
 	CheckAddSv();
 	CheckGetSvs();
+	CheckCls();
 #else
 	SendSvs();
 #endif

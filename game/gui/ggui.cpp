@@ -31,6 +31,7 @@
 #include "../../common/gui/widgets/spez/newhost.h"
 #include "../../common/gui/widgets/spez/loadview.h"
 #include "../../common/gui/widgets/spez/lobby.h"
+#include "../../common/sim/simdef.h"
 
 //not engine
 #include "editorgui.h"
@@ -153,8 +154,8 @@ void Resize_MenuItem(Widget* thisw)
 	//thisw->m_pos[0] = g_width/2 - f->gheight*4;
 	thisw->m_pos[0] = f->gheight*4;
 	thisw->m_pos[1] = g_height/2 - f->gheight*4 + f->gheight*1.5f*row;
-	thisw->m_pos[2] = g_width;
-	thisw->m_pos[3] = g_height;
+	thisw->m_pos[2] = thisw->m_pos[0] + f->gheight * 6;
+	thisw->m_pos[3] = thisw->m_pos[1] + f->gheight;
 }
 
 void Resize_LoadingStatus(Widget* thisw)
@@ -253,6 +254,8 @@ void Click_NewGame()
 			//else
 			PlaceUnit(UNIT_LABOURER, cmpos, 0, NULL);
 			//PlaceUnit(UNIT_TRUCK, cmpos, rand()%PLAYERS, NULL);
+
+			ClearFol(cmpos.x - TILE_SIZE, cmpos.y - TILE_SIZE, cmpos.x + TILE_SIZE, cmpos.y + TILE_SIZE);
 		}
 
 	//return;
@@ -269,12 +272,12 @@ void Click_NewGame()
 		p->global[RES_DOLLARS] = 40 * 1000 * 1000;
 		p->global[RES_FARMPRODUCTS] = 4000;
 		p->global[RES_RETFOOD] = 4000;
-		p->global[RES_CEMENT] = 4000;
+		p->global[RES_CEMENT] = 150;
 		p->global[RES_STONE] = 4000;
 		p->global[RES_FUEL] = 4000;
 		p->global[RES_URANIUM] = 4000;
 		p->global[RES_ELECTRONICS] = 4000;
-		p->global[RES_METAL] = 4000;
+		p->global[RES_METAL] = 150;
 		p->global[RES_PRODUCTION] = 40;
 
 #if 0
@@ -432,6 +435,9 @@ void Click_LoadGame()
 
 void Click_Options()
 {
+	GUI* gui = &g_gui;
+	gui->closeall();
+	gui->open("options");
 }
 
 void Click_Quit()
@@ -456,6 +462,46 @@ void Click_JoinCancel()
 
 }
 
+void Click_SetOptions()
+{
+	GUI* gui = &g_gui;
+	ViewLayer* opview = (ViewLayer*)gui->get("options");
+	DropList* winmodes = (DropList*)opview->get("0");
+	DropList* reslist = (DropList*)opview->get("1");
+	bool changed = false;
+
+	int w;
+	int h;
+	bool fs;
+	std::string resname = reslist->m_options[ reslist->m_selected ].rawstr();
+	fs = winmodes->m_selected == 1 ? true : false;
+	sscanf(resname.c_str(), "%dx%d", &w, &h);
+
+	if(w != g_selectedRes.width)
+		changed = true;
+
+	if(h != g_selectedRes.height)
+		changed = true;
+
+	if(fs != g_fullscreen)
+		changed = true;
+
+	gui->closeall();
+	gui->open("main");
+
+	if(!changed)
+		return;
+	
+	g_selectedRes.width = w;
+	g_selectedRes.height = h;
+	g_width = w;
+	g_height = h;
+	g_fullscreen = fs;
+
+	WriteConfig();
+	g_mode = APPMODE_RELOADING;
+}
+
 void FillMenu()
 {
 	Player* py = &g_player[g_localP];
@@ -464,15 +510,71 @@ void FillMenu()
 	// Main ViewLayer
 	gui->add(new ViewLayer(gui, "main"));
 	ViewLayer* mainview = (ViewLayer*)gui->get("main");
-
 	mainview->add(new Image(mainview, "gui/mmbg.jpg", true, Resize_Fullscreen));
-	
+#if 1
 	mainview->add(new Link(mainview, "0", RichText("New Game"), FONT_EUROSTILE16, Resize_MenuItem, Click_NewGame));
 	mainview->add(new Link(mainview, "1", RichText("Load Game"), FONT_EUROSTILE16, Resize_MenuItem, Click_LoadGame));
 	mainview->add(new Link(mainview, "2", RichText("Host Game"), FONT_EUROSTILE16, Resize_MenuItem, Click_HostGame));
 	mainview->add(new Link(mainview, "3", RichText("Join Game"), FONT_EUROSTILE16, Resize_MenuItem, Click_ListHosts));
 	mainview->add(new Link(mainview, "4", RichText("Options"), FONT_EUROSTILE16, Resize_MenuItem, Click_Options));
 	mainview->add(new Link(mainview, "5", RichText("Quit"), FONT_EUROSTILE16, Resize_MenuItem, Click_Quit));
+#else
+	mainview->add(new Link(mainview, "0", RichText("New Game"), FONT_EUROSTILE16, Resize_MenuItem, Click_NewGame));
+	mainview->add(new Link(mainview, "1", RichText("Load Game"), FONT_EUROSTILE16, Resize_MenuItem, Click_LoadGame));
+	mainview->add(new Link(mainview, "2", RichText("Options"), FONT_EUROSTILE16, Resize_MenuItem, Click_Options));
+	mainview->add(new Link(mainview, "3", RichText("Quit"), FONT_EUROSTILE16, Resize_MenuItem, Click_Quit));
+#endif
+
+	//Options ViewLayer
+	gui->add(new ViewLayer(gui, "options"));
+	ViewLayer* opview = (ViewLayer*)gui->get("options");
+	opview->add(new Image(opview, "gui/mmbg.jpg", true, Resize_Fullscreen));
+	opview->add(new DropList(opview, "0", MAINFONT16, Resize_MenuItem, NULL));
+	opview->add(new DropList(opview, "1", MAINFONT16, Resize_MenuItem, NULL));
+	opview->add(new Link(opview, "2", RichText("Done"), FONT_EUROSTILE16, Resize_MenuItem, Click_SetOptions));
+	DropList* winmodes = (DropList*)opview->get("0");
+	winmodes->m_options.push_back(RichText("Windowed"));
+	winmodes->m_options.push_back(RichText("Fullscreen"));
+	winmodes->m_selected = g_fullscreen ? 1 : 0;
+	DropList* reslist = (DropList*)opview->get("1");
+	g_resolution.clear();
+	int uniquei = 0;
+	for(int i=0; i<SDL_GetNumDisplayModes(0); i++)
+	{
+		SDL_DisplayMode mode;
+		SDL_GetDisplayMode(0, i, &mode);
+
+		bool found = false;
+
+		for(auto rit=g_resolution.begin(); rit!=g_resolution.end(); rit++)
+		{
+			if(rit->width == mode.w &&
+				rit->height == mode.h)
+			{
+				found = true;
+				break;
+			}
+		}
+
+		if(found)
+			continue;
+
+		Resolution res;
+		res.width = mode.w;
+		res.height = mode.h;
+		g_resolution.push_back(res);
+
+		if(mode.w == g_selectedRes.width &&
+			mode.h == g_selectedRes.height)
+			reslist->m_selected = uniquei;
+
+		char resname[32];
+		sprintf(resname, "%dx%d", mode.w, mode.h);
+		reslist->m_options.push_back(RichText(resname));
+
+		uniquei++;
+	}
+
 
 	gui->add(new SvList(gui, "sv list", Resize_CenterWin));
 	gui->add(new NewHost(gui, "new host", Resize_CenterWin2));

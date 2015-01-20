@@ -1,6 +1,6 @@
 #include "../gui.h"
 #include "../../texture.h"
-#include "../../sim/player.h"
+
 #include "windoww.h"
 #include "../../debug.h"
 
@@ -339,28 +339,6 @@ void WindowW::drawover()
 	subdrawover();
 }
 
-void WindowW::tofront()
-{
-	//return;
-
-	if(!m_parent)
-		return;
-
-	//return;
-
-	auto subs = &m_parent->m_subwidg;
-
-	for(auto wi=subs->begin(); wi!=subs->end(); wi++)
-	{
-		if(*wi == this)
-		{
-			subs->erase(wi);
-			subs->push_back(this);
-			break;
-		}
-	}
-}
-
 void WindowW::inev(InEv* ie)
 {
 	if(!m_opened)
@@ -370,8 +348,6 @@ void WindowW::inev(InEv* ie)
 
 	for(auto w=m_subwidg.rbegin(); w!=m_subwidg.rend(); w++)
 		(*w)->inev(ie);
-
-	Player* py = &g_player[g_localP];
 
 	//m_vscroll.inev(ie);
 

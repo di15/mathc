@@ -144,7 +144,10 @@ void WriteProfiles(int in, int layer)
 	}
 
 	if(in == -1)
+	{
 		g_profF.flush();
+		g_profF.close();
+	}
 }
 
 void DefTimer(int id, int inside, const char* name)
@@ -201,7 +204,7 @@ void InitProfiles()
 
 void LastNum(const char* l)
 {
-	//return;
+	return;
 
 #if 1
 	char fullpath[MAX_PATH+1];

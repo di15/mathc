@@ -150,7 +150,7 @@ void DrawGlyph()
 		float hscale = f->gheight / (float)icon->m_height;
 
 		UseIconTex(g_rpartit->m_icon);
-		//glUniform4f(g_shader[g_curS].m_slot[SSLOT_COLOR], 1, 1, 1, 1);
+		glUniform4f(g_shader[g_curS].m_slot[SSLOT_COLOR], 1, 1, 1, 1);
 
 		short left = x;
 		short right = (short)( left + (float)icon->m_width * hscale );
@@ -159,7 +159,7 @@ void DrawGlyph()
 		DrawGlyph((float)left, (float)top, (float)right, (float)bottom, 0, 0, 1, 1);
 
 		UseFontTex();
-		//glUniform4f(g_shader[g_curS].m_slot[SSLOT_COLOR], currcolor[0], currcolor[1], currcolor[2], currcolor[3]);
+		glUniform4f(g_shader[g_curS].m_slot[SSLOT_COLOR], currcolor[0], currcolor[1], currcolor[2], currcolor[3]);
 
 		//g_log<<"color[3] = "<<currcolor[3]<<std::endl;
 	}
@@ -186,7 +186,7 @@ void DrawGlyphF()
 		float hscale = f->gheight / (float)icon->m_height;
 
 		UseIconTex(g_rpartit->m_icon);
-		//glUniform4f(g_shader[g_curS].m_slot[SSLOT_COLOR], 1, 1, 1, 1);
+		glUniform4f(g_shader[g_curS].m_slot[SSLOT_COLOR], 1, 1, 1, 1);
 
 		short left = x;
 		short right = (short)( left + (float)icon->m_width * hscale );
@@ -195,7 +195,7 @@ void DrawGlyphF()
 		DrawGlyphF((float)left, (float)top, (float)right, (float)bottom, 0, 0, 1, 1);
 
 		UseFontTex();
-		//glUniform4f(g_shader[g_curS].m_slot[SSLOT_COLOR], currcolor[0], currcolor[1], currcolor[2], currcolor[3]);
+		glUniform4f(g_shader[g_curS].m_slot[SSLOT_COLOR], currcolor[0], currcolor[1], currcolor[2], currcolor[3]);
 
 		//g_log<<"color[3] = "<<currcolor[3]<<std::endl;
 	}

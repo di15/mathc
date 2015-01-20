@@ -12,7 +12,7 @@
 #include "textarea.h"
 #include "textblock.h"
 #include "touchlistener.h"
-#include "../../sim/player.h"
+#include "../gui.h"
 
 DropList::DropList() : Widget()
 {
@@ -139,8 +139,6 @@ void DropList::drawover()
 
 void DropList::inev(InEv* ie)
 {
-	Player* py = &g_player[g_localP];
-
 	if(ie->type == INEV_MOUSEWHEEL && !ie->intercepted)
 	{
 		if(m_opened)
@@ -153,6 +151,24 @@ void DropList::inev(InEv* ie)
 	{
 		if(g_mouse.x >= m_pos[0] && g_mouse.x <= m_pos[2] && g_mouse.y >= m_pos[1] && g_mouse.y <= m_pos[3])
 			g_mouseoveraction =  true;
+
+#if 0
+		if(m_opened)
+		{
+			Font* f = &g_font[m_font];
+
+			//on dropped list?
+			if(g_mouse.x >= m_pos[0] && g_mouse.x <= m_pos[2] && g_mouse.y >= m_pos[1] && g_mouse.y <= m_pos[1] + f->gheight*rowsshown())
+			{
+				g_mouseoveraction =  true;
+				m_over = true;
+				ie->intercepted = true;
+			}
+		}
+#endif
+
+		if(m_ldown)
+			ie->intercepted = true;
 
 		if(!m_mousescroll)
 			return;
@@ -189,6 +205,16 @@ void DropList::inev(InEv* ie)
 	}
 	else if(ie->type == INEV_MOUSEDOWN && ie->key == MOUSE_LEFT)
 	{
+		//InfoMess("dlld", "dlld");
+
+#if 0
+		if(m_over)
+		{
+			m_ldown = true;
+			ie->intercepted = true;
+		}
+#endif
+
 		if(m_opened)
 		{
 			for(int i=(int)m_scroll[1]; i<(int)m_scroll[1]+rowsshown(); i++)
@@ -245,6 +271,15 @@ void DropList::inev(InEv* ie)
 	}
 	else if(ie->type == INEV_MOUSEUP && ie->key == MOUSE_LEFT)
 	{
+		//InfoMess("dllu", "dllu");
+
+#if 0
+		if(m_over)
+		{
+			ie->intercepted = true;
+		}
+#endif
+
 		if(m_opened)
 		{
 			if(!m_ldown)
@@ -253,7 +288,11 @@ void DropList::inev(InEv* ie)
 				return;
 			}
 
-			m_ldown = false;
+			if(m_ldown)
+			{
+				ie->intercepted = true;
+				m_ldown = false;
+			}
 
 			if(m_mousescroll)
 			{
@@ -261,8 +300,6 @@ void DropList::inev(InEv* ie)
 				ie->intercepted = true;
 				return;	// intercept mouse event
 			}
-
-			Player* py = &g_player[g_localP];
 
 			for(int i=(int)m_scroll[1]; i<(int)m_scroll[1]+rowsshown(); i++)
 			{
@@ -307,7 +344,7 @@ void DropList::inev(InEv* ie)
 			ie->intercepted = true;	// intercept mouse event
 		}
 
-		if(!ie->intercepted)
+		else if(!ie->intercepted)
 		{
 			if(!m_ldown)
 				return;
@@ -318,6 +355,17 @@ void DropList::inev(InEv* ie)
 			{
 				m_opened = true;
 				ie->intercepted = true;
+
+				//Need to bring tree to front so that drop-down list gets 
+				//the mouse up event first instead of any item in the background.
+				Widget* parw = m_parent;
+				while(parw)
+				{
+					parw->tofront();
+					parw = parw->m_parent;
+				}
+				tofront();
+
 				return;
 			}
 		}
