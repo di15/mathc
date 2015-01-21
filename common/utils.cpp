@@ -154,7 +154,7 @@ void StripPathExtension(const char* n, char* o)
 #ifndef PLATFORM_IOS
 void ExePath(char* exepath)
 {
-#if 0
+#if 1
 #ifdef PLATFORM_WIN
 	//char buffer[MAX_PATH+1];
 	GetModuleFileName(NULL, exepath, MAX_PATH+1);
