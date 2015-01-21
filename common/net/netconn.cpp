@@ -9,6 +9,7 @@
 #include "../save/savemap.h"
 #include "../path/pathdebug.h"
 #include "../utils.h"
+#include "readpackets.h"
 
 #ifndef MATCHMAKER
 #include "../../game/gmain.h"
@@ -90,6 +91,12 @@ NetConn* Connect(const char* addrstr, unsigned short port, bool ismatcher, bool 
 	return Connect(&ip, ismatcher, isourhost, isclient, ishostinfo);
 }
 
+//Safe to call more than once, if connection already established, this will just
+//update NetConn booleans.
+//Edit: Maybe not safe anymore. Connection will reset to 0 on additional call.
+//Necesssary because other side might have lost connection (timeout) and if we 
+//send using the last acks we'll just get acks back but other side won't read messages.
+//Edit: probably unlikely that one side will time out significantly before the other. Still safe.
 NetConn* Connect(IPaddress* ip, bool ismatcher, bool isourhost, bool isclient, bool ishostinfo)
 {
 	OpenSock();
@@ -207,7 +214,7 @@ NetConn* Connect(IPaddress* ip, bool ismatcher, bool isourhost, bool isclient, b
 			ConnectPacket cp;
 			cp.header.type = PACKET_CONNECT;
 			cp.reply = false;
-			SendData((char*)&cp, sizeof(ConnectPacket), ip, true, false, nc, &g_sock, 0);
+			SendData((char*)&cp, sizeof(ConnectPacket), ip, true, false, nc, &g_sock, 0, OnAck_Connect);
 		}
 	}
 
@@ -347,7 +354,7 @@ void KeepAlive()
 #endif
 			KeepAlivePacket kap;
 			kap.header.type = PACKET_KEEPALIVE;
-			SendData((char*)&kap, sizeof(KeepAlivePacket), &ci->addr, true, false, &*ci, &g_sock, 0);
+			SendData((char*)&kap, sizeof(KeepAlivePacket), &ci->addr, true, false, &*ci, &g_sock, 0, NULL);
 		}
 
 		
@@ -515,7 +522,7 @@ void Disconnect(NetConn* nc)
 {
 	DisconnectPacket dp;
 	dp.header.type = PACKET_DISCONNECT;
-	SendData((char*)&dp, sizeof(DisconnectPacket), &nc->addr, true, false, nc, &g_sock, 0);
+	SendData((char*)&dp, sizeof(DisconnectPacket), &nc->addr, true, false, nc, &g_sock, 0, NULL);
 	nc->closed = true;
 	//nc->expirein(RESEND_DELAY*2);
 

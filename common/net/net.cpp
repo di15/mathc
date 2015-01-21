@@ -160,7 +160,7 @@ void CheckAddSv()
 					asp.svinfo.nplayers = 1;	//TO DO
 					memset(&asp.svinfo.addr, 0, sizeof(IPaddress));
 #endif
-					SendData((char*)&asp, sizeof(AddSvPacket), &g_mmconn->addr, true, false, g_mmconn, &g_sock, 0);
+					SendData((char*)&asp, sizeof(AddSvPacket), &g_mmconn->addr, true, false, g_mmconn, &g_sock, 0, NULL);
 					g_sentsvinfo = true;
 				}
 			}
@@ -357,7 +357,7 @@ void CheckGetSvs()
 
 	SendNextHostPacket snhp;
 	snhp.header.type = PACKET_SENDNEXTHOST;
-	SendData((char*)&snhp, sizeof(SendNextHostPacket), &g_mmconn->addr, true, false, g_mmconn, &g_sock, 0);
+	SendData((char*)&snhp, sizeof(SendNextHostPacket), &g_mmconn->addr, true, false, g_mmconn, &g_sock, 0, NULL);
 
 	//prevent us from sending out more nexthost requests
 	//until we get the current one.

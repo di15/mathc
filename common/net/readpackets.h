@@ -12,6 +12,7 @@ void PacketSwitch(int type, char* buffer, int bytes, NetConn* nc, IPaddress* fro
 void ReadPlaceBlPacket(PlaceBlPacket* pbp, NetConn* nc, IPaddress* from, UDPsocket* sock);
 void ReadAckPacket(AckPacket* ap, NetConn* nc, IPaddress* from, UDPsocket* sock);
 void ReadDisconnectPacket(DisconnectPacket* dp, NetConn* nc, IPaddress* from, UDPsocket* sock);
+void ReadNoConnPacket(NoConnectionPacket* ncp, NetConn* nc, IPaddress* from, UDPsocket* sock);
 void ReadConnectPacket(ConnectPacket* cp, NetConn* nc, IPaddress* from, UDPsocket* sock);
 void ReadDoneTurnPacket(DoneTurnPacket* dtp, NetConn* nc, IPaddress* from, UDPsocket* sock);
 void ReadNetTurnPacket(NetTurnPacket* ntp, NetConn* nc, IPaddress* from, UDPsocket* sock);
@@ -34,5 +35,6 @@ void ReadTooManyClPacket(TooManyClPacket* tmcp, NetConn* nc, IPaddress* from, UD
 void ReadMapChangePacket(MapChangePacket* mcp, NetConn* nc, IPaddress* from, UDPsocket* sock);
 void ReadChValPacket(ChValPacket* cvp, NetConn* nc, IPaddress* from, UDPsocket* sock);
 void ReadClDisconnectedPacket(ClDisconnectedPacket* cdp, NetConn* nc, IPaddress* from, UDPsocket* sock);
+void OnAck_Connect(OldPacket* p, NetConn* nc);
 
 #endif	//READPACKETS_H

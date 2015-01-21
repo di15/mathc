@@ -146,7 +146,7 @@ void Click_SL_Ref()	//refresh
 		g_reqdnexthost = true;
 		GetSvListPacket gslp;
 		gslp.header.type = PACKET_GETSVLIST;
-		SendData((char*)&gslp, sizeof(GetSvListPacket), &g_mmconn->addr, true, false, g_mmconn, &g_sock, 0);
+		SendData((char*)&gslp, sizeof(GetSvListPacket), &g_mmconn->addr, true, false, g_mmconn, &g_sock, 0, NULL);
 	}
 }
 
@@ -198,7 +198,7 @@ void Click_SL_Join()
 	{
 		JoinPacket jp;
 		jp.header.type = PACKET_JOIN;
-		SendData((char*)&jp, sizeof(JoinPacket), &sinfo->addr, true, false, svnc, &g_sock, 0);
+		SendData((char*)&jp, sizeof(JoinPacket), &sinfo->addr, true, false, svnc, &g_sock, 0, NULL);
 	}
 
 	//Connect("localhost", PORT, false, true, false, false);

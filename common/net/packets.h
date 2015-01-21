@@ -66,6 +66,7 @@ public:
 			first = original.first;
 			expires = original.expires;
 			addr = original.addr;
+			onackfunc = original.onackfunc;
 #ifdef MATCHMAKER
 			//ipaddr = original.ipaddr;
 			//port = original.port;
@@ -76,6 +77,7 @@ public:
 		{
 			buffer = NULL;
 			len = 0;
+			onackfunc = NULL;
 		}
 
 		return *this;
@@ -112,6 +114,7 @@ public:
 #define PACKET_CHVAL					25
 #define PACKET_CLDISCONNECTED			26
 #define PACKET_CLSTATE					27
+#define PACKET_NOCONN					28
 
 // byte-align structures
 #pragma pack(push, 1)
@@ -127,6 +130,7 @@ struct BasePacket
 	PacketHeader header;
 };
 
+typedef BasePacket NoConnectionPacket;
 typedef BasePacket DoneJoinPacket;
 typedef BasePacket TooManyClPacket;
 typedef BasePacket SendNextHostPacket;

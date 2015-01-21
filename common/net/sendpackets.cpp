@@ -25,11 +25,11 @@ void SendAll(char* data, int size, bool reliable, bool expires, IPaddress* excep
 
 		//InfoMess("sa", "sa");
 
-		SendData(data, size, &ci->addr, reliable, expires, &*ci, &g_sock, 0);
+		SendData(data, size, &ci->addr, reliable, expires, &*ci, &g_sock, 0, NULL);
 	}
 }
 
-void SendData(char* data, int size, IPaddress * paddr, bool reliable, bool expires, NetConn* nc, UDPsocket* sock, int msdelay)
+void SendData(char* data, int size, IPaddress * paddr, bool reliable, bool expires, NetConn* nc, UDPsocket* sock, int msdelay, void (*onackfunc)(OldPacket* p, NetConn* nc))
 {
 	UDPpacket *out = SDLNet_AllocPacket(65535);
 
@@ -61,6 +61,7 @@ void SendData(char* data, int size, IPaddress * paddr, bool reliable, bool expir
 		p.last = GetTickCount64() + msdelay - RESEND_DELAY;
 		p.first = p.last;
 		p.expires = expires;
+		p.onackfunc = onackfunc;
 		g_outgo.push_back(p);
 		nc->sendack = NextAck(nc->sendack);
 	}
@@ -178,7 +179,7 @@ void ResendPacks()
 		g_log.flush();
 #endif
 
-		SendData(p->buffer, p->len, &p->addr, false, p->expires, nc, &g_sock, 0);
+		SendData(p->buffer, p->len, &p->addr, false, p->expires, nc, &g_sock, 0, NULL);
 
 		p->last = now;
 #ifdef _IOS
@@ -222,7 +223,7 @@ void Acknowledge(unsigned short ack, NetConn* nc, IPaddress* addr, UDPsocket* so
 	g_log.flush();
 #endif
 
-	SendData((char*)&p, sizeof(AckPacket), addr, false, true, nc, sock, 0);
+	SendData((char*)&p, sizeof(AckPacket), addr, false, true, nc, sock, 0, NULL);
 }
 
 

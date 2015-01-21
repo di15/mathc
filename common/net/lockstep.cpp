@@ -59,7 +59,7 @@ void UpdTurn()
 		dtp.header.type = PACKET_DONETURN;
 		dtp.player = g_localP;
 		dtp.fornetfr = g_netframe;
-		SendData((char*)&dtp, sizeof(DoneTurnPacket), &g_svconn->addr, true, false, g_svconn, &g_sock, 0);
+		SendData((char*)&dtp, sizeof(DoneTurnPacket), &g_svconn->addr, true, false, g_svconn, &g_sock, 0, NULL);
 	}
 }
 
@@ -455,7 +455,7 @@ void LockCmd(PacketHeader* p, short sz)
 		NetConn* nc = g_svconn;
 
 		if(nc)
-			SendData((char*)p, sz, &nc->addr, true, false, nc, &g_sock, 0);
+			SendData((char*)p, sz, &nc->addr, true, false, nc, &g_sock, 0, NULL);
 	}
 	else if(g_netmode == NETM_SINGLE)
 	{
