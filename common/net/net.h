@@ -46,7 +46,7 @@ extern unsigned int g_transmitted;
 #define NETM_CLIENT			2	//client
 //#define NET_SPECT			3	//spectator client
 
-//#define NET_DEBUG	//debug messages for packets recvd
+#define NET_DEBUG	//debug messages for packets recvd
 
 void UpdNet();
 void ClearPackets();

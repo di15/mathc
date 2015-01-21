@@ -6792,48 +6792,7 @@
 	"sim/simflow.h"
 	"sim/bltype.h"
 
-1420591338 source:/home/polyfrag/Desktop/Projects/CorpStatesC/aaa004_low3d/game/gmain.cpp
-	"gmain.h"
-	"../common/gui/gui.h"
-	"keymap.h"
-	"../common/render/shader.h"
-	"gres.h"
-	"../common/gui/font.h"
-	"../common/texture.h"
-	"../common/render/model.h"
-	"../common/math/frustum.h"
-	"gui/ggui.h"
-	"../common/gui/gui.h"
-	"../common/debug.h"
-	"../common/render/heightmap.h"
-	"../common/math/camera.h"
-	"../common/render/shadow.h"
-	"../common/window.h"
-	"../common/utils.h"
-	"../common/sim/sim.h"
-	"../common/math/hmapmath.h"
-	"../common/sim/unit.h"
-	"../common/sim/building.h"
-	"../common/sim/build.h"
-	"../common/sim/buildingtype.h"
-	"../common/render/foliage.h"
-	"../common/render/water.h"
-	"../common/sim/road.h"
-	"../common/sim/crpipe.h"
-	"../common/sim/powl.h"
-	"../common/sim/deposit.h"
-	"../common/sim/selection.h"
-	"../common/sim/player.h"
-	"../common/sim/order.h"
-	"../common/render/transaction.h"
-	"../common/path/collidertile.h"
-	"../common/path/pathdebug.h"
-	"gui/playgui.h"
-	"../common/gui/widgets/spez/bottompanel.h"
-	"../common/texture.h"
-	"../common/render/skybox.h"
-	"../common/script/script.h"
-	"../common/ai/ai.h"
+1421803434 source:/home/polyfrag/Desktop/Projects/CorpStatesC/aaa004_low3d/game/gmain.cpp
 	"gmain.h"
 	"../common/gui/gui.h"
 	"keymap.h"
@@ -6884,10 +6843,11 @@
 	"../common/econ/demand.h"
 	"../common/save/savemap.h"
 	"../common/render/graph.h"
+	"../common/path/tilepath.h"
 
 1409380628 /ai/ai.h"
 
-1415613514 /home/polyfrag/Desktop/Projects/CorpStatesC/aaa004_low3d/game/gres.h
+1421802666 /home/polyfrag/Desktop/Projects/CorpStatesC/aaa004_low3d/game/gres.h
 
 1421802665 source:/home/polyfrag/Desktop/Projects/CorpStatesC/aaa004_low3d/common/ai/ai.cpp
 	"../sim/player.h"
@@ -7372,7 +7332,7 @@
 	"net.h"
 	"packets.h"
 
-1421802665 /home/polyfrag/Desktop/Projects/CorpStatesC/aaa004_low3d/common/net/net.h
+1421807254 /home/polyfrag/Desktop/Projects/CorpStatesC/aaa004_low3d/common/net/net.h
 	"../platform.h"
 	"packets.h"
 
@@ -8128,7 +8088,7 @@
 1421802665 source:/home/polyfrag/Desktop/Projects/CorpStatesC/aaa004_low3d/common/sys/utf8.cpp
 	"utf8.h"
 
-1416458606 /home/polyfrag/Desktop/Projects/CorpStatesC/aaa004_low3d/common/render/infoov.h
+1421802665 /home/polyfrag/Desktop/Projects/CorpStatesC/aaa004_low3d/common/render/infoov.h
 
 1421802666 source:/home/polyfrag/Desktop/Projects/CorpStatesC/aaa004_low3d/game/gui/chattext.cpp
 	"chattext.h"
