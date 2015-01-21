@@ -150,12 +150,12 @@ void UpdSim()
 {
 	if(!CanTurn())
 		return;
-	
+
 #ifdef FREEZE_DEBUG
 		g_log<<"updturn"<<std::endl;
 		g_log.flush();
 #endif
-	
+
 #if 1
 	//if(g_netframe%100==0)
 	//	g_log<<"numlab: "<<CountU(UNIT_LABOURER)<<std::endl;
@@ -163,8 +163,8 @@ void UpdSim()
 	{
 		g_gameover = true;
 		char msg[128];
-		sprintf(msg, "lasted %u simframes / %fs / %fm / %fh", 
-			g_simframe, 
+		sprintf(msg, "lasted %u simframes / %fs / %fm / %fh",
+			g_simframe,
 			(float)g_simframe / (float)SIM_FRAME_RATE,
 			(float)g_simframe / (float)SIM_FRAME_RATE / 60.0f,
 			(float)g_simframe / (float)SIM_FRAME_RATE / 60.0f / 60.0f);
@@ -188,7 +188,7 @@ void UpdSim()
 		g_netframe ++;
 		return;
 	}
-	
+
 	UpdTurn();
 
 	UpdJams();
@@ -199,7 +199,7 @@ void UpdSim()
 #endif
 
 	UpdAI();
-	
+
 #ifdef FREEZE_DEBUG
 		g_log<<"managetrips"<<std::endl;
 		g_log.flush();
@@ -226,12 +226,12 @@ void UpdSim()
 	StopTimer(TIMER_UPDATEBUILDINGS);
 
 	Tally();
-	
+
 #ifdef FREEZE_DEBUG
 		g_log<<"/updsim"<<std::endl;
 		g_log.flush();
 #endif
-	
+
 	static long long tick = GetTickCount64();
 
 	//must do this after UpdTurn
@@ -246,7 +246,7 @@ void UpdSim()
 		InfoMess(msg, msg);
 		//1.7m
 	}
-	
+
 #if 1
 	if(g_simframe % (SIM_FRAME_RATE * 60 * 30) == 0 && g_simframe > 0)
 	{
@@ -393,7 +393,7 @@ void DrawScene(Matrix projection, Matrix viewmat, Matrix modelmat, Matrix modelv
 	StopTimer(TIMER_DRAWUNITS);
 	CheckGLError(__FILE__, __LINE__);
 
-	
+
 #ifdef FREEZE_DEBUG
 	g_log<<"drawfol"<<std::endl;
 	g_log.flush();
@@ -422,7 +422,7 @@ void DrawScene(Matrix projection, Matrix viewmat, Matrix modelmat, Matrix modelv
 	DrawBorderLines();
 #endif
 
-	
+
 #ifdef FREEZE_DEBUG
 	g_log<<"drawdebug"<<std::endl;
 	g_log.flush();
@@ -441,7 +441,7 @@ void DrawScene(Matrix projection, Matrix viewmat, Matrix modelmat, Matrix modelv
 	}
 #endif
 
-	
+
 #ifdef FREEZE_DEBUG
 	g_log<<"drawselorders"<<std::endl;
 	g_log.flush();
@@ -452,7 +452,7 @@ void DrawScene(Matrix projection, Matrix viewmat, Matrix modelmat, Matrix modelv
 	DrawOrders(&projection, &modelmat, &viewmat);
 	CheckGLError(__FILE__, __LINE__);
 
-	
+
 #ifdef FREEZE_DEBUG
 	g_log<<"drawbillbs"<<std::endl;
 	g_log.flush();
@@ -481,7 +481,7 @@ void DrawScene(Matrix projection, Matrix viewmat, Matrix modelmat, Matrix modelv
 	EndS();
 #endif
 
-	
+
 #ifdef FREEZE_DEBUG
 	g_log<<"drawtransactions"<<std::endl;
 	g_log.flush();
@@ -521,7 +521,7 @@ void DrawScene(Matrix projection, Matrix viewmat, Matrix modelmat, Matrix modelv
 	EndS();
 #endif
 
-	
+
 #ifdef FREEZE_DEBUG
 	g_log<<"/draw"<<std::endl;
 	g_log.flush();
@@ -645,7 +645,7 @@ void Draw()
 		CheckGLError(__FILE__, __LINE__);
 		RenderShadowedScene(projection, viewmat, modelmat, modelview, DrawScene);
 		CheckGLError(__FILE__, __LINE__);
-		
+
 		Ortho(g_width, g_height, 1, 1, 1, 1);
 		DrawOv(&mvpmat);
 		EndS();
@@ -965,11 +965,11 @@ void Init()
 	SDL_version compile_version;
 	const SDL_version *link_version=Mix_Linked_Version();
 	SDL_MIXER_VERSION(&compile_version);
-	printf("compiled with SDL_mixer version: %d.%d.%d\n", 
+	printf("compiled with SDL_mixer version: %d.%d.%d\n",
 			compile_version.major,
 			compile_version.minor,
 			compile_version.patch);
-	printf("running with SDL_mixer version: %d.%d.%d\n", 
+	printf("running with SDL_mixer version: %d.%d.%d\n",
 			link_version->major,
 			link_version->minor,
 			link_version->patch);
@@ -982,7 +982,7 @@ void Init()
 	{
 		char msg[1280];
 		sprintf(msg, "Mix_Init: Failed to init required ogg and mod support!\nMix_Init: %s", Mix_GetError());
-		ErrMess("Error", msg);
+		//ErrMess("Error", msg);
 		// handle error
 	}
 
@@ -1046,8 +1046,8 @@ void Deinit()
 			UpdNet();
 	}
 
-	// Clean up	
-	
+	// Clean up
+
 	if(g_sock)
 	{
 		SDLNet_UDP_Close(g_sock);
@@ -1372,7 +1372,7 @@ void EventLoop()
 
 			StopTimer(TIMER_DRAW);
 		}
-		
+
 		//if((g_mode == APPMODE_LOADING || g_mode == APPMODE_RELOADING) || true /* UpdNextFrame(SIM_FRAME_RATE) */ )
 		if((g_mode == APPMODE_LOADING || g_mode == APPMODE_RELOADING) || UpdNextFrame(SIM_FRAME_RATE) )
 		{
