@@ -511,7 +511,7 @@ void FillMenu()
 	gui->add(new ViewLayer(gui, "main"));
 	ViewLayer* mainview = (ViewLayer*)gui->get("main");
 	mainview->add(new Image(mainview, "gui/mmbg.jpg", true, Resize_Fullscreen));
-#if 1
+#if 0
 	mainview->add(new Link(mainview, "0", RichText("New Game"), FONT_EUROSTILE16, Resize_MenuItem, Click_NewGame));
 	mainview->add(new Link(mainview, "1", RichText("Load Game"), FONT_EUROSTILE16, Resize_MenuItem, Click_LoadGame));
 	mainview->add(new Link(mainview, "2", RichText("Host Game"), FONT_EUROSTILE16, Resize_MenuItem, Click_HostGame));

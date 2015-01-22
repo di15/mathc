@@ -54,6 +54,10 @@ int g_mode = APPMODE_LOADING;
 
 //static long long g_lasttime = GetTickCount();
 
+#ifdef DEMO
+static long long g_demostart = GetTickCount64();
+#endif
+
 void SkipLogo()
 {
 	g_mode = APPMODE_LOADING;
@@ -282,6 +286,11 @@ void Update()
 		UpdSim();
 	else if(g_mode == APPMODE_EDITOR)
 		UpdEd();
+
+#ifdef DEMO
+	if(GetTickCount64() - g_demostart > DEMOTIME)
+		g_quit = true;
+#endif
 }
 
 void DrawScene(Matrix projection, Matrix viewmat, Matrix modelmat, Matrix modelviewinv, float lightpos[3], float lightdir[3])
@@ -718,6 +727,18 @@ void Draw()
 		CheckGLError(__FILE__, __LINE__);
 	}
 #endif
+
+#ifdef DEMO
+	{
+		unsigned int msleft = DEMOTIME - (GetTickCount64() - g_demostart);
+		char msg[128];
+		sprintf(msg, "Demo time %d:%02d", msleft / 1000 / 60, (msleft % (1000 * 60)) / 1000);
+		RichText msgrt(msg);
+		float color[] = {0.5f,1.0f,0.5f,1.0f};
+		DrawShadowedText(MAINFONT16, g_width - 130, g_height-16, &msgrt, color);
+	}
+#endif
+
 	glEnable(GL_DEPTH_TEST);
 	EndS();
 	CheckGLError(__FILE__, __LINE__);

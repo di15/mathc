@@ -189,4 +189,7 @@ extern SDL_GLContext g_glcontext;
 //#define FREEZE_DEBUG
 //#define RANDOM8DEBUG
 
+#define DEMO		//is this a time-restricted version?
+#define DEMOTIME		(5*60*1000)
+
 #endif // #define LIBRARY_H
