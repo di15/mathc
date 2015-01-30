@@ -2,7 +2,7 @@
 #define SAVEMAP_H
 
 #define MAP_TAG			{'C','S','M'}
-#define MAP_VERSION		3
+#define MAP_VERSION		4
 
 float ConvertHeight(unsigned char brightness);
 void LoadJPGMap(const char* relative);

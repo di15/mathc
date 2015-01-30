@@ -246,7 +246,7 @@ void Queue()
 	// Building types
 
 #if 0
-#define BL_APARTMENT		0
+#define BL_HOUSE		0
 #define BL_STORE		1
 #define BL_FACTORY		2
 #define BL_FARM			3
@@ -415,17 +415,25 @@ void Queue()
 	BOut(RESEARCH, 1);			// 118/1+1+3*12 = 155
 #endif
 
-	//DefB(BL_APARTMENT, "Apartments", Vec2i(2,1), "models/apartment1/basebuilding.ms3d", Vec3f(100,100,100), Vec3f(0,0,0), "models/apartment1/basebuilding.ms3d", Vec3f(100,100,100), Vec3f(0,0,0), FOUNDATION_LAND, RES_NONE);
-#if 1
-	DefB(BL_APARTMENT, "Apartments", 
+	//DefB(BL_HOUSE, "Apartments", Vec2i(2,1), "models/apartment1/basebuilding.ms3d", Vec3f(100,100,100), Vec3f(0,0,0), "models/apartment1/basebuilding.ms3d", Vec3f(100,100,100), Vec3f(0,0,0), FOUNDATION_LAND, RES_NONE);
+#if 0
+	DefB(BL_HOUSE, "Apartments", 
 		Vec2i(2,2),  false, 
 		"models/apartment2/b1911", 
 		Vec3f(1,1,1), Vec3f(0,0,0), 
 		"models/apartment2/b1911", 
 		Vec3f(1,1,1), Vec3f(0,0,0), 
 		FOUNDATION_LAND, RES_NONE, 1000);
+#elif 1
+	DefB(BL_HOUSE, "House", 
+		Vec2i(1,1),  false, 
+		"models/naping1/naping1", 
+		Vec3f(1,1,1), Vec3f(0,0,0), 
+		"models/naping1/naping1", 
+		Vec3f(1,1,1), Vec3f(0,0,0), 
+		FOUNDATION_LAND, RES_NONE, 1000);
 #else
-	DefB(BL_APARTMENT, "Apartments", 
+	DefB(BL_HOUSE, "Apartments", 
 		Vec2i(2,2),  false, 
 		"models/box/apartment/basebuilding.ms3d", 
 		Vec3f(1,1,1)*200, Vec3f(0,0,0), 
@@ -433,12 +441,12 @@ void Queue()
 		Vec3f(1,1,1)*200, Vec3f(0,0,0), 
 		FOUNDATION_LAND, RES_NONE, 1000);
 #endif
-	BMat(BL_APARTMENT, RES_CEMENT, 4);
-	BMat(BL_APARTMENT, RES_LABOUR, 4);
-	BMat(BL_APARTMENT, RES_STONE, 2);
-	BOut(BL_APARTMENT, RES_HOUSING, 15);
-	BDesc(BL_APARTMENT, "Apartments collect rent from labourers. They are required by the labourers to regenerate labour power.");
-	BSound(BL_APARTMENT, BLSND_FINI, "sounds/notif/beep-22.wav");
+	BMat(BL_HOUSE, RES_CEMENT, 4);
+	BMat(BL_HOUSE, RES_LABOUR, 4);
+	BMat(BL_HOUSE, RES_STONE, 2);
+	BOut(BL_HOUSE, RES_HOUSING, 15);
+	BDesc(BL_HOUSE, "Apartments collect rent from labourers. They are required by the labourers to regenerate labour power.");
+	BSound(BL_HOUSE, BLSND_FINI, "sounds/notif/beep-22.wav");
 
 #if 1
 	DefB(BL_FACTORY, "Factory", 
@@ -484,9 +492,9 @@ void Queue()
 #elif 1
 	DefB(BL_REFINERY, "Oil Refinery", 
 		Vec2i(1,1),  false, 
-		"models/refinery3/fractower", 
+		"models/oilref/oilref", 
 		Vec3f(1,1,1), Vec3f(0,0,0), 
-		"models/refinery3/fractower", 
+		"models/oilref/oilref", 
 		Vec3f(1,1,1), Vec3f(0,0,0), 
 		FOUNDATION_LAND, RES_NONE, 1000);
 #elif 0
@@ -527,7 +535,7 @@ void Queue()
 
 #if 1
 	DefB(BL_COALPOW, "Coal Powerplant", 
-		Vec2i(2,2), true, 
+		Vec2i(2,2), false, 
 		"models/coalpow/combustor.ms3d", 
 		Vec3f(1,1,1)/32.0f*TILE_SIZE*2, Vec3f(0,0,0), 
 		"models/coalpow/combustor.ms3d", 
@@ -555,13 +563,21 @@ void Queue()
 	BSound(BL_COALPOW, BLSND_PROD, "sounds/notif/beep-24.wav");
 	BSound(BL_COALPOW, BLSND_FINI, "sounds/notif/beep-22.wav");
 	
-#if 1
+#if 0
 	DefB(BL_CHEMPLANT, "Chemical Plant", 
 		Vec2i(2,2), true, 
 		"models/chemplant/chemplant.ms3d", 
 		Vec3f(1,1,1)/32.0f*TILE_SIZE*2, Vec3f(0,0,0), 
 		"models/chemplant/chemplant.ms3d", 
 		Vec3f(1,1,1)/32.0f*TILE_SIZE*2, Vec3f(0,0,0), 
+		FOUNDATION_LAND, RES_NONE, 1000);
+#elif 1
+	DefB(BL_CHEMPLANT, "Chemical Plant", 
+		Vec2i(1,1), false, 
+		"models/chempl/chempl", 
+		Vec3f(1,1,1), Vec3f(0,0,0), 
+		"models/chempl/chempl", 
+		Vec3f(1,1,1), Vec3f(0,0,0), 
 		FOUNDATION_LAND, RES_NONE, 1000);
 #else
 	DefB(BL_CHEMPLANT, "Chemical Plant", 
@@ -611,7 +627,7 @@ void Queue()
 
 #if 1
 	DefB(BL_CEMPLANT, "Cement Plant", 
-		Vec2i(1,1), true, 
+		Vec2i(1,1), false, 
 		"models/cemplant/cemplant.ms3d", 
 		Vec3f(1,1,1)/32.0f*TILE_SIZE*2, Vec3f(0,0,0), 
 		"models/cemplant/cemplant.ms3d", 
@@ -636,6 +652,7 @@ void Queue()
 	BSound(BL_CEMPLANT, BLSND_PROD, "sounds/notif/beep-027.wav");
 	BSound(BL_CEMPLANT, BLSND_FINI, "sounds/notif/beep-22.wav");
 	
+#if 0
 #if 1
 	DefB(BL_QUARRY, "Quarry", 
 		Vec2i(1,1), true, 
@@ -661,14 +678,23 @@ void Queue()
 	BDesc(BL_QUARRY, "Extracts stone.");
 	BSound(BL_QUARRY, BLSND_PROD, "sounds/notif/beep-28.wav");
 	BSound(BL_QUARRY, BLSND_FINI, "sounds/notif/beep-22.wav");
+#endif
 
-#if 1
+#if 0
 	DefB(BL_SMELTER, "Smelter", 
 		Vec2i(2,2), true, 
 		"models/smelter/smelter.ms3d", 
 		Vec3f(1,1,1)/32.0f*TILE_SIZE*2, Vec3f(0,0,0), 
 		"models/smelter/smelter.ms3d", 
 		Vec3f(1,1,1)/32.0f*TILE_SIZE*2, Vec3f(0,0,0), 
+		FOUNDATION_LAND, RES_NONE, 1000);
+#elif 1
+	DefB(BL_SMELTER, "Iron Smelter", 
+		Vec2i(1,1), false, 
+		"models/ironsm/ironsm", 
+		Vec3f(1,1,1), Vec3f(0,0,0), 
+		"models/ironsm/ironsm", 
+		Vec3f(1,1,1), Vec3f(0,0,0), 
 		FOUNDATION_LAND, RES_NONE, 1000);
 #else
 	DefB(BL_SMELTER, "Smelter", 
@@ -718,12 +744,20 @@ void Queue()
 	BSound(BL_NUCPOW, BLSND_PROD, "sounds/notif/beep-30b.wav");
 	BSound(BL_NUCPOW, BLSND_FINI, "sounds/notif/beep-22.wav");
 
-#if 1
+#if 0
 	DefB(BL_FARM, "Farm", 
 		Vec2i(4,2), true, 
 		"models/farm2/farm2", 
 		Vec3f(1,1,1), Vec3f(0,0,0), 
 		"models/farm2/farm2", 
+		Vec3f(1,1,1), Vec3f(0,0,0), 
+		FOUNDATION_LAND, RES_NONE, 1000);
+#elif 1
+	DefB(BL_FARM, "Farm", 
+		Vec2i(1,1), true, 
+		"models/farm3/farm", 
+		Vec3f(1,1,1), Vec3f(0,0,0), 
+		"models/farm3/farm", 
 		Vec3f(1,1,1), Vec3f(0,0,0), 
 		FOUNDATION_LAND, RES_NONE, 1000);
 #else
@@ -800,13 +834,21 @@ void Queue()
 	BSound(BL_OILWELL, BLSND_PROD, "sounds/notif/button-31.wav");
 	BSound(BL_OILWELL, BLSND_FINI, "sounds/notif/beep-22.wav");
 
-#if 1
+#if 0
 	DefB(BL_MINE, "Mine", 
 		Vec2i(1,1), false, 
 		"models/mine/nobottom.ms3d", 
 		Vec3f(1,1,1)/32.0f*TILE_SIZE, Vec3f(0,0,0), 
 		"models/mine/nobottom.ms3d", 
 		Vec3f(1,1,1)/32.0f*TILE_SIZE, Vec3f(0,0,0), 
+		FOUNDATION_LAND, -1, 1000);
+#elif 1
+	DefB(BL_MINE, "Shaft Mine", 
+		Vec2i(1,1), false, 
+		"models/shmine/shmine", 
+		Vec3f(1,1,1), Vec3f(0,0,0), 
+		"models/shmine/shmine", 
+		Vec3f(1,1,1), Vec3f(0,0,0), 
 		FOUNDATION_LAND, -1, 1000);
 #else
 	DefB(BL_MINE, "Mine", 
@@ -822,9 +864,10 @@ void Queue()
 	BIn(BL_MINE, RES_LABOUR, 10);
 	BIn(BL_MINE, RES_LABOUR, 5);
 	BOut(BL_MINE, RES_IRONORE, 7);
+	BOut(BL_MINE, RES_STONE, 10);
 	BOut(BL_MINE, RES_URANIUM, 5);
 	BOut(BL_MINE, RES_COAL, 5);
-	BDesc(BL_MINE, "Digs up minerals necessary for production at factories, and uranium, necessary for electricity generation at nuclear powerplants.");
+	BDesc(BL_MINE, "Digs up minerals necessary for production at factories, stone, and uranium, necessary for electricity generation at nuclear powerplants.");
 	BSound(BL_MINE, BLSND_PROD, "sounds/notif/button-32.wav");
 	BSound(BL_MINE, BLSND_FINI, "sounds/notif/beep-22.wav");
 

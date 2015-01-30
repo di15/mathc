@@ -236,7 +236,9 @@ void TranslatePacket(char* buffer, int bytes, bool checkprev, UDPsocket* sock, I
 	//We're getting an anonymous packet.
 	//Maybe we've timed out and they still have a connection.
 	//Tell them we don't have a connection.
-	if(!nc && header->type != PACKET_CONNECT)
+	//We check if sock is set to make sure this isn't a local 
+	//command packet being executed.
+	if(!nc && header->type != PACKET_CONNECT && sock)
 	{
 		NoConnectionPacket ncp;
 		ncp.header.type = PACKET_NOCONN;

@@ -1314,7 +1314,7 @@ void DrawBl()
 			continue;
 
 		const BlType* t = &g_bltype[b->type];
-		//const BlType* t = &g_bltype[BL_APARTMENT];
+		//const BlType* t = &g_bltype[BL_HOUSE];
 		Model* m = &g_model[ t->model ];
 
 		Vec3f vmin(b->drawpos.x - t->widthx*TILE_SIZE/2, b->drawpos.y, b->drawpos.z - t->widthy*TILE_SIZE/2);

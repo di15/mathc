@@ -101,15 +101,15 @@ void MS3DModel::loadtex(unsigned int& diffm, unsigned int& specm, unsigned int& 
 			if(dontqueue)
 			{
 				CreateTexture(diffm, difffile, false, true);
-				//CreateTexture(specm, specfile, false, true);
-				//CreateTexture(normm, normfile, false, true);
+				CreateTexture(specm, specfile, false, true);
+				CreateTexture(normm, normfile, false, true);
 				CreateTexture(ownm, ownfile, false, true);
 			}
 			else
 			{
 				QueueTexture(&diffm, difffile, false, true);
-				//QueueTexture(&specm, specfile, false, true);
-				//QueueTexture(&normm, normfile, false, true);
+				QueueTexture(&specm, specfile, false, true);
+				QueueTexture(&normm, normfile, false, true);
 				QueueTexture(&ownm, ownfile, false, true);
 			}
 		}

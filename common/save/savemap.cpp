@@ -33,6 +33,7 @@
 
 float ConvertHeight(unsigned char brightness)
 {
+#if 0
 	// Apply exponential scale to height data.
 	float y = (float)brightness*TILE_Y_SCALE/255.0f - TILE_Y_SCALE/2.0f;
 	y = y / fabs(y) * pow(fabs(y), TILE_Y_POWER) * TILE_Y_AFTERPOW;
@@ -43,6 +44,9 @@ float ConvertHeight(unsigned char brightness)
 		y += TILE_SIZE/100;
 
 	return y;
+#else
+	return brightness / 25 * TILE_SIZE / 4;
+#endif
 }
 
 void PlaceUnits()

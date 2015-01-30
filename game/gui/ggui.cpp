@@ -299,9 +299,9 @@ void Click_NewGame()
 
 #if 0
 	PlaceBl(BL_HARBOUR, Vec2i(g_hmap.m_widthx/2-1, g_hmap.m_widthy/2-3), true, 0);
-	PlaceBl(BL_APARTMENT, Vec2i(g_hmap.m_widthx/2+2, g_hmap.m_widthy/2-2), true, 0);
-	PlaceBl(BL_APARTMENT, Vec2i(g_hmap.m_widthx/2+4, g_hmap.m_widthy/2-3), true, 0);
-	PlaceBl(BL_APARTMENT, Vec2i(g_hmap.m_widthx/2+6, g_hmap.m_widthy/2-3), true, 0);
+	PlaceBl(BL_HOUSE, Vec2i(g_hmap.m_widthx/2+2, g_hmap.m_widthy/2-2), true, 0);
+	PlaceBl(BL_HOUSE, Vec2i(g_hmap.m_widthx/2+4, g_hmap.m_widthy/2-3), true, 0);
+	PlaceBl(BL_HOUSE, Vec2i(g_hmap.m_widthx/2+6, g_hmap.m_widthy/2-3), true, 0);
 	PlaceRoad(g_hmap.m_widthx/2+1, g_hmap.m_widthy/2-1, 1, false);
 	PlaceRoad(g_hmap.m_widthx/2+2, g_hmap.m_widthy/2-1, 1, false);
 	PlaceRoad(g_hmap.m_widthx/2+3, g_hmap.m_widthy/2-1, 1, false);

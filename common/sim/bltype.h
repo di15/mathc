@@ -56,7 +56,7 @@ public:
 #define FOUNDATION_SEA			2
 
 #define BL_NONE				-1
-#define BL_APARTMENT		0
+#define BL_HOUSE			0
 #define BL_STORE			1
 #define BL_FACTORY			2
 #define BL_FARM				3
@@ -66,12 +66,11 @@ public:
 #define BL_REFINERY			7
 #define BL_NUCPOW			8
 #define BL_COALPOW			9
-#define BL_QUARRY			10
-#define BL_CEMPLANT			11
-#define BL_CHEMPLANT		12
-#define BL_ELECPLANT		13
-#define BL_GASSTATION		14
-#define BL_TYPES			15
+#define BL_CEMPLANT			10
+#define BL_CHEMPLANT		11
+#define BL_ELECPLANT		12
+#define BL_GASSTATION		13
+#define BL_TYPES			14
 
 #define BL_ROAD				(BL_TYPES+CONDUIT_ROAD)
 #define BL_POWL				(BL_TYPES+CONDUIT_POWL)

@@ -282,7 +282,7 @@ void RenderToShadowMap(Matrix projection, Matrix viewmat, Matrix modelmat, Vec3f
 
 	CheckGLError(__FILE__, __LINE__);
 
-#if 0
+#if 1
 	glDisable(GL_CULL_FACE);
 
 	int viewport[4];
@@ -346,7 +346,7 @@ void RenderToShadowMap(Matrix projection, Matrix viewmat, Matrix modelmat, Vec3f
 
 	CheckGLError(__FILE__, __LINE__);
 
-#if 0
+#if 1
 	UseS(SHADER_DEPTH);
 	glUniformMatrix4fv(g_shader[SHADER_DEPTH].m_slot[SSLOT_PROJECTION], 1, 0, g_lightproj.m_matrix);
 	glUniformMatrix4fv(g_shader[SHADER_DEPTH].m_slot[SSLOT_MODELMAT], 1, 0, modelmat.m_matrix);

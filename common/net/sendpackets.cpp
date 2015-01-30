@@ -70,9 +70,12 @@ void SendData(char* data, int size, IPaddress * paddr, bool reliable, bool expir
 	
 	//unsigned int ipaddr = SDL_SwapBE32(ip.host);
 	//unsigned short port = SDL_SwapBE16(ip.port);
-	g_log<<"send to "<<SDL_SwapBE32(paddr->host)<<":"<<SDL_SwapBE16(paddr->port)<<" at tick "<<SDL_GetTicks()<<" ack"<<((PacketHeader*)data)->ack<<" t"<<((PacketHeader*)data)->type<<std::endl;
-	g_log.flush();
-	
+	if(paddr)
+	{
+		g_log<<"send to "<<SDL_SwapBE32(paddr->host)<<":"<<SDL_SwapBE16(paddr->port)<<" at tick "<<SDL_GetTicks()<<" ack"<<((PacketHeader*)data)->ack<<" t"<<((PacketHeader*)data)->type<<std::endl;
+		g_log.flush();
+	}
+
 	int nhs = 0;
 	for(auto ci=g_conn.begin(); ci!=g_conn.end(); ci++)
 		if(ci->handshook)
