@@ -25,14 +25,16 @@
 //#define PROJ_TOP			(16*4)
 //#define PROJ_BOTTOM			(-16*4)
 //#define INI_ZOOM			0.025f
-//#define MIN_ZOOM		0.1f
+//#define MIN_ZOOM		0.25f
+#define MIN_ZOOM		0.15f
 //#define MIN_ZOOM		0.025f
 //#define MIN_ZOOM		0.005f
-#define MIN_ZOOM		0.05f
-#define MAX_ZOOM		0.7f
+//#define MIN_ZOOM		0.05f
+//#define MAX_ZOOM		0.7f
+#define MAX_ZOOM		0.3f
 //#define MAX_ZOOM		0.1f
-//#define INI_ZOOM			MIN_ZOOM
-#define INI_ZOOM			0.05f
+#define INI_ZOOM			MIN_ZOOM
+//#define INI_ZOOM			0.05f
 
 extern double g_drawfrinterval;
 extern bool g_quit;

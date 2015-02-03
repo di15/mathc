@@ -166,6 +166,9 @@ void TBid(int target, int target2, int targtype, int umode, int cdtype, int res,
 	UType* ut = &g_utype[UNIT_TRUCK];
 	Building* demb = NULL;
 
+	//if(amt >0 && res == RES_CEMENT)
+		//InfoMess("req c", "hreq c2");
+
 	if(targtype == TARG_BL)
 	{
 		//char msg[128];
@@ -279,6 +282,9 @@ void TBid(int target, int target2, int targtype, int umode, int cdtype, int res,
 
 		truckpathd.push_back(ui);
 
+		//if(amt >0 && res == RES_CEMENT)
+		//	InfoMess("req c", "hreq c3");
+
 		if(Trapped(u, NULL))
 		{
 			short tin = (u->cmpos.x/TILE_SIZE) + (u->cmpos.y/TILE_SIZE)*g_hmap.m_widthx;
@@ -299,10 +305,20 @@ void TBid(int target, int target2, int targtype, int umode, int cdtype, int res,
 		for(int bi=0; bi<BUILDINGS; bi++)
 		{
 			Building* potsupb = &g_building[bi];	//potential supplier building
+
+			if(!potsupb->on)//how could I have missed this?
+				continue;
+
+			if(!potsupb->finished)
+				continue;
+
 			BlType* bt = &g_bltype[potsupb->type];
 
 			if(bt->output[res] <= 0)
 				continue;
+			
+			//if(amt >0 && res == RES_CEMENT)
+			//	InfoMess("req c", "hreq c1");
 
 			Player* supp = &g_player[potsupb->owner];
 
@@ -312,6 +328,10 @@ void TBid(int target, int target2, int targtype, int umode, int cdtype, int res,
 			//check if distance is better or if there's no best yet
 
 			Vec2i supcmpos = potsupb->tilepos * TILE_SIZE + Vec2i(TILE_SIZE,TILE_SIZE)/2;
+
+			
+			//if(amt >0 && res == RES_CEMENT)
+			//	InfoMess("req c", "hreq c");
 
 #if 0
 			//warning: possibility of int overflow on large maps, definitly on 255x255 tiles, using Magnitude()
@@ -435,8 +455,8 @@ void TBid(int target, int target2, int targtype, int umode, int cdtype, int res,
 			subbestsuppos = supcmpos;
 			
 #else
-			int trucktosup = Manhattan(u->cmpos - supcmpos);
-			int suptodem = Manhattan(supcmpos - dempos);
+			int trucktosup = TRANHEUR(u->cmpos - supcmpos);
+			int suptodem = TRANHEUR(supcmpos - dempos);
 
 			int dist = trucktosup + suptodem;
 
@@ -465,6 +485,15 @@ void TBid(int target, int target2, int targtype, int umode, int cdtype, int res,
 				demcmminx, demcmminy, demcmmaxx, demcmmaxy,
 				0, 0, g_pathdim.x-1, g_pathdim.y-1))
 				continue;
+#endif
+
+#if 0
+			if(amt >0 && res == RES_CEMENT)
+			{
+				char msg[128];
+				sprintf(msg, "c hu %d", util);
+				InfoMess("req c", msg);
+			}
 #endif
 
 			jobs.push_back(TransportJob());
@@ -526,8 +555,17 @@ void TBid(int target, int target2, int targtype, int umode, int cdtype, int res,
 
 #ifdef TBID2
 	
-	if(jobs.size() < 0)
+	if(jobs.size() <= 0)
 		return;
+	
+#if 0
+	if(amt >0 && res == RES_CEMENT)
+	{
+		char msg[128];
+		sprintf(msg, "j %d", (int)jobs.size());
+		InfoMess("req c", msg);
+	}
+#endif
 
 	jobs.sort(CompareJobs);
 
@@ -573,7 +611,13 @@ void TBid(int target, int target2, int targtype, int umode, int cdtype, int res,
 			j->supcmpos.x, j->supcmpos.y,
 			j->supcmpos.x, j->supcmpos.y, j->supcmpos.x, j->supcmpos.y,
 			0, 0, g_pathdim.x-1, g_pathdim.y-1))
+		{
+			
+			//if(amt >0 && res == RES_CEMENT)
+			//	InfoMess("bl","bl");
+
 			continue;
+		}
 
 		if(!AnyPath(u->type, umode, 
 			u->cmpos.x, u->cmpos.y, target, target2, targtype, cdtype,
@@ -581,7 +625,13 @@ void TBid(int target, int target2, int targtype, int umode, int cdtype, int res,
 			dempos.x, dempos.y, 
 			demcmminx, demcmminy, demcmmaxx, demcmmaxy,
 			0, 0, g_pathdim.x-1, g_pathdim.y-1))
+		{
+			
+			//if(amt >0 && res == RES_CEMENT)
+			//	InfoMess("bl","bl2");
+
 			continue;
+		}
 #endif
 #else
 		Vec2i subgoal;
@@ -611,6 +661,9 @@ void TBid(int target, int target2, int targtype, int umode, int cdtype, int res,
 		}
 #endif
 
+		//if(amt >0 && res == RES_CEMENT)
+		//	InfoMess("bl","suc");
+
 		u->mode = UMODE_GOSUP;
 		u->goal = j->supcmpos;
 		u->cargoreq = amt;
@@ -621,6 +674,9 @@ void TBid(int target, int target2, int targtype, int umode, int cdtype, int res,
 		u->targtype = targtype;
 		u->cdtype = cdtype;
 		u->supplier = j->supbi;
+		
+		//if(amt >0 && res == RES_CEMENT)
+		//	InfoMess("req c", "req c");
 	
 		if(targtype == TARG_BL)
 		{
@@ -973,6 +1029,9 @@ void ManageTrips()
 				}
 #endif
 
+				//if(netreq >0 && ri == RES_CEMENT)
+				//	InfoMess("req c", "req c");
+
 				TBid(i, -1, TARG_BL, UMODE_GODEMB, -1, ri, netreq);
 			}
 		}
@@ -1026,7 +1085,7 @@ void ManageTrips()
 					g_log.flush();
 #endif
 					int netreq = ctile->netreq(ri, cti);
-					if(netreq <= 0.0f)
+					if(netreq <= 0)
 						continue;
 #ifdef TRUCK_DEBUG
 					g_log<<"road bid 5"<<endl;
@@ -1043,6 +1102,9 @@ void ManageTrips()
 						AddChat(&debugrt);
 					}
 #endif
+					
+					//if(netreq >0 && ri == RES_CEMENT)
+					//	InfoMess("req c", "req c");
 
 					//Chat("bid r");
 					TBid(x, y, TARG_CD, UMODE_GODEMCD, cti, ri, netreq);

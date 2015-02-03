@@ -577,16 +577,24 @@ bool Standable2(const PathJob* pj, int cmposx, int cmposz)
 				}
 			}
 		}
+
+	bool arrived = false;
+
+	if(cmminx < pj->goalmaxx &&
+		cmminz < pj->goalmaxy &&
+		cmmaxx > pj->goalminx &&
+		cmmaxz > pj->goalminy)
+		arrived = true;
 		
 	if(pj->roaded)
 	{
 		CdTile* cdtile = GetCd(CONDUIT_ROAD, cmposx / TILE_SIZE, cmposz / TILE_SIZE, false);
-		if((!cdtile->on || !cdtile->finished) && !ignoredb && !ignoredu)
+		if((!cdtile->on || !cdtile->finished) && !ignoredb && !ignoredu && !arrived)
 		//g_log<<"!road"<<std::endl;
 			return false;
 	}
 
-	if(collided && !ignoredb && !ignoredu)
+	if(collided && !ignoredb && !ignoredu && !arrived)
 		return false;
 
 	return true;
@@ -787,10 +795,18 @@ bool Standable(const PathJob* pj, const int nx, const int nz)
 			}
 		}
 
+	bool arrived = false;
+
+	if(cmminx < pj->goalmaxx &&
+		cmminz < pj->goalmaxy &&
+		cmmaxx > pj->goalminx &&
+		cmmaxz > pj->goalminy)
+		arrived = true;
+
 	if(pj->roaded)
 	{
 		CdTile* cdtile = GetCd(CONDUIT_ROAD, cmposx / TILE_SIZE, cmposz / TILE_SIZE, false);
-		if((!cdtile->on || !cdtile->finished) && !ignoredb && !ignoredu)
+		if((!cdtile->on || !cdtile->finished) && !ignoredb && !ignoredu && !arrived)
 		//g_log<<"!road"<<std::endl;
 				
 #ifdef POWCD_DEBUG
@@ -832,7 +848,7 @@ bool Standable(const PathJob* pj, const int nx, const int nz)
 		return false;
 	}
 
-	if(collided && !ignoredu && !ignoredb)
+	if(collided && !ignoredu && !ignoredb && !arrived)
 		return false;
 
 	return true;

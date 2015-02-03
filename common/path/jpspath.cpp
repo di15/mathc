@@ -118,7 +118,7 @@ void JPSPath(int utype, int umode, int cmstartx, int cmstarty, int target, int t
 	{
 		CdType* ct = &g_cdtype[cdtype];
 		//...and not muck around with cmgoalmin/max
-		CdTile* ctile = GetCd(thisu->cdtype, target, target2, false);
+		CdTile* ctile = GetCd(cdtype, target, target2, false);
 		Vec2i ccmpos = Vec2i(target, target2)*TILE_SIZE + ct->physoff;
 		cmgoalminx = ccmpos.x - TILE_SIZE/2;
 		cmgoalminy = ccmpos.y - TILE_SIZE/2;

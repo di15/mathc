@@ -24,6 +24,7 @@ class PathNode;
 #define PATHHEUR Magnitude
 #define JOBHEUR Manhattan
 #define FUELHEUR Manhattan
+#define TRANHEUR Manhattan	//transport heuristic
 
 //#define HIERDEBUG	//hierarchical pathfinding debug output
 

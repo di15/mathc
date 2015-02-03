@@ -789,5 +789,13 @@ void AfterSel(Selection* s)
 			g_unit[*s->units.begin()].goal.y - g_unit[*s->units.begin()].cmpos.y);
 		InfoMess(msg, msg);
 	}
+	if(s->buildings.size() > 0)
+	{
+		char msg[128];
+		sprintf(msg, "sel %d b \n transporter cement = %d",
+			*s->buildings.begin(),
+			g_building[*s->buildings.begin()].transporter[RES_CEMENT]);
+		InfoMess(msg, msg);
+	}
 #endif
 }

@@ -224,7 +224,7 @@ void Queue()
 	DefU(UNIT_LABOURER, "models/labourer/labourer.ms3d", Vec3f(1,1,1)*182.0f/100.0f, Vec3f(0,0,0)*182.0f/100.0f, Vec3i(50, 150, 50), "Labourer", 100, true, true, false, false, false, 6, false);
 	
 	//DefU(UNIT_TRUCK, "models/truck/truck.ms3d", Vec3f(1,1,1)*30.0f, Vec3f(0,0,0), Vec3i(125, 250, 125), "Truck", 100, true, false, true, false, false, 30, false);
-	DefU(UNIT_TRUCK, "models/truck/truck.ms3d", Vec3f(1,1,1)*30.0f, Vec3f(0,0,0), Vec3i(100, 250, 100), "Truck", 100, true, false, true, false, false, 30, false);
+	DefU(UNIT_TRUCK, "models/truck/truck.ms3d", Vec3f(1,1,1)*50.0f, Vec3f(0,0,0), Vec3i(200, 250, 200), "Truck", 100, true, false, true, false, false, 30, false);
 	UCost(UNIT_TRUCK, RES_PRODUCTION, 1);
 
 	// Foliage types
@@ -451,10 +451,10 @@ void Queue()
 #if 1
 	DefB(BL_FACTORY, "Factory", 
 		Vec2i(1,1),  false, 
-		"models/factory3/factory3", 
-		Vec3f(1,1,1)/2, Vec3f(0,0,0), 
-		"models/factory3/factory3", 
-		Vec3f(1,1,1)/2, Vec3f(0,0,0), 
+		"models/trfac/trfac", 
+		Vec3f(1,1,1), Vec3f(0,0,0), 
+		"models/trfac/trfac", 
+		Vec3f(1,1,1), Vec3f(0,0,0), 
 		FOUNDATION_LAND, RES_NONE, 1000);
 #else
 	DefB(BL_FACTORY, "Factory", 
@@ -718,10 +718,10 @@ void Queue()
 
 #if 1
 	DefB(BL_NUCPOW, "Nuclear Powerplant", 
-		Vec2i(2,2), false, 
-		"models/nucpow2/nucpow2", 
+		Vec2i(1,1), false, 
+		"models/nucpow/nucpow", 
 		Vec3f(1,1,1), Vec3f(0,0,0), 
-		"models/nucpow2/nucpow2", 
+		"models/nucpow/nucpow", 
 		Vec3f(1,1,1), Vec3f(0,0,0), 
 		FOUNDATION_LAND, RES_NONE, 1000);
 #else
@@ -780,11 +780,11 @@ void Queue()
 
 #if 1
 	DefB(BL_STORE, "Store", 
-		Vec2i(2,1), true, 
-		"models/store1/hugterr.ms3d", 
-		Vec3f(100,100,100), Vec3f(0,0,0), 
-		"models/store1/hugterr.ms3d", 
-		Vec3f(100,100,100), Vec3f(0,0,0), 
+		Vec2i(1,1), true, 
+		"models/store2/store2", 
+		Vec3f(1,1,1), Vec3f(0,0,0), 
+		"models/store2/store2", 
+		Vec3f(1,1,1), Vec3f(0,0,0), 
 		FOUNDATION_LAND, RES_NONE, 1000);
 #else
 	DefB(BL_STORE, "Store", 
@@ -811,9 +811,9 @@ void Queue()
 #if 1
 	DefB(BL_OILWELL, "Oil Well", 
 		Vec2i(1,1), false, 
-		"models/oilwell2/oilwell2", 
+		"models/oilwell/oilwell", 
 		Vec3f(1,1,1), Vec3f(0,0,0), 
-		"models/oilwell2/oilwell2", 
+		"models/oilwell/oilwell", 
 		Vec3f(1,1,1), Vec3f(0,0,0), 
 		FOUNDATION_LAND, RES_CRUDEOIL, 1000);
 #else

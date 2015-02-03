@@ -1,5 +1,5 @@
-#ifndef SIM_H
-#define SIM_H
+#ifndef SIMDEF_H
+#define SIMDEF_H
 
 #ifndef MATCHMAKER
 #include "../render/heightmap.h"
