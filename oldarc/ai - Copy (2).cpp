@@ -7,7 +7,6 @@
 #include "../sim/simdef.h"
 #include "../econ/utility.h"
 #include "../sim/unit.h"
-#include "../sim/simflow.h"
 
 //#define AI_FRAMES	CYCLE_FRAMES/30
 //#define AI_FRAMES	CYCLE_FRAMES
@@ -26,7 +25,7 @@ void UpdAI()
 
 		if(!p->ai)
 			continue;
-
+		
 		CalcDem2(p);
 		AdjPr(p);
 	}
@@ -76,7 +75,7 @@ bool Build(Player* p)
 
 		if(!PlaceBAb(btype, Vec2i(g_hmap.m_widthx/2, g_hmap.m_widthz/2), &tpos))
 			continue;
-
+		
 #if 0
 		{
 			char msg[256];
@@ -166,7 +165,7 @@ bool Build(Player* p)
 
 				if(!p2->ai)
 					continue;
-
+		
 				CalcDem2(p2, false);
 				chpr = AdjPr(p2) ? true : chpr;
 			}
@@ -180,7 +179,7 @@ bool Build(Player* p)
 
 				if(!p2->ai)
 					continue;
-
+		
 				CalcDem2(p2, false);
 				chpr = AdjPr(p2) ? true : chpr;
 			}
@@ -280,7 +279,7 @@ bool AdjPr(Building* b)
 			if(requtil < 0)
 			{
 				margpr = rdem->bid.maxbid;
-
+				
 #if 0
 				//if(ri == RES_HOUSING)
 				//if(ri == RES_RETFOOD)
@@ -294,7 +293,7 @@ bool AdjPr(Building* b)
 			else
 			{
 				margpr = r->physical ? InvPhUtilP(requtil, cmdist) : InvGlUtilP(requtil);
-
+				
 #if 0
 				//if(ri == RES_HOUSING)
 				//if(ri == RES_RETFOOD)
@@ -310,10 +309,10 @@ bool AdjPr(Building* b)
 
 				while((r->physical ? PhUtil(margpr, cmdist) : GlUtil(margpr)) < requtil)
 					margpr--;
-
+			
 				if(margpr <= 0)
 					continue;
-
+				
 				//also, need to stay within budget, otherwise this generates wildly large prices
 				if(margpr > rdem->bid.maxbid)
 					margpr = rdem->bid.maxbid;
@@ -414,7 +413,7 @@ bool AdjPr(Building* b)
 			int bi = b - g_building;
 
 			sprintf(msg, "adjpr %s b%d to$%d from$%d", g_resource[ri].name.c_str(), bi, bestprc, b->prodprice[ri]);
-
+			
 			for(int bi=0; bi<BUILDINGS; bi++)
 			{
 				Building* b2 = &g_building[bi];
@@ -484,7 +483,7 @@ void UpdAI(Player* p)
 
 	once = true;
 #endif
-
+	
 #if 0
 	//OpenLog("log.txt", 123);
 	g_log<<"a p "<<(int)(p-g_player)<<std::endl;
@@ -492,7 +491,7 @@ void UpdAI(Player* p)
 #endif
 
 	CalcDem2(p, true);
-
+	
 #if 0
 	//OpenLog("log.txt", 123);
 	g_log<<"b p "<<(int)(p-g_player)<<std::endl;
@@ -501,7 +500,7 @@ void UpdAI(Player* p)
 
 	if(Build(p))
 		return;
-
+	
 #if 0
 	//OpenLog("log.txt", 123);
 	g_log<<"c p "<<(int)(p-g_player)<<std::endl;
@@ -509,7 +508,7 @@ void UpdAI(Player* p)
 #endif
 
 	Manuf(p);
-
+	
 #if 0
 	//OpenLog("log.txt", 123);
 	g_log<<"d p "<<(int)(p-g_player)<<std::endl;
@@ -517,7 +516,7 @@ void UpdAI(Player* p)
 #endif
 
 	AdjPr(p);
-
+	
 #if 0
 	//OpenLog("log.txt", 123);
 	g_log<<"e p "<<(int)(p-g_player)<<std::endl;
