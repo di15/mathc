@@ -15,6 +15,7 @@
 #include "../render/transaction.h"
 #include "unit.h"
 #include "job.h"
+#include "../render/fogofwar.h"
 
 //not engine
 #include "../../game/gui/chattext.h"
@@ -1084,6 +1085,16 @@ void DrawCo(unsigned char ctype)
 
 			if(!ctile->on)
 				continue;
+
+			if(!IsTileVis(g_localP, x, z))
+			{
+				if(!Explored(g_localP, x, z))
+					continue;
+				else
+					glUniform4f(s->m_slot[SSLOT_COLOR], 0.5f, 0.5f, 0.5f, 1.0f);
+			}
+			else
+				glUniform4f(s->m_slot[SSLOT_COLOR], 1.0f, 1.0f, 1.0f, 1.0f);
 
 			const float* owncol = g_player[ctile->owner].color;
 			glUniform4f(s->m_slot[SSLOT_OWNCOLOR], owncol[0], owncol[1], owncol[2], owncol[3]);

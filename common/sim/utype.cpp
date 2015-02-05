@@ -5,7 +5,13 @@
 
 UType g_utype[UNIT_TYPES];
 
-void DefU(int type, const char* modelrelative, Vec3f scale, Vec3f translate, Vec3i size, const char* name, int starthp, bool landborne, bool walker, bool roaded, bool seaborne, bool airborne, int cmspeed, bool military)
+void DefU(
+	int type, 
+	const char* modelrelative, Vec3f scale, Vec3f translate, Vec3i size, 
+	const char* name, int starthp, 
+	bool landborne, bool walker, bool roaded, bool seaborne, bool airborne, 
+	int cmspeed, bool military,
+	int visrange)
 {
 	UType* t = &g_utype[type];
 	QueueModel(&t->model, modelrelative, scale, translate);
@@ -20,6 +26,7 @@ void DefU(int type, const char* modelrelative, Vec3f scale, Vec3f translate, Vec
 	t->airborne = airborne;
 	t->cmspeed = cmspeed;
 	t->military = military;
+	t->visrange = visrange;
 }
 
 void UCost(int type, int res, int amt)

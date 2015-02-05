@@ -31,6 +31,7 @@
 #include "../math/fixmath.h"
 #include "../path/pathnode.h"
 #include "job.h"
+#include "../render/fogofwar.h"
 
 void UpdSBl()
 {
@@ -478,6 +479,8 @@ bool PlaceBl(int type, Vec2i pos, bool finished, int owner, int* bid)
 
 	b->remesh();
 	b->fillcollider();
+	AddVis(b);
+	Explore(b);
 
 	if(g_mode == APPMODE_PLAY)
 	{

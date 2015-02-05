@@ -18,6 +18,7 @@
 #include "../econ/demand.h"
 #include "../math/vec4f.h"
 #include "../path/pathjob.h"
+#include "../render/fogofwar.h"
 
 #ifdef RANDOM8DEBUG
 int thatunit = -1;
@@ -126,6 +127,12 @@ void DrawUnits()
 			continue;
 
 		if(u->hidden())
+			continue;
+
+		int tx = u->cmpos.x / TILE_SIZE;
+		int ty = u->cmpos.y / TILE_SIZE;
+
+		if(!IsTileVis(g_localP, tx, ty))
 			continue;
 
 		UType* t = &g_utype[u->type];
@@ -280,6 +287,8 @@ bool PlaceUnit(int type, Vec2i cmpos, int owner, int *reti)
 	u->cargotype = -1;
 
 	u->fillcollider();
+	AddVis(u);
+	Explore(u);
 
 	return true;
 }
@@ -463,11 +472,14 @@ void ResetMode(Unit* u)
 	if(u->hidden())
 	{
 		u->freecollider();
+		RemVis(u);
 		PlaceUAb(u->type, u->cmpos, &u->cmpos);
 		u->drawpos.x = u->cmpos.x;
 		u->drawpos.z = u->cmpos.y;
 		u->drawpos.y = g_hmap.accheight(u->cmpos.x, u->cmpos.y);
 		u->fillcollider();
+		AddVis(u);
+		Explore(u);
 	}
 #endif
 

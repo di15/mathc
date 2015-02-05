@@ -524,6 +524,12 @@
     <ClCompile Include="..\common\sys\binheap.cpp">
       <Filter>Source Files\common\sys</Filter>
     </ClCompile>
+    <ClCompile Include="..\common\render\compilebl.cpp">
+      <Filter>Source Files\common\render</Filter>
+    </ClCompile>
+    <ClCompile Include="..\common\render\fogofwar.cpp">
+      <Filter>Source Files\common\render</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="gmain.h">
@@ -996,6 +1002,12 @@
     </ClInclude>
     <ClInclude Include="..\common\sys\binheap.h">
       <Filter>Source Files\common\sys</Filter>
+    </ClInclude>
+    <ClInclude Include="..\common\render\compilebl.h">
+      <Filter>Source Files\common\render</Filter>
+    </ClInclude>
+    <ClInclude Include="..\common\render\fogofwar.h">
+      <Filter>Source Files\common\render</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

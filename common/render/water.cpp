@@ -8,6 +8,7 @@
 #include "../sim/player.h"
 #include "shadow.h"
 #include "../debug.h"
+#include "fogofwar.h"
 
 unsigned int g_water;
 unsigned int g_watertex[WATER_TEXS];
@@ -164,6 +165,23 @@ void DrawWater3()
 	//glPolygonOffset(1.0, 250.0);
 #endif
 
+	for(int x=0; x<g_hmap.m_widthx; x++)
+		for(int z=0; z<g_hmap.m_widthy; z++)
+		{
+			if(!IsTileVis(g_localP, x, z))
+				continue;
+
+			//glVertexAttribPointer(s->m_slot[SSLOT_POSITION], 3, GL_FLOAT, GL_FALSE, 0, &g_waterverts[ (z * g_hmap.m_widthx + x) * 3 * 2 + 0 ]);
+			//glVertexAttribPointer(s->m_slot[SSLOT_TEXCOORD0], 2, GL_FLOAT, GL_FALSE, 0, &g_watertexcos[ (z * g_hmap.m_widthx + x) * 3 * 2 + 0 ]);
+			//glVertexAttribPointer(s->m_slot[SSLOT_NORMAL], 3, GL_FLOAT, GL_FALSE, 0, &g_waternorms[ (z * g_hmap.m_widthx + x) * 3 * 2 + 0 ]);
+			glVertexPointer(3, GL_FLOAT, 0, &g_waterverts[ (z * g_hmap.m_widthx + x) * 3 * 2 + 0 ]);
+			glTexCoordPointer(2, GL_FLOAT, 0, &g_watertexcos[ (z * g_hmap.m_widthx + x) * 3 * 2 + 0 ]);
+			glNormalPointer(GL_FLOAT, 0, &g_waternorms[ (z * g_hmap.m_widthx + x) * 3 * 2 + 0 ]);
+
+			glDrawArrays(GL_TRIANGLES, 0, 6);
+		}
+
+#if 0
 	//glVertexAttribPointer(s->m_slot[SSLOT_POSITION], 3, GL_FLOAT, GL_FALSE, 0, g_waterverts);
 	glVertexPointer(3, GL_FLOAT, 0, g_waterverts);
 	//glVertexAttribPointer(s->m_slot[SSLOT_TEXCOORD0], 2, GL_FLOAT, GL_FALSE, 0, g_watertexcos);
@@ -172,6 +190,7 @@ void DrawWater3()
 	glNormalPointer(GL_FLOAT, 0, g_waternorms);
 
 	glDrawArrays(GL_TRIANGLES, 0, g_hmap.m_widthx * g_hmap.m_widthy * 6 );
+#endif
 
 #if 0
 	glDisable(GL_POLYGON_OFFSET_FILL);
@@ -383,6 +402,7 @@ void DrawWater2()
 
 	CheckGLError(__FILE__, __LINE__);
 
+#if 0
 	a = Vec3f(wx * TILE_SIZE, WATER_LEVEL, wy * TILE_SIZE);
 	b = Vec3f(0, WATER_LEVEL, wy * TILE_SIZE);
 	c = Vec3f(0, WATER_LEVEL, 0);
@@ -418,6 +438,8 @@ void DrawWater2()
 		0, 1, 0
 	};
 
+#endif
+
 	Player* py = &g_player[g_localP];
 
 	glEnable(GL_POLYGON_OFFSET_FILL);
@@ -427,6 +449,7 @@ void DrawWater2()
 
 	CheckGLError(__FILE__, __LINE__);
 
+#if 0
 	//glVertexAttribPointer(s->m_slot[SSLOT_POSITION], 3, GL_FLOAT, GL_FALSE, 0, vertices);
 	glVertexPointer(3, GL_FLOAT, 0, vertices);
 	CheckGLError(__FILE__, __LINE__);
@@ -439,6 +462,23 @@ void DrawWater2()
 
 	glDrawArrays(GL_TRIANGLES, 0, 6);
 	CheckGLError(__FILE__, __LINE__);
+#endif
+
+	for(int x=0; x<g_hmap.m_widthx; x++)
+		for(int z=0; z<g_hmap.m_widthy; z++)
+		{
+			if(!IsTileVis(g_localP, x, z))
+				continue;
+			
+			//glVertexAttribPointer(s->m_slot[SSLOT_POSITION], 3, GL_FLOAT, GL_FALSE, 0, &g_waterverts[ (z * g_hmap.m_widthx + x) * 3 * 2 + 0 ]);
+			//glVertexAttribPointer(s->m_slot[SSLOT_TEXCOORD0], 2, GL_FLOAT, GL_FALSE, 0, &g_watertexcos[ (z * g_hmap.m_widthx + x) * 3 * 2 + 0 ]);
+			//glVertexAttribPointer(s->m_slot[SSLOT_NORMAL], 3, GL_FLOAT, GL_FALSE, 0, &g_waternorms[ (z * g_hmap.m_widthx + x) * 3 * 2 + 0 ]);
+			glVertexPointer(3, GL_FLOAT, 0, &g_waterverts[ (z * g_hmap.m_widthx + x) * 3 * 2 + 0 ]);
+			glTexCoordPointer(2, GL_FLOAT, 0, &g_watertexcos[ (z * g_hmap.m_widthx + x) * 3 * 2 + 0 ]);
+			glNormalPointer(GL_FLOAT, 0, &g_waternorms[ (z * g_hmap.m_widthx + x) * 3 * 2 + 0 ]);
+
+			glDrawArrays(GL_TRIANGLES, 0, 6);
+		}
 
 	glDisable(GL_POLYGON_OFFSET_FILL);
 	CheckGLError(__FILE__, __LINE__);

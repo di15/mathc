@@ -59,6 +59,12 @@ inline int imin(const int a, const int b)
 	return (((a)<(b))?(a):(b));
 }
 
+inline int iabs(int x)
+{
+	//return x & INT_MAX;
+	return x & 0x7FFFFFFF;
+}
+
 //deterministic ceil
 inline int iceil(const int num, const int denom)
 {

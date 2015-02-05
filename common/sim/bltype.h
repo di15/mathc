@@ -48,6 +48,8 @@ public:
 	short sound[BL_SOUNDS];
 	int maxhp;
 
+	int visrange;
+
 	BlType();
 };
 
@@ -93,7 +95,8 @@ void DefB(int type,
 		  Vec3f ctranslate, 
 		  int foundation, 
 		  int reqdeposit,
-		  int maxhp);
+		  int maxhp,
+		  int visrange);
 void BMat(int type, int res, int amt);
 void BIn(int type, int res, int amt);
 void BOut(int type, int res, int amt);

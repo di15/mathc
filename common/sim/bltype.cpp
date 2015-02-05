@@ -20,7 +20,8 @@ void DefB(int type,
 		  Vec3f ctranslate, 
 		  int foundation, 
 		  int reqdeposit,
-		  int maxhp)
+		  int maxhp,
+		  int visrange)
 {
 	BlType* t = &g_bltype[type];
 	t->widthx = size.x;
@@ -30,6 +31,7 @@ void DefB(int type,
 	QueueModel(&t->cmodel, cmodelrelative, cscale, ctranslate);
 	t->foundation = foundation;
 	t->hugterr = hugterr;
+	t->visrange = visrange;
 
 	Zero(t->input);
 	Zero(t->output);

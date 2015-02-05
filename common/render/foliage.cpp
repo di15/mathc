@@ -17,6 +17,7 @@
 #include "../math/hmapmath.h"
 #include "../sim/simflow.h"
 #include "../path/fillbodies.h"
+#include "fogofwar.h"
 
 FlType g_fltype[FL_TYPES];
 Foliage g_foliage[FOLIAGES];
@@ -192,13 +193,33 @@ void DrawFol(Vec3f zoompos, Vec3f vertical, Vec3f horizontal)
 		if(!f->on)
 			continue;
 #endif
+		
+		t = &g_fltype[f->type];
+		size = &t->size;
 
 		Vec3f vmin(f->drawpos.x - t->size.x/2, f->drawpos.y, f->drawpos.z - t->size.x/2);
 		Vec3f vmax(f->drawpos.x + t->size.x/2, f->drawpos.y + t->size.y, f->drawpos.z + t->size.x/2);
 
 		if(!g_frustum.boxin2(vmin.x, vmin.y, vmin.z, vmax.x, vmax.y, vmax.z))
 			continue;
-	
+		
+		int tx = f->cmpos.x / TILE_SIZE;
+		int ty = f->cmpos.y / TILE_SIZE;
+		
+		if(!IsTileVis(g_localP, tx, ty))
+		{
+			if(!Explored(g_localP, tx, ty))
+				continue;
+			else
+				glUniform4f(s->m_slot[SSLOT_COLOR], 0.5f, 0.5f, 0.5f, 1.0f);
+		}
+		else
+			glUniform4f(s->m_slot[SSLOT_COLOR], 1.0f, 1.0f, 1.0f, 1.0f);
+		
+		m = &g_model[t->model];
+		va = &m->m_va[0];
+		m->usetex();
+
 		if(Magnitude2( f->drawpos - zoompos ) > 8000*8000*2*2)
 		//if(false)
 		{
@@ -466,8 +487,9 @@ void FillForest()
 					PlaceUnit(type, Vec3i(x, y, z), -1, -1);
 #endif
 #if 1
-
-					int type = FL_TREE1;
+					
+					//int type = FL_TREE1;
+					int type = rand()%FL_TYPES;
 
 					if(PlaceFol(type, Vec3i(x, y, z)))
 						break;

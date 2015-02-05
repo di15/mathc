@@ -22,6 +22,8 @@
 #include "../path/pathjob.h"
 #include "../path/anypath.h"
 #include "../path/fillbodies.h"
+#include "../math/frustum.h"
+#include "../render/fogofwar.h"
 
 //not engine
 #include "../../game/gui/chattext.h"
@@ -690,7 +692,9 @@ void TBid(int target, int target2, int targtype, int umode, int cdtype, int res,
 		}
 
 		NewJob(UMODE_GODRIVE, j->truckui, -1, CONDUIT_NONE);
-		PlaySound(g_trsnd[TRSND_NEWJOB]);
+		if(g_frustum.pointin(u->drawpos.x, u->drawpos.y, u->drawpos.z) && 
+			IsTileVis(g_localP, u->cmpos.x/TILE_SIZE, u->cmpos.y/TILE_SIZE))
+			PlaySound(g_trsnd[TRSND_NEWJOB]);
 
 		//InfoMess("fj", "fj");
 

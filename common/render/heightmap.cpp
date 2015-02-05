@@ -26,6 +26,7 @@
 #include "water.h"
 #include "../sim/player.h"
 #include "../debug.h"
+#include "fogofwar.h"
 
 unsigned int g_tiletexs[TILE_TYPES];
 Vec2i g_mapview[2];
@@ -46,6 +47,7 @@ void AllocGrid(int wx, int wy)
 	if( !(g_cdtype[CONDUIT_POWL].cdtiles[1] = new CdTile [ (wx * wy) ]) ) OutOfMem(__FILE__, __LINE__);
 	if( !(g_cdtype[CONDUIT_CRPIPE].cdtiles[0] = new CdTile [ (wx * wy) ]) ) OutOfMem(__FILE__, __LINE__);
 	if( !(g_cdtype[CONDUIT_CRPIPE].cdtiles[1] = new CdTile [ (wx * wy) ]) ) OutOfMem(__FILE__, __LINE__);
+	if( !(g_vistile = new VisTile[ (wx*wy) ]) ) OutOfMem(__FILE__, __LINE__);
 }
 
 /*
@@ -114,6 +116,12 @@ void FreeGrid()
 			delete [] actual;
 			actual = NULL;
 		}
+	}
+
+	if(g_vistile)
+	{
+		delete [] g_vistile;
+		g_vistile = NULL;
 	}
 }
 
@@ -1399,18 +1407,30 @@ void Heightmap::draw()
 	Inverse2(modelview, modelviewinv);
 	//Transpose(modelviewinv, modelviewinv);
 	glUniformMatrix4fv(s->m_slot[SSLOT_NORMALMAT], 1, 0, modelviewinv.m_matrix);
-
-	/*
+	
 	for(int x=0; x<m_widthx; x++)
 		for(int z=0; z<m_widthy; z++)
 		{
-			glVertexAttribPointer(s->m_slot[SSLOT_POSITION], 3, GL_FLOAT, GL_FALSE, 0, &m_drawverts[ (z * m_widthx + x) * 3 * 2 + 0 ]);
-			glVertexAttribPointer(s->m_slot[SSLOT_TEXCOORD0], 2, GL_FLOAT, GL_FALSE, 0, &m_texcoords0[ (z * m_widthx + x) * 3 * 2 + 0 ]);
-			glVertexAttribPointer(s->m_slot[SSLOT_NORMAL], 3, GL_FLOAT, GL_FALSE, 0, &m_normals[ (z * m_widthx + x) * 3 * 2 + 0 ]);
+			if(!IsTileVis(g_localP, x, z))
+			{
+				if(!Explored(g_localP, x, z))
+					continue;
+				else
+					glUniform4f(s->m_slot[SSLOT_COLOR], 0.5f, 0.5f, 0.5f, 1.0f);
+			}
+			else
+				glUniform4f(s->m_slot[SSLOT_COLOR], 1.0f, 1.0f, 1.0f, 1.0f);
+			
+			//glVertexAttribPointer(s->m_slot[SSLOT_POSITION], 3, GL_FLOAT, GL_FALSE, 0, &m_drawverts[ (z * m_widthx + x) * 3 * 2 + 0 ]);
+			//glVertexAttribPointer(s->m_slot[SSLOT_TEXCOORD0], 2, GL_FLOAT, GL_FALSE, 0, &m_texcoords0[ (z * m_widthx + x) * 3 * 2 + 0 ]);
+			//glVertexAttribPointer(s->m_slot[SSLOT_NORMAL], 3, GL_FLOAT, GL_FALSE, 0, &m_normals[ (z * m_widthx + x) * 3 * 2 + 0 ]);
+			glVertexPointer(3, GL_FLOAT, 0, &m_drawverts[ (z * m_widthx + x) * 3 * 2 + 0 ]);
+			glTexCoordPointer(2, GL_FLOAT, 0, &m_texcoords0[ (z * m_widthx + x) * 3 * 2 + 0 ]);
+			glNormalPointer(GL_FLOAT, 0, &m_normals[ (z * m_widthx + x) * 3 * 2 + 0 ]);
 
 			glDrawArrays(GL_TRIANGLES, 0, 6);
 		}
-		*/
+	
 #if 0
 	// Draw all tiles
 	glVertexAttribPointer(s->m_slot[SSLOT_POSITION], 3, GL_FLOAT, GL_FALSE, 0, m_drawverts);
@@ -1418,8 +1438,8 @@ void Heightmap::draw()
 	glVertexAttribPointer(s->m_slot[SSLOT_NORMAL], 3, GL_FLOAT, GL_FALSE, 0, m_normals);
 	glDrawArrays(GL_TRIANGLES, 0, (m_widthx) * (m_widthy) * 3 * 2);
 
-#elif 1
-
+#elif 0
+	//correct one
 	glBindBuffer(GL_ARRAY_BUFFER, m_vbo[VBO_POSITION]);
 	//glVertexAttribPointer(s->m_slot[SSLOT_POSITION], 3, GL_FLOAT, GL_FALSE, 0, 0);
 	glVertexPointer(3, GL_FLOAT, 0, 0);
@@ -1431,7 +1451,7 @@ void Heightmap::draw()
 	glNormalPointer(GL_FLOAT, 0, 0);
 	glDrawArrays(GL_TRIANGLES, 0, (m_widthx) * (m_widthy) * 3 * 2);
 
-#else
+elif 0
 	int tilescale = m_tilescale;
 
 	// Draw only visible tiles in strips
@@ -1544,17 +1564,29 @@ void Heightmap::draw2()
 	CheckGLError(__FILE__, __LINE__);
 
 
-	/*
+	
 	for(int x=0; x<m_widthx; x++)
 		for(int z=0; z<m_widthy; z++)
 		{
-			glVertexAttribPointer(s->m_slot[SSLOT_POSITION], 3, GL_FLOAT, GL_FALSE, 0, &m_drawverts[ (z * m_widthx + x) * 3 * 2 + 0 ]);
-			glVertexAttribPointer(s->m_slot[SSLOT_TEXCOORD0], 2, GL_FLOAT, GL_FALSE, 0, &m_texcoords0[ (z * m_widthx + x) * 3 * 2 + 0 ]);
-			glVertexAttribPointer(s->m_slot[SSLOT_NORMAL], 3, GL_FLOAT, GL_FALSE, 0, &m_normals[ (z * m_widthx + x) * 3 * 2 + 0 ]);
+			if(!IsTileVis(g_localP, x, z))
+			{
+				if(!Explored(g_localP, x, z))
+					continue;
+				else
+					glUniform4f(s->m_slot[SSLOT_COLOR], 0.5f, 0.5f, 0.5f, 1.0f);
+			}
+			else
+				glUniform4f(s->m_slot[SSLOT_COLOR], 1.0f, 1.0f, 1.0f, 1.0f);
+
+			//glVertexAttribPointer(s->m_slot[SSLOT_POSITION], 3, GL_FLOAT, GL_FALSE, 0, &m_drawverts[ (z * m_widthx + x) * 3 * 2 + 0 ]);
+			//glVertexAttribPointer(s->m_slot[SSLOT_TEXCOORD0], 2, GL_FLOAT, GL_FALSE, 0, &m_texcoords0[ (z * m_widthx + x) * 3 * 2 + 0 ]);
+			//glVertexAttribPointer(s->m_slot[SSLOT_NORMAL], 3, GL_FLOAT, GL_FALSE, 0, &m_normals[ (z * m_widthx + x) * 3 * 2 + 0 ]);
+			glVertexPointer(3, GL_FLOAT, 0, &m_drawverts[ (z * m_widthx + x) * 3 * 2 + 0 ]);
+			glTexCoordPointer(2, GL_FLOAT, 0, &m_texcoords0[ (z * m_widthx + x) * 3 * 2 + 0 ]);
+			glNormalPointer(GL_FLOAT, 0, &m_normals[ (z * m_widthx + x) * 3 * 2 + 0 ]);
 
 			glDrawArrays(GL_TRIANGLES, 0, 6);
 		}
-		*/
 
 #if 0
 	// Draw all tiles
@@ -1575,7 +1607,7 @@ void Heightmap::draw2()
 
 	CheckGLError(__FILE__, __LINE__);
 
-#elif 1
+#elif 0
 
 	glBindBuffer(GL_ARRAY_BUFFER, m_fullvbo[VBO_POSITION]);
 	//glVertexAttribPointer(s->m_slot[SSLOT_POSITION], 3, GL_FLOAT, GL_FALSE, 0, 0);
@@ -1587,7 +1619,7 @@ void Heightmap::draw2()
 	//glVertexAttribPointer(s->m_slot[SSLOT_NORMAL], 3, GL_FLOAT, GL_FALSE, 0, 0);
 	glNormalPointer(GL_FLOAT, 0, 0);
 	glDrawArrays(GL_TRIANGLES, 0, (m_widthx) * (m_widthy) * 3 * 2);
-#else
+elif 0
 	int tilescale = m_tilescale;
 
 	// Draw only visible tiles in strips

@@ -30,6 +30,7 @@
 #include "../render/graph.h"
 #include "../path/fillbodies.h"
 #include "../path/tilepath.h"
+#include "../render/fogofwar.h"
 
 float ConvertHeight(unsigned char brightness)
 {

@@ -30,6 +30,7 @@
 #include "simflow.h"
 #include "../econ/utility.h"
 #include "job.h"
+#include "../render/fogofwar.h"
 
 //not engine
 #include "../../game/gui/chattext.h"
@@ -58,6 +59,8 @@ void Building::destroy()
 		{
 			u->cmpos = cmplace;
 			u->fillcollider();
+			AddVis(u);
+			Explore(u);
 			u->drawpos.x = (float)u->cmpos.x;
 			u->drawpos.z = (float)u->cmpos.y;
 			u->drawpos.y = g_hmap.accheight(u->cmpos.x, u->cmpos.y);
@@ -99,6 +102,8 @@ void Building::destroy()
 	}
 
 	capsup.clear();
+
+	RemVis(this);
 
 	on = false;
 }
@@ -1113,7 +1118,10 @@ bool Building::tryprod()
 		)
 	{
 		NewTransx(drawpos, &transx);
-		PlaySound(bt->sound[BLSND_PROD]);
+
+		if(g_frustum.pointin(drawpos.x, drawpos.y, drawpos.z) && 
+			IsTileVis(g_localP, tilepos.x, tilepos.y))
+			PlaySound(bt->sound[BLSND_PROD]);
 	}
 
 	//TO DO: capacity resources like electricity have to be handled completely differently
@@ -1279,7 +1287,9 @@ bool Building::checkconstruction()
 	if(finished)
 	{
 		NewJob(UMODE_GOBLJOB, (int)(this-g_building), -1, CONDUIT_NONE);
-		PlaySound(t->sound[BLSND_FINI]);
+		if(g_frustum.pointin(drawpos.x, drawpos.y, drawpos.z) && 
+			IsTileVis(g_localP, tilepos.x, tilepos.y))
+			PlaySound(t->sound[BLSND_FINI]);
 		hp = t->maxhp;
 
 		Vec2i tmin;
@@ -1296,6 +1306,8 @@ bool Building::checkconstruction()
 		int cmmaxy = cmminy + t->widthy*TILE_SIZE - 1;
 
 		ClearFol(cmminx, cmminy, cmmaxx, cmmaxy);
+
+		//AddVis(this);
 	}
 
 	return finished;
@@ -1322,6 +1334,19 @@ void DrawBl()
 
 		if(!g_frustum.boxin2(vmin.x, vmin.y, vmin.z, vmax.x, vmax.y, vmax.z))
 			continue;
+
+		int tx = b->tilepos.x;
+		int ty = b->tilepos.y;
+
+		if(!IsTileVis(g_localP, tx, ty))
+		{
+			if(!Explored(g_localP, tx, ty))
+				continue;
+			else
+				glUniform4f(s->m_slot[SSLOT_COLOR], 0.5f, 0.5f, 0.5f, 1.0f);
+		}
+		else
+			glUniform4f(s->m_slot[SSLOT_COLOR], 1.0f, 1.0f, 1.0f, 1.0f);
 
 		if(!b->finished)
 			m = &g_model[ t->cmodel ];

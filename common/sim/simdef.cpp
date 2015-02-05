@@ -214,17 +214,33 @@ void Queue()
 
 	// Unit types
 
-	DefU(UNIT_BATTLECOMP, "models/battlecomp2011simp/battlecomp.ms3d", Vec3f(1,1,1)*182.0f/72.0f, Vec3f(0,0,0)*182.0f/72.0f, Vec3i(125, 250, 125), "Droid", 100, true, true, false, false, false, 6, true);
+	DefU(UNIT_BATTLECOMP, 
+		"models/battlecomp2011simp/battlecomp.ms3d", Vec3f(1,1,1)*182.0f/72.0f, Vec3f(0,0,0)*182.0f/72.0f, Vec3i(125, 250, 125), 
+		"Droid", 100, 
+		true, true, false, false, false, 6, 
+		true, 4*TILE_SIZE);
 	UCost(UNIT_BATTLECOMP, RES_PRODUCTION, 10);
 	
-	DefU(UNIT_CARLYLE, "models/carlyle/carlyle.ms3d", Vec3f(1,1,1)*220.0f/72.0f, Vec3f(0,0,0)*182.0f/72.0f, Vec3i(250, 250, 250), "Tank", 100, true, true, false, false, false, 16, true);
+	DefU(UNIT_CARLYLE, 
+		"models/carlyle/carlyle.ms3d", Vec3f(1,1,1)*220.0f/72.0f, Vec3f(0,0,0)*182.0f/72.0f, Vec3i(250, 250, 250), 
+		"Tank", 100, 
+		true, true, false, false, false, 16, 
+		true, 4*TILE_SIZE);
 	UCost(UNIT_CARLYLE, RES_PRODUCTION, 15);
 	
 	//DefU(UNIT_LABOURER, "models/labourer/labourer.ms3d", Vec3f(1,1,1)*182.0f/100.0f, Vec3f(0,0,0)*182.0f/100.0f, Vec3i(125, 250, 125), "Labourer", 100, true, true, false, false, false, 6, false);
-	DefU(UNIT_LABOURER, "models/labourer/labourer.ms3d", Vec3f(1,1,1)*182.0f/100.0f, Vec3f(0,0,0)*182.0f/100.0f, Vec3i(50, 150, 50), "Labourer", 100, true, true, false, false, false, 6, false);
+	DefU(UNIT_LABOURER, 
+		"models/labourer/labourer.ms3d", Vec3f(1,1,1)*182.0f/100.0f, Vec3f(0,0,0)*182.0f/100.0f, Vec3i(50, 150, 50), 
+		"Labourer", 100, 
+		true, true, false, false, false, 6, 
+		false, 4*TILE_SIZE);
 	
 	//DefU(UNIT_TRUCK, "models/truck/truck.ms3d", Vec3f(1,1,1)*30.0f, Vec3f(0,0,0), Vec3i(125, 250, 125), "Truck", 100, true, false, true, false, false, 30, false);
-	DefU(UNIT_TRUCK, "models/truck/truck.ms3d", Vec3f(1,1,1)*50.0f, Vec3f(0,0,0), Vec3i(200, 250, 200), "Truck", 100, true, false, true, false, false, 30, false);
+	DefU(UNIT_TRUCK, 
+		"models/truck/truck.ms3d", Vec3f(1,1,1)*50.0f, Vec3f(0,0,0), Vec3i(200, 250, 200), 
+		"Truck", 100, 
+		true, false, true, false, false, 30, 
+		false, 4*TILE_SIZE);
 	UCost(UNIT_TRUCK, RES_PRODUCTION, 1);
 
 	// Foliage types
@@ -235,8 +251,8 @@ void Queue()
 	DefF(FL_TREE3, "models/pine/pine.ms3d", Vec3f(200,200,200), Vec3f(0,0,0), Vec3i(40, 60, 500)*20);
 #elif 1
 	DefF(FL_TREE1, "models/spruce1/spruce1.ms3d", Vec3f(20,20,20), Vec3f(0,0,0), Vec3i(125, 200, 125)*3);
-	DefF(FL_TREE2, "models/spruce1/spruce1.ms3d", Vec3f(20,20,20), Vec3f(0,0,0), Vec3i(125, 200, 125)*3);
-	DefF(FL_TREE3, "models/spruce1/spruce1.ms3d", Vec3f(20,20,20), Vec3f(0,0,0), Vec3i(125, 200, 125)*3);
+	DefF(FL_TREE2, "models/spruce2/spruce1.ms3d", Vec3f(20,20,20), Vec3f(0,0,0), Vec3i(125, 200, 125)*3);
+	DefF(FL_TREE3, "models/spruce3/spruce1.ms3d", Vec3f(20,20,20), Vec3f(0,0,0), Vec3i(125, 200, 125)*3);
 #elif 1
 	DefF(FL_TREE1, "models/trees/tree1/tree1.ms3d", Vec3f(20,20,20)*8, Vec3f(0,0,0), Vec3i(40, 60, 500)*20);
 	DefF(FL_TREE2, "models/trees/tree2/tree2.ms3d", Vec3f(20,20,20)*8, Vec3f(0,0,0), Vec3i(40, 60, 500)*20);
@@ -423,7 +439,7 @@ void Queue()
 		Vec3f(1,1,1), Vec3f(0,0,0), 
 		"models/apartment2/b1911", 
 		Vec3f(1,1,1), Vec3f(0,0,0), 
-		FOUNDATION_LAND, RES_NONE, 1000);
+		FOUNDATION_LAND, RES_NONE, 1000, 5*TILE_SIZE);
 #elif 1
 	DefB(BL_HOUSE, "House", 
 		Vec2i(1,1),  false, 
@@ -431,7 +447,7 @@ void Queue()
 		Vec3f(1,1,1), Vec3f(0,0,0), 
 		"models/naping1/naping1", 
 		Vec3f(1,1,1), Vec3f(0,0,0), 
-		FOUNDATION_LAND, RES_NONE, 1000);
+		FOUNDATION_LAND, RES_NONE, 1000, 5*TILE_SIZE);
 #else
 	DefB(BL_HOUSE, "Apartments", 
 		Vec2i(2,2),  false, 
@@ -439,7 +455,7 @@ void Queue()
 		Vec3f(1,1,1)*200, Vec3f(0,0,0), 
 		"models/box/apartment_c/basebuilding.ms3d", 
 		Vec3f(1,1,1)*200, Vec3f(0,0,0), 
-		FOUNDATION_LAND, RES_NONE, 1000);
+		FOUNDATION_LAND, RES_NONE, 1000, 5*TILE_SIZE);
 #endif
 	BMat(BL_HOUSE, RES_CEMENT, 4);
 	BMat(BL_HOUSE, RES_LABOUR, 4);
@@ -455,7 +471,7 @@ void Queue()
 		Vec3f(1,1,1), Vec3f(0,0,0), 
 		"models/trfac/trfac", 
 		Vec3f(1,1,1), Vec3f(0,0,0), 
-		FOUNDATION_LAND, RES_NONE, 1000);
+		FOUNDATION_LAND, RES_NONE, 1000, 5*TILE_SIZE);
 #else
 	DefB(BL_FACTORY, "Factory", 
 		Vec2i(1,1),  false, 
@@ -463,7 +479,7 @@ void Queue()
 		Vec3f(1,1,1)/200, Vec3f(0,0,0), 
 		"models/box/factory_c/basebuilding.ms3d", 
 		Vec3f(1,1,1)/200, Vec3f(0,0,0), 
-		FOUNDATION_LAND, RES_NONE, 1000);
+		FOUNDATION_LAND, RES_NONE, 1000, 5*TILE_SIZE);
 #endif
 	BMat(BL_FACTORY, RES_LABOUR, 4);
 	BMat(BL_FACTORY, RES_METAL, 2);
@@ -488,7 +504,7 @@ void Queue()
 		Vec3f(1,1,1), Vec3f(0,0,0), 
 		"models/refinery2/refinery2", 
 		Vec3f(1,1,1), Vec3f(0,0,0), 
-		FOUNDATION_LAND, RES_NONE, 1000);
+		FOUNDATION_LAND, RES_NONE, 1000, 5*TILE_SIZE);
 #elif 1
 	DefB(BL_REFINERY, "Oil Refinery", 
 		Vec2i(1,1),  false, 
@@ -496,7 +512,7 @@ void Queue()
 		Vec3f(1,1,1), Vec3f(0,0,0), 
 		"models/oilref/oilref", 
 		Vec3f(1,1,1), Vec3f(0,0,0), 
-		FOUNDATION_LAND, RES_NONE, 1000);
+		FOUNDATION_LAND, RES_NONE, 1000, 5*TILE_SIZE);
 #elif 0
 	DefB(BL_REFINERY, "Oil Refinery", 
 		Vec2i(2,2),  false, 
@@ -504,7 +520,7 @@ void Queue()
 		Vec3f(1,1,1)*200, Vec3f(0,0,0), 
 		"models/box/refinery_c/basebuilding.ms3d", 
 		Vec3f(1,1,1)*200, Vec3f(0,0,0), 
-		FOUNDATION_LAND, RES_NONE, 1000);
+		FOUNDATION_LAND, RES_NONE, 1000, 5*TILE_SIZE);
 #endif
 	BMat(BL_REFINERY, RES_CEMENT, 5);
 	BMat(BL_REFINERY, RES_LABOUR, 10);
@@ -524,7 +540,7 @@ void Queue()
 	DefB(BL_REFINERY, "Gas Station", 
 		Vec2i(2,2),  false, "models/refinery2/refinery2", 
 		Vec3f(1,1,1), Vec3f(0,0,0), "models/refinery2/refinery2", 
-		Vec3f(1,1,1), Vec3f(0,0,0), FOUNDATION_LAND, RES_NONE, 1000);
+		Vec3f(1,1,1), Vec3f(0,0,0), FOUNDATION_LAND, RES_NONE, 1000, 5*TILE_SIZE);
 	BMat(BL_REFINERY, RES_CEMENT, 5);
 	BMat(BL_REFINERY, RES_LABOUR, 10);
 	BIn(BL_REFINERY, RES_ENERGY, 50);
@@ -540,7 +556,7 @@ void Queue()
 		Vec3f(1,1,1)/32.0f*TILE_SIZE*2, Vec3f(0,0,0), 
 		"models/coalpow/combustor.ms3d", 
 		Vec3f(1,1,1)/32.0f*TILE_SIZE*2, Vec3f(0,0,0), 
-		FOUNDATION_LAND, RES_NONE, 1000);
+		FOUNDATION_LAND, RES_NONE, 1000, 5*TILE_SIZE);
 #else
 	DefB(BL_COALPOW, "Coal Powerplant", 
 		Vec2i(2,2), false, 
@@ -548,7 +564,7 @@ void Queue()
 		Vec3f(1,1,1)*200, Vec3f(0,0,0), 
 		"models/box/coalpow_c/basebuilding.ms3d", 
 		Vec3f(1,1,1)*200, Vec3f(0,0,0), 
-		FOUNDATION_LAND, RES_NONE, 1000);
+		FOUNDATION_LAND, RES_NONE, 1000, 5*TILE_SIZE);
 #endif
 	BMat(BL_COALPOW, RES_CEMENT, 5);
 	BMat(BL_COALPOW, RES_LABOUR, 10);
@@ -570,7 +586,7 @@ void Queue()
 		Vec3f(1,1,1)/32.0f*TILE_SIZE*2, Vec3f(0,0,0), 
 		"models/chemplant/chemplant.ms3d", 
 		Vec3f(1,1,1)/32.0f*TILE_SIZE*2, Vec3f(0,0,0), 
-		FOUNDATION_LAND, RES_NONE, 1000);
+		FOUNDATION_LAND, RES_NONE, 1000, 5*TILE_SIZE);
 #elif 1
 	DefB(BL_CHEMPLANT, "Chemical Plant", 
 		Vec2i(1,1), false, 
@@ -578,7 +594,7 @@ void Queue()
 		Vec3f(1,1,1), Vec3f(0,0,0), 
 		"models/chempl/chempl", 
 		Vec3f(1,1,1), Vec3f(0,0,0), 
-		FOUNDATION_LAND, RES_NONE, 1000);
+		FOUNDATION_LAND, RES_NONE, 1000, 5*TILE_SIZE);
 #else
 	DefB(BL_CHEMPLANT, "Chemical Plant", 
 		Vec2i(2,2), false, 
@@ -586,7 +602,7 @@ void Queue()
 		Vec3f(1,1,1)*200, Vec3f(0,0,0), 
 		"models/box/chemplant_c/basebuilding.ms3d", 
 		Vec3f(1,1,1)*200, Vec3f(0,0,0), 
-		FOUNDATION_LAND, RES_NONE, 1000);
+		FOUNDATION_LAND, RES_NONE, 1000, 5*TILE_SIZE);
 #endif
 	BMat(BL_CHEMPLANT, RES_CEMENT, 5);
 	BMat(BL_CHEMPLANT, RES_LABOUR, 10);
@@ -605,7 +621,7 @@ void Queue()
 		Vec3f(1,1,1)/32.0f*TILE_SIZE*2, Vec3f(0,0,0), 
 		"models/elecplant/elecplant.ms3d", 
 		Vec3f(1,1,1)/32.0f*TILE_SIZE*2, Vec3f(0,0,0), 
-		FOUNDATION_LAND, RES_NONE, 1000);
+		FOUNDATION_LAND, RES_NONE, 1000, 5*TILE_SIZE);
 #else
 	DefB(BL_ELECPLANT, "Electronics Plant", 
 		Vec2i(2,2), false, 
@@ -613,7 +629,7 @@ void Queue()
 		Vec3f(1,1,1)*200, Vec3f(0,0,0), 
 		"models/box/elecplant_c/basebuilding.ms3d", 
 		Vec3f(1,1,1)*200, Vec3f(0,0,0), 
-		FOUNDATION_LAND, RES_NONE, 1000);
+		FOUNDATION_LAND, RES_NONE, 1000, 5*TILE_SIZE);
 #endif
 	BMat(BL_ELECPLANT, RES_CEMENT, 5);
 	BMat(BL_ELECPLANT, RES_LABOUR, 10);
@@ -632,7 +648,7 @@ void Queue()
 		Vec3f(1,1,1)/32.0f*TILE_SIZE*2, Vec3f(0,0,0), 
 		"models/cemplant/cemplant.ms3d", 
 		Vec3f(1,1,1)/32.0f*TILE_SIZE*2, Vec3f(0,0,0), 
-		FOUNDATION_LAND, RES_NONE, 1000);
+		FOUNDATION_LAND, RES_NONE, 1000, 5*TILE_SIZE);
 #else
 	DefB(BL_CEMPLANT, "Cement Plant", 
 		Vec2i(1,1), false, 
@@ -640,7 +656,7 @@ void Queue()
 		Vec3f(1,1,1)*100, Vec3f(0,0,0), 
 		"models/box/cemplant_c/basebuilding.ms3d", 
 		Vec3f(1,1,1)*100, Vec3f(0,0,0), 
-		FOUNDATION_LAND, RES_NONE, 1000);
+		FOUNDATION_LAND, RES_NONE, 1000, 5*TILE_SIZE);
 #endif
 	BMat(BL_CEMPLANT, RES_CEMENT, 5);
 	BMat(BL_CEMPLANT, RES_LABOUR, 10);
@@ -660,7 +676,7 @@ void Queue()
 		Vec3f(1,1,1)/32.0f*TILE_SIZE, Vec3f(0,0,0), 
 		"models/quarry/quarry.ms3d", 
 		Vec3f(1,1,1)/32.0f*TILE_SIZE, Vec3f(0,0,0), 
-		FOUNDATION_LAND, RES_NONE, 1000);
+		FOUNDATION_LAND, RES_NONE, 1000, 5*TILE_SIZE);
 #else
 	DefB(BL_QUARRY, "Quarry", 
 		Vec2i(1,1), false, 
@@ -668,7 +684,7 @@ void Queue()
 		Vec3f(1,1,1)*100, Vec3f(0,0,0), 
 		"models/box/quarry_c/basebuilding.ms3d", 
 		Vec3f(1,1,1)*100, Vec3f(0,0,0), 
-		FOUNDATION_LAND, RES_NONE, 1000);
+		FOUNDATION_LAND, RES_NONE, 1000, 5*TILE_SIZE);
 #endif
 	BMat(BL_QUARRY, RES_CEMENT, 5);
 	BMat(BL_QUARRY, RES_LABOUR, 10);
@@ -687,7 +703,7 @@ void Queue()
 		Vec3f(1,1,1)/32.0f*TILE_SIZE*2, Vec3f(0,0,0), 
 		"models/smelter/smelter.ms3d", 
 		Vec3f(1,1,1)/32.0f*TILE_SIZE*2, Vec3f(0,0,0), 
-		FOUNDATION_LAND, RES_NONE, 1000);
+		FOUNDATION_LAND, RES_NONE, 1000, 5*TILE_SIZE);
 #elif 1
 	DefB(BL_SMELTER, "Iron Smelter", 
 		Vec2i(1,1), false, 
@@ -695,7 +711,7 @@ void Queue()
 		Vec3f(1,1,1), Vec3f(0,0,0), 
 		"models/ironsm/ironsm", 
 		Vec3f(1,1,1), Vec3f(0,0,0), 
-		FOUNDATION_LAND, RES_NONE, 1000);
+		FOUNDATION_LAND, RES_NONE, 1000, 5*TILE_SIZE);
 #else
 	DefB(BL_SMELTER, "Smelter", 
 		Vec2i(2,2), false, 
@@ -703,7 +719,7 @@ void Queue()
 		Vec3f(1,1,1)*200, Vec3f(0,0,0), 
 		"models/box/smelter_c/basebuilding.ms3d", 
 		Vec3f(1,1,1)*200, Vec3f(0,0,0), 
-		FOUNDATION_LAND, RES_NONE, 1000);
+		FOUNDATION_LAND, RES_NONE, 1000, 5*TILE_SIZE);
 #endif
 	BMat(BL_SMELTER, RES_LABOUR, 4);
 	BMat(BL_SMELTER, RES_CEMENT, 3);
@@ -723,7 +739,7 @@ void Queue()
 		Vec3f(1,1,1), Vec3f(0,0,0), 
 		"models/nucpow/nucpow", 
 		Vec3f(1,1,1), Vec3f(0,0,0), 
-		FOUNDATION_LAND, RES_NONE, 1000);
+		FOUNDATION_LAND, RES_NONE, 1000, 5*TILE_SIZE);
 #else
 	DefB(BL_NUCPOW, "Nuclear Powerplant", 
 		Vec2i(2,2), false, 
@@ -731,7 +747,7 @@ void Queue()
 		Vec3f(1,1,1)*200, Vec3f(0,0,0), 
 		"models/box/nucpow_c/basebuilding.ms3d", 
 		Vec3f(1,1,1)*200, Vec3f(0,0,0), 
-		FOUNDATION_LAND, RES_NONE, 1000);
+		FOUNDATION_LAND, RES_NONE, 1000, 5*TILE_SIZE);
 #endif
 	BMat(BL_NUCPOW, RES_CEMENT, 5);
 	BMat(BL_NUCPOW, RES_LABOUR, 10);
@@ -751,7 +767,7 @@ void Queue()
 		Vec3f(1,1,1), Vec3f(0,0,0), 
 		"models/farm2/farm2", 
 		Vec3f(1,1,1), Vec3f(0,0,0), 
-		FOUNDATION_LAND, RES_NONE, 1000);
+		FOUNDATION_LAND, RES_NONE, 1000, 5*TILE_SIZE);
 #elif 1
 	DefB(BL_FARM, "Farm", 
 		Vec2i(1,1), true, 
@@ -759,7 +775,7 @@ void Queue()
 		Vec3f(1,1,1), Vec3f(0,0,0), 
 		"models/farm3/farm", 
 		Vec3f(1,1,1), Vec3f(0,0,0), 
-		FOUNDATION_LAND, RES_NONE, 1000);
+		FOUNDATION_LAND, RES_NONE, 1000, 5*TILE_SIZE);
 #else
 	DefB(BL_FARM, "Farm", 
 		Vec2i(4,2), false, 
@@ -767,7 +783,7 @@ void Queue()
 		Vec3f(2,1,1)*200, Vec3f(0,0,0), 
 		"models/box/farm_c/basebuilding.ms3d", 
 		Vec3f(2,1,1)*200, Vec3f(0,0,0), 
-		FOUNDATION_LAND, RES_NONE, 1000);
+		FOUNDATION_LAND, RES_NONE, 1000, 5*TILE_SIZE);
 #endif
 	BMat(BL_FARM, RES_LABOUR, 4);
 	BIn(BL_FARM, RES_LABOUR, 10);
@@ -785,7 +801,7 @@ void Queue()
 		Vec3f(1,1,1), Vec3f(0,0,0), 
 		"models/store2/store2", 
 		Vec3f(1,1,1), Vec3f(0,0,0), 
-		FOUNDATION_LAND, RES_NONE, 1000);
+		FOUNDATION_LAND, RES_NONE, 1000, 5*TILE_SIZE);
 #else
 	DefB(BL_STORE, "Store", 
 		Vec2i(2,1), false, 
@@ -793,7 +809,7 @@ void Queue()
 		Vec3f(2,1,1)*100, Vec3f(0,0,0), 
 		"models/box/store_c/basebuilding.ms3d", 
 		Vec3f(2,1,1)*100, Vec3f(0,0,0), 
-		FOUNDATION_LAND, RES_NONE, 1000);
+		FOUNDATION_LAND, RES_NONE, 1000, 5*TILE_SIZE);
 #endif
 	BMat(BL_STORE, RES_CEMENT, 5);
 	BMat(BL_STORE, RES_LABOUR, 10);
@@ -815,7 +831,7 @@ void Queue()
 		Vec3f(1,1,1), Vec3f(0,0,0), 
 		"models/oilwell/oilwell", 
 		Vec3f(1,1,1), Vec3f(0,0,0), 
-		FOUNDATION_LAND, RES_CRUDEOIL, 1000);
+		FOUNDATION_LAND, RES_CRUDEOIL, 1000, 5*TILE_SIZE);
 #else
 	DefB(BL_OILWELL, "Oil Well", 
 		Vec2i(1,1), false, 
@@ -823,7 +839,7 @@ void Queue()
 		Vec3f(1,1,1)*100, Vec3f(0,0,0), 
 		"models/box/oilwell_c/basebuilding.ms3d", 
 		Vec3f(1,1,1)*100, Vec3f(0,0,0), 
-		FOUNDATION_LAND, RES_CRUDEOIL, 1000);
+		FOUNDATION_LAND, RES_CRUDEOIL, 1000, 5*TILE_SIZE);
 #endif
 	BMat(BL_OILWELL, RES_CEMENT, 5);
 	BMat(BL_OILWELL, RES_LABOUR, 10);
@@ -841,7 +857,7 @@ void Queue()
 		Vec3f(1,1,1)/32.0f*TILE_SIZE, Vec3f(0,0,0), 
 		"models/mine/nobottom.ms3d", 
 		Vec3f(1,1,1)/32.0f*TILE_SIZE, Vec3f(0,0,0), 
-		FOUNDATION_LAND, -1, 1000);
+		FOUNDATION_LAND, -1, 1000, 5*TILE_SIZE);
 #elif 1
 	DefB(BL_MINE, "Shaft Mine", 
 		Vec2i(1,1), false, 
@@ -849,7 +865,7 @@ void Queue()
 		Vec3f(1,1,1), Vec3f(0,0,0), 
 		"models/shmine/shmine", 
 		Vec3f(1,1,1), Vec3f(0,0,0), 
-		FOUNDATION_LAND, -1, 1000);
+		FOUNDATION_LAND, -1, 1000, 5*TILE_SIZE);
 #else
 	DefB(BL_MINE, "Mine", 
 		Vec2i(1,1), false, 
@@ -857,7 +873,7 @@ void Queue()
 		Vec3f(1,1,1)*100, Vec3f(0,0,0), 
 		"models/box/mine_c/basebuilding.ms3d", 
 		Vec3f(1,1,1)*100, Vec3f(0,0,0), 
-		FOUNDATION_LAND, -1, 1000);
+		FOUNDATION_LAND, -1, 1000, 5*TILE_SIZE);
 #endif
 	BMat(BL_MINE, RES_LABOUR, 4);
 	BMat(BL_MINE, RES_CEMENT, 3);

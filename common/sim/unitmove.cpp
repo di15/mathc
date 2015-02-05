@@ -28,6 +28,7 @@
 #include "../path/astarpath.h"
 #include "../path/anypath.h"
 #include "../path/fillbodies.h"
+#include "../render/fogofwar.h"
 
 //not engine
 #include "../../game/gui/chattext.h"
@@ -740,6 +741,7 @@ elif 0
 	//return;	//temp
 
 	u->freecollider();
+	RemVis(u);
 
 	Vec2i dir = u->subgoal - u->cmpos;
 		
@@ -1058,6 +1060,8 @@ elif 0
 			u->tpath.clear();
 			u->subgoal = u->cmpos;
 			u->fillcollider();
+			AddVis(u);
+			Explore(u);
 			ResetPath(u);
 
 			if(ar)
@@ -1089,7 +1093,11 @@ elif 0
 	//	u->collided = true;
 
 	if(!u->hidden())
+	{
 		u->fillcollider();
+		AddVis(u);
+		Explore(u);
+	}
 
 	u->drawpos.x = u->cmpos.x;
 	u->drawpos.z = u->cmpos.y;
@@ -1331,32 +1339,38 @@ void OnArrived(Unit* u)
 	case UMODE_GOBLJOB:
 		u->mode = UMODE_BLJOB;
 		u->freecollider();
+		RemVis(u);
 		ResetGoal(u);
 		g_building[u->target].worker.push_back(u-g_unit);
 		break;
 	case UMODE_GOCSTJOB:
 		u->mode = UMODE_CSTJOB;
 		u->freecollider();
+		RemVis(u);
 		ResetGoal(u);
 		break;
 	case UMODE_GOCDJOB:
 		u->mode = UMODE_CDJOB;
 		u->freecollider();
+		RemVis(u);
 		ResetGoal(u);
 		break;
 	case UMODE_GOSHOP:
 		u->mode = UMODE_SHOPPING;
 		u->freecollider();
+		RemVis(u);
 		ResetGoal(u);
 		break;
 	case UMODE_GOREST:
 		u->mode = UMODE_RESTING;
 		u->freecollider();
+		RemVis(u);
 		ResetGoal(u);
 		break;
 	case UMODE_GODRIVE:
 		ArAtTra(u);
 		u->freecollider();
+		RemVis(u);
 		ResetGoal(u);
 		break;
 	case UMODE_GODEMB:

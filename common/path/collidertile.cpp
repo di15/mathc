@@ -26,6 +26,7 @@
 #include "../phys/collision.h"
 #include "fillbodies.h"
 #include "tilepath.h"
+#include "../render/fogofwar.h"
 
 //not engine
 #include "../../game/gui/chattext.h"
@@ -250,6 +251,9 @@ void FillColliderGrid()
 			continue;
 
 		u->fillcollider();
+		
+		AddVis(u);
+		Explore(u);
 	}
 
 	for(int i=0; i<BUILDINGS; i++)
@@ -260,6 +264,10 @@ void FillColliderGrid()
 			continue;
 
 		b->fillcollider();
+
+		//if(b->finished)
+		AddVis(b);
+		Explore(b);
 	}
 
 	for(int i=0; i<FOLIAGES; i++)

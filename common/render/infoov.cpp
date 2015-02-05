@@ -13,6 +13,7 @@
 #include "../sim/simflow.h"
 #include "../sim/simdef.h"
 #include "../math/frustum.h"
+#include "fogofwar.h"
 
 //draw unit/bl info overlay
 void DrawOv(Matrix* mvp)
@@ -35,6 +36,12 @@ void DrawOv(Matrix* mvp)
 			//	continue;
 
 			if(!g_frustum.pointin(b->drawpos.x, b->drawpos.y, b->drawpos.z))
+				continue;
+			
+			int tx = b->tilepos.x;
+			int ty = b->tilepos.y;
+
+			if(!IsTileVis(g_localP, tx, ty))
 				continue;
 
 			Vec4f screenpos = ScreenPos(mvp, b->drawpos, g_width, g_height, true);
@@ -140,6 +147,12 @@ void DrawOv(Matrix* mvp)
 
 			if(!g_frustum.pointin(b->drawpos.x, b->drawpos.y, b->drawpos.z))
 				continue;
+			
+			int tx = b->tilepos.x;
+			int ty = b->tilepos.y;
+
+			if(!IsTileVis(g_localP, tx, ty))
+				continue;
 
 			Vec4f screenpos = ScreenPos(mvp, b->drawpos, g_width, g_height, true);
 		
@@ -213,6 +226,12 @@ void DrawOv(Matrix* mvp)
 			continue;
 
 		if(!g_frustum.pointin(u->drawpos.x, u->drawpos.y, u->drawpos.z))
+			continue;
+		
+		int tx = u->cmpos.x / TILE_SIZE;
+		int ty = u->cmpos.y / TILE_SIZE;
+
+		if(!IsTileVis(g_localP, tx, ty))
 			continue;
 
 		Vec4f screenpos = ScreenPos(mvp, u->drawpos, g_width, g_height, true);

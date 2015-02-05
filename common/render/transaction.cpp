@@ -6,6 +6,8 @@
 #include "../utils.h"
 #include "../sim/player.h"
 #include "../math/frustum.h"
+#include "fogofwar.h"
+#include "heightmap.h"
 
 std::list<Transaction> g_transx;
 bool g_drawtransx = false;
@@ -47,6 +49,15 @@ void DrawTransactions(Matrix projmodlview)
 		pos = &triter->drawpos;
 
 		if(!g_frustum.pointin(pos->x, pos->y, pos->z))
+		{
+			triter++;
+			continue;
+		}
+		
+		int tx = pos->x / TILE_SIZE;
+		int ty = pos->y / TILE_SIZE;
+
+		if(!IsTileVis(g_localP, tx, ty))
 		{
 			triter++;
 			continue;

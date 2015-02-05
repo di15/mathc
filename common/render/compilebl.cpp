@@ -39,10 +39,10 @@ Vec2i TileTimes(Vec2f* tc)
 	Vec2f tc1 = tc[1];
 	Vec2f tc2 = tc[2];
 
-	float minu = std::min(tc0.x, std::min(tc1.x, tc2.x));
-	float minv = std::min(tc0.y, std::min(tc1.y, tc2.y));
-	float maxu = std::max(tc0.x, std::max(tc1.x, tc2.x));
-	float maxv = std::max(tc0.y, std::max(tc1.y, tc2.y));
+	float minu = imin(tc0.x, imin(tc1.x, tc2.x));
+	float minv = imin(tc0.y, imin(tc1.y, tc2.y));
+	float maxu = imax(tc0.x, imax(tc1.x, tc2.x));
+	float maxv = imax(tc0.y, imax(tc1.y, tc2.y));
 
 	float rangeu = maxu - minu;
 	float rangev = maxv - minv;
@@ -98,68 +98,6 @@ Vec2i TileTimes(VertexArray* va)
 	}
 
 	return maxtile;
-}
-
-void Resample(LoadedTex* original, LoadedTex* empty, Vec2i newdim)
-{
-#ifdef COMPILEB_DEBUG
-	g_log<<"resample...?"<<endl;
-	g_log.flush();
-#endif
-
-	if(original == NULL || original->data == NULL || original->sizeX <= 0 || original->sizeY <= 0)
-	{
-#ifdef COMPILEB_DEBUG
-		g_log<<"resample NULL 1"<<endl;
-		g_log.flush();
-#endif
-
-		empty->data = NULL;
-
-#ifdef COMPILEB_DEBUG
-		g_log<<"resample NULL 2"<<endl;
-		g_log.flush();
-#endif
-
-		empty->sizeX = 0;
-		empty->sizeY = 0;
-
-		if(original != NULL)
-			empty->channels = original->channels;
-
-		return;
-	}
-
-#ifdef COMPILEB_DEBUG
-	g_log<<"resample "<<original->sizeX<<","<<original->sizeY<<" to "<<newdim.x<<","<<newdim.y<<endl;
-	g_log.flush();
-#endif
-
-	AllocTex(empty, newdim.x, newdim.y, original->channels);
-
-	double scaleW =  (double)newdim.x / (double)original->sizeX;
-	double scaleH = (double)newdim.y / (double)original->sizeY;
-
-	for(int cy = 0; cy < newdim.y; cy++)
-	{
-		for(int cx = 0; cx < newdim.x; cx++)
-		{
-			int pixel = cy * (newdim.x * original->channels) + cx*original->channels;
-			int nearestMatch =  (int)(cy / scaleH) * original->sizeX * original->channels + (int)(cx / scaleW) * original->channels;
-
-			empty->data[pixel    ] =  original->data[nearestMatch    ];
-			empty->data[pixel + 1] =  original->data[nearestMatch + 1];
-			empty->data[pixel + 2] =  original->data[nearestMatch + 2];
-
-			if(original->channels > 3)
-				empty->data[pixel + 3] =  original->data[nearestMatch + 3];
-		}
-	}
-
-#ifdef COMPILEB_DEBUG
-	g_log<<"\t done resample"<<endl;
-	g_log.flush();
-#endif
 }
 
 #if 0

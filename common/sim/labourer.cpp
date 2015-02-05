@@ -16,6 +16,8 @@
 #include "../math/fixmath.h"
 #include "../path/pathjob.h"
 #include "../path/fillbodies.h"
+#include "../render/fogofwar.h"
+#include "../math/frustum.h"
 
 short g_labsnd[LAB_SOUNDS] = {-1,-1,-1};
 
@@ -280,7 +282,10 @@ void DoCstJob(Unit* u)
 		}
 
 		NewTransx(b->drawpos, &transx);
-		PlaySound(g_labsnd[LABSND_WORK]);
+		
+		if(g_frustum.pointin(u->drawpos.x, u->drawpos.y, u->drawpos.z) && 
+			IsTileVis(g_localP, u->cmpos.x/TILE_SIZE, u->cmpos.y/TILE_SIZE))
+			PlaySound(g_labsnd[LABSND_WORK]);
 	}
 #endif
 
@@ -402,7 +407,9 @@ void DoBlJob(Unit* u)
 		}
 	}
 	
-	PlaySound(g_labsnd[LABSND_WORK]);
+	if(g_frustum.pointin(u->drawpos.x, u->drawpos.y, u->drawpos.z) && 
+			IsTileVis(g_localP, u->cmpos.x/TILE_SIZE, u->cmpos.y/TILE_SIZE))
+		PlaySound(g_labsnd[LABSND_WORK]);
 
 	//char msg[128];
 	//sprintf(msg, "job %s", g_buildingType[b->type].name);
@@ -510,7 +517,9 @@ void DoCdJob(Unit* u)
 		//NewTransx(RoadPosition(target, target2), CURRENC, -p->conwage);
 		//NewTransx(RoadPosition(target, target2), LABOUR, 1, CURRENC, -p->conwage);
 
-		PlaySound(g_labsnd[LABSND_WORK]);
+		if(g_frustum.pointin(u->drawpos.x, u->drawpos.y, u->drawpos.z) && 
+			IsTileVis(g_localP, u->cmpos.x/TILE_SIZE, u->cmpos.y/TILE_SIZE))
+			PlaySound(g_labsnd[LABSND_WORK]);
 	}
 
 	ctile->checkconstruction(u->cdtype);
@@ -899,7 +908,10 @@ void DoShop(Unit* u)
 		tt.m_part.push_back(RichPart(UString(ft)));
 
 		NewTransx(u->drawpos, &tt);
-		PlaySound(g_labsnd[LABSND_SHOP]);
+		
+		if(g_frustum.pointin(u->drawpos.x, u->drawpos.y, u->drawpos.z) && 
+			IsTileVis(g_localP, u->cmpos.x/TILE_SIZE, u->cmpos.y/TILE_SIZE))
+			PlaySound(g_labsnd[LABSND_SHOP]);
 	}
 #endif
 
@@ -935,7 +947,9 @@ void DoRest(Unit* u)
 	//SubmitConsole(&em);
 	//AddChat(&rt);
 	NewTransx(u->drawpos, &rt);
-	PlaySound(g_labsnd[LABSND_REST]);
+	if(g_frustum.pointin(u->drawpos.x, u->drawpos.y, u->drawpos.z) && 
+			IsTileVis(g_localP, u->cmpos.x/TILE_SIZE, u->cmpos.y/TILE_SIZE))
+		PlaySound(g_labsnd[LABSND_REST]);
 #endif
 }
 
@@ -1089,10 +1103,13 @@ void Disembark(Unit* op)
 	ResetMode(op);
 	//must be a better way to do this - fillcollider is called already
 	op->freecollider();
+	RemVis(op);
 	Vec2i oppos;
 	PlaceUAb(op->type, trpos, &oppos);
 	op->cmpos = oppos;
 	op->fillcollider();
+	AddVis(op);
+	Explore(op);
 	op->drawpos = Vec3f(oppos.x, g_hmap.accheight(oppos.x, oppos.y), oppos.y);
 
 	tr->driver = -1;
@@ -1211,7 +1228,9 @@ void DoDrive(Unit* op)
 
 		NewTransx(tr->drawpos, &transx);
 		
-		PlaySound(g_trsnd[TRSND_WORK]);
+		if(g_frustum.pointin(tr->drawpos.x, tr->drawpos.y, tr->drawpos.z) && 
+			IsTileVis(g_localP, tr->cmpos.x/TILE_SIZE, tr->cmpos.y/TILE_SIZE))
+			PlaySound(g_trsnd[TRSND_WORK]);
 	}
 
 	/*

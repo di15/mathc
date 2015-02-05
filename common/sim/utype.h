@@ -26,6 +26,7 @@ public:
 	bool seaborne;
 	bool airborne;
 	bool military;
+	int visrange;
 };
 
 #define UNIT_BATTLECOMP		0
@@ -36,7 +37,13 @@ public:
 
 extern UType g_utype[UNIT_TYPES];
 
-void DefU(int type, const char* modelrelative, Vec3f scale, Vec3f translate, Vec3i size, const char* name, int starthp, bool landborne, bool walker, bool roaded, bool seaborne, bool airborne, int cmspeed, bool military);
+void DefU(
+	int type, 
+	const char* modelrelative, Vec3f scale, Vec3f translate, Vec3i size, 
+	const char* name, int starthp, 
+	bool landborne, bool walker, bool roaded, bool seaborne, bool airborne, 
+	int cmspeed, bool military,
+	int visrange);
 void UCost(int type, int res, int amt);
 
 #endif

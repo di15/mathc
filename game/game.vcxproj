@@ -246,7 +246,9 @@
     <ClCompile Include="..\common\phys\trace.cpp" />
     <ClCompile Include="..\common\platform.cpp" />
     <ClCompile Include="..\common\render\billboard.cpp" />
+    <ClCompile Include="..\common\render\compilebl.cpp" />
     <ClCompile Include="..\common\render\dmdmodel.cpp" />
+    <ClCompile Include="..\common\render\fogofwar.cpp" />
     <ClCompile Include="..\common\render\foliage.cpp" />
     <ClCompile Include="..\common\render\graph.cpp" />
     <ClCompile Include="..\common\render\heightmap.cpp" />
@@ -405,7 +407,9 @@
     <ClInclude Include="..\common\phys\trace.h" />
     <ClInclude Include="..\common\platform.h" />
     <ClInclude Include="..\common\render\billboard.h" />
+    <ClInclude Include="..\common\render\compilebl.h" />
     <ClInclude Include="..\common\render\dmdmodel.h" />
+    <ClInclude Include="..\common\render\fogofwar.h" />
     <ClInclude Include="..\common\render\foliage.h" />
     <ClInclude Include="..\common\render\graph.h" />
     <ClInclude Include="..\common\render\heightmap.h" />

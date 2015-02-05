@@ -15,6 +15,8 @@
 #include "../sim/job.h"
 #include "../econ/demand.h"
 #include "../path/pathjob.h"
+#include "../math/frustum.h"
+#include "../render/fogofwar.h"
 
 //not engine
 #include "../../game/gui/chattext.h"
@@ -201,7 +203,10 @@ void DoneRefuel(Unit* u)
 	else*/
 	{
 		ResetMode(u);
-		PlaySound(g_trsnd[TRSND_DONEJOB]);
+		
+		if(g_frustum.pointin(u->drawpos.x, u->drawpos.y, u->drawpos.z) && 
+			IsTileVis(g_localP, u->cmpos.x/TILE_SIZE, u->cmpos.y/TILE_SIZE))
+			PlaySound(g_trsnd[TRSND_DONEJOB]);
 	}
 	//else
 	//	ResetMode();
@@ -392,8 +397,10 @@ void AtDemB(Unit* u)
 		b->transporter[u->cargotype] = -1;
 		ResetMode(u);
 	}
-
-	PlaySound(g_trsnd[TRSND_DONEJOB]);
+	
+	if(g_frustum.pointin(u->drawpos.x, u->drawpos.y, u->drawpos.z) && 
+			IsTileVis(g_localP, u->cmpos.x/TILE_SIZE, u->cmpos.y/TILE_SIZE))
+		PlaySound(g_trsnd[TRSND_DONEJOB]);
 }
 
 void DoneAtSup(Unit* u)
@@ -432,8 +439,10 @@ void DoneAtSup(Unit* u)
 
 	NewJob(UMODE_GODRIVE, (int)(u-g_unit), -1, CONDUIT_NONE);
 	//LastNum("dat sup 5");
-
-	PlaySound(g_trsnd[TRSND_DONEJOB]);
+	
+	if(g_frustum.pointin(u->drawpos.x, u->drawpos.y, u->drawpos.z) && 
+			IsTileVis(g_localP, u->cmpos.x/TILE_SIZE, u->cmpos.y/TILE_SIZE))
+		PlaySound(g_trsnd[TRSND_DONEJOB]);
 }
 
 void AtSup(Unit* u)
@@ -651,8 +660,10 @@ void AtDemCd(Unit* u)
 
 		//NewTransx(b->pos, transportRes, 1.0f);
 		//NewTransx(b->pos, transportRes, transportAmt);
-
-		PlaySound(g_trsnd[TRSND_DONEJOB]);
+		
+		if(g_frustum.pointin(u->drawpos.x, u->drawpos.y, u->drawpos.z) && 
+			IsTileVis(g_localP, u->cmpos.x/TILE_SIZE, u->cmpos.y/TILE_SIZE))
+			PlaySound(g_trsnd[TRSND_DONEJOB]);
 	}
 
 	if(u->cargoamt <= 0)
